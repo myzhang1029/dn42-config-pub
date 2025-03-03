@@ -17,5 +17,5 @@ chain filter_FWD_aredn {
 }
 
 chain nat_POST_aredn {
-    iifname @lan_interfaces oifname @aredn_interfaces meta nfproto ipv4 masquerade
+    iifname @lan_interfaces oifname @aredn_interfaces meta nfproto ipv4 counter masquerade
 }
