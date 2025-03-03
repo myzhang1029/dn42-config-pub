@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-kiou-us2.netdev
+
+[NetDev]
+Name=wg3914kiouus2
+Kind=wireguard
+Description=WireGuard tunnel to AS4242423914 Kioubit us2
+
+[WireGuard]
+ListenPort=24205
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=6Cylr9h1xFduAO+5nyXhFI1XJ0+Sw9jCpCDvcqErF1s=
+Endpoint=us2.g-load.eu:20893
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64

@@ -1,0 +1,6 @@
+interface "ztbtosre7x" {
+    type tunnel;
+};
+interface "eth0" {
+    type wired;
+};

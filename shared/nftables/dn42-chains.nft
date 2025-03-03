@@ -1,0 +1,34 @@
+# vi: ft=nftables
+# /etc/nftables/dn42-chains.nft
+
+# Chains for dn42 interfaces
+
+define dn42_self_ipv4_prefix = 172.23.6.160/27
+define dn42_self_ipv6_prefix = fdc0:d227:306::/48
+
+chain filter_IN_dn42 {
+    jump filter_IN_policy_allow-host-ipv6
+    # BGP
+    tcp dport 179 accept
+    # Babel
+    udp dport 6696 accept
+    # SSH
+    tcp dport 22 accept
+    # bird-lg
+    ip6 daddr $dn42_self_ipv6 ip6 saddr fdc0:d227:306:ee01::1 tcp dport 8000 accept
+    # Other services
+    tcp dport @dn42_tcp_ports accept
+    udp dport @dn42_udp_ports accept
+    meta l4proto { icmp, ipv6-icmp } accept
+    log prefix "filter_IN_dn42_REJECT: " reject with icmpx admin-prohibited
+}
+
+chain filter_FWD_dn42 {
+    # @dn42_interfaces needs to be defined in `main.nft`
+    # Accept all traffic within the dn42 network
+    oifname @dn42_interfaces counter accept
+    log prefix "filter_FWD_dn42_REJECT: " reject with icmpx admin-prohibited
+}
+
+chain nat_POST_dn42 {
+}

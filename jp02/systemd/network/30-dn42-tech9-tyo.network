@@ -1,0 +1,24 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-tech9-tyo.network
+
+[Match]
+Name=wg1588tech9tyo
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+
+[Network]
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=172.23.6.166/32
+Peer=172.20.16.145/32
+
+[Address]
+Address=fe80::100/64
+Peer=fe80::1588/64

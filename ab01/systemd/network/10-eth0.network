@@ -1,0 +1,19 @@
+# vi: ft=systemd
+# /etc/systemd/network/10-eth0.network
+
+[Match]
+Name=eth0
+
+[Link]
+RequiredForOnline=no
+
+[Network]
+Description=Raspberry Pi Built-in Ethernet
+DHCP=ipv4
+LinkLocalAddressing=ipv6
+Domains=maiyun.me dn42
+MulticastDNS=yes
+
+[DHCP]
+RouteMetric=500
+UseMTU=true

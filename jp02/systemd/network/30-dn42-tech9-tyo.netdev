@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-tech9-tyo.netdev
+
+[NetDev]
+Name=wg1588tech9tyo
+Kind=wireguard
+Description=WireGuard tunnel to AS4242421588 tech9 jp-tyo01
+
+[WireGuard]
+ListenPort=24211
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=unTYSat5YjkY+BY31Q9xLSfFhTUBvn3CiDCSZxbINVM=
+Endpoint=jp-tyo01.dn42.tech9.io:53675
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64

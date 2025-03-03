@@ -1,0 +1,16 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-potat0-las.network
+
+[Match]
+Name=wg1816potat0las
+
+[Network]
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=fe80::893/64
+Peer=fe80::1816/64

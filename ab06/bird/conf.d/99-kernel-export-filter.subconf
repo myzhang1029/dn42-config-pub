@@ -1,0 +1,17 @@
+filter kernel_export4 {
+    if source = RTS_STATIC then reject;
+    if source = RTS_BGP then {
+        krt_prefsrc = dn42_thisaddr4;
+        accept;
+    }
+    accept;
+}
+
+filter kernel_export6 {
+    if source = RTS_STATIC then reject;
+    if source = RTS_BGP then {
+        krt_prefsrc = dn42_thisaddr6;
+        accept;
+    }
+    accept;
+}

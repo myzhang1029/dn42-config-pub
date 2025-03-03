@@ -1,0 +1,33 @@
+# vi: ft=nftables
+# /etc/nftables/lan-chains.nft
+
+# Chains for LAN interfaces
+
+chain filter_IN_lan {
+    tcp dport ssh accept
+    ip daddr 224.0.0.251 udp dport 5353 accept comment "mDNS"
+    ip6 daddr ff02::fb udp dport 5353 accept comment "mDNS"
+    ip6 daddr fe80::/64 udp dport 546 accept comment "DHCPv6"
+    udp dport 67 accept comment "DHCP"
+    tcp dport 53 accept comment "DNS"
+    udp dport 53 accept comment "DNS"
+    tcp dport 8080 accept comment "PiAware"
+    meta l4proto { icmp, ipv6-icmp } accept
+    meta pkttype host log prefix "filter_IN_aredn_REJECT: "
+    reject with icmpx admin-prohibited
+}
+
+chain filter_FWD_lan {
+    # LAN bridge forwarding
+    oifname @lan_interfaces accept
+    # Allow forwarding from LAN to WAN
+    oifname @public_interfaces accept
+    # Allow forwarding from LAN to dn42
+    oifname @dn42_interfaces accept
+    # Allow forwarding from LAN to AREDN
+    oifname @aredn_interfaces accept
+    log prefix "filter_FWD_lan_REJECT: " reject with icmpx admin-prohibited
+}
+
+chain nat_POST_lan {
+}

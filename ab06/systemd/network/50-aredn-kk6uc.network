@@ -1,0 +1,22 @@
+# vi: ft=systemd
+# /etc/systemd/network/50-aredn-kk6uc.network
+
+[Match]
+Name=wgarednkk6uc
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv4
+
+[Network]
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=10.250.230.125/32
+
+[Address]
+Address=fe80::893/64

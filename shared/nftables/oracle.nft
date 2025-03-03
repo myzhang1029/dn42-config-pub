@@ -1,0 +1,29 @@
+# vi: ft=nftables
+# /etc/nftables/oracle.nft
+
+# Oracle-added rules (hand-edited from /etc/firewalld/direct.xml)
+# Comment: See the Oracle-Provided Images section in the Oracle Bare Metal documentation for security impact of modifying or removing this rule
+chain BareMetalInstanceServices {
+    # iSCSI network endpoints
+    ip daddr 169.254.0.2 skuid 0 tcp dport 3260 counter accept
+    ip6 daddr fd00:c1::a9fe:2 skuid 0 tcp dport 3260 counter accept
+    ip daddr 169.254.2.0/24 skuid 0 tcp dport 3260 counter accept
+    ip6 daddr fd00:c1::a9fe:200/120 skuid 0 tcp dport 3260 counter accept
+    ip daddr 169.254.4.0/24 skuid 0 tcp dport 3260 counter accept
+    ip6 daddr fd00:c1::a9fe:400/120 skuid 0 tcp dport 3260 counter accept
+    ip daddr 169.254.5.0/24 skuid 0 tcp dport 3260 counter accept
+    ip6 daddr fd00:c1::a9fe:500/120 skuid 0 tcp dport 3260 counter accept
+
+    ip daddr { 169.254.0.2, 169.254.0.3, 169.254.0.4 } tcp dport 80 counter accept
+    ip6 daddr { fd00:c1::a9fe:2, fd00:c1::a9fe:3, fd00:c1::a9fe:4 } tcp dport 80 counter accept
+
+    ip daddr 169.254.169.254 tcp dport {53, 80} counter accept
+    ip daddr 169.254.169.254 udp dport {53, 67, 69, 123} counter accept
+    ip6 daddr fd00:c1::a9fe:a9fe tcp dport {53, 80} counter accept
+    ip6 daddr fd00:c1::a9fe:a9fe udp dport {53, 67, 69, 123} counter accept
+
+    ip daddr 169.254.0.0/16 meta l4proto tcp counter reject with tcp reset
+    ip daddr 169.254.0.0/16 meta l4proto udp counter reject
+    ip6 daddr fd00:c1::a9fe:0/120 meta l4proto tcp counter reject with tcp reset
+    ip6 daddr fd00:c1::a9fe:0/120 meta l4proto udp counter reject
+}

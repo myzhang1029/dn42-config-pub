@@ -1,0 +1,8 @@
+# vi: ft=systemd
+# /etc/systemd/network/40-ampr-dummy.network
+
+[Match]
+Name=dummy44
+
+[Network]
+Address=44.63.16.202/32

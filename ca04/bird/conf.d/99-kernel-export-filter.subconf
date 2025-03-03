@@ -1,0 +1,21 @@
+filter kernel_export4 {
+    if source = RTS_STATIC then reject;
+    if source = RTS_BGP then {
+        krt_prefsrc = dn42_thisaddr4;
+        accept;
+    }
+    # AMPR should be handled via policy routing on table 44
+    # except for our internal routes
+    if net ~ ampr_netset then accept;
+    if net ~ ampr_valid_netset then reject;
+    accept;
+}
+
+filter kernel_export6 {
+    if source = RTS_STATIC then reject;
+    if source = RTS_BGP then {
+        krt_prefsrc = dn42_thisaddr6;
+        accept;
+    }
+    accept;
+}

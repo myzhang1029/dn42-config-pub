@@ -1,0 +1,18 @@
+# vi: ft=systemd
+# /etc/systemd/network/50-aredn-kk6uc.netdev
+
+[NetDev]
+Name=wgarednkk6uc
+Kind=wireguard
+Description=WireGuard tunnel to KK6UC-SUPERNODE AREDN Node
+
+[WireGuard]
+PrivateKeyFile=/etc/systemd/network/50-aredn-kk6uc.wgkey
+
+[WireGuardPeer]
+# AREDN server generated Key is serverpub+mypriv+mypub
+PublicKey=XdJppaqz1QW2RNZLeGMwApc96EVK7NlrluUNNBFYuxU=
+Endpoint=kk6uc-supernode.ucsd.edu:6528
+AllowedIPs=0.0.0.0/0
+AllowedIPs=fe80::/10
+AllowedIPs=ff00::/8

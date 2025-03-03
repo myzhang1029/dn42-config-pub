@@ -1,0 +1,11 @@
+[Unit]
+Description=AMPR RIP44 Daemon
+Wants=syslog.service local-fs.target network-online.target
+After=local-fs.target network-online.target
+
+[Service]
+Restart=always
+ExecStart=/usr/local/sbin/ampr-ripd -d -s -i tunl0 -t 44 -a 44.63.16.192/29 -L VE7ZMY@FN03hp
+
+[Install]
+WantedBy=multi-user.target

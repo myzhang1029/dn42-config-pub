@@ -1,0 +1,18 @@
+[Unit]
+Description=Reload nftables rules once system is configured
+Documentation=man:nft(8) http://wiki.nftables.org
+Wants=nftables.service sys-subsystem-net-devices-brlan.device
+After=nftables.service sys-subsystem-net-devices-brlan.device
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+StandardInput=null
+ProtectSystem=full
+ProtectHome=true
+ExecStart=/usr/sbin/nft -f /etc/nftables/main.nft
+ExecReload=/usr/sbin/nft -f /etc/nftables/main.nft
+ExecStop=/usr/sbin/nft flush ruleset
+
+[Install]
+WantedBy=network-online.target

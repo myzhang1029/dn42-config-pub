@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-hujk-lax.netdev
+
+[NetDev]
+Name=wg2717hujklax
+Kind=wireguard
+Description=WireGuard tunnel to AS4242422717 hujk LAX
+
+[WireGuard]
+ListenPort=24201
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=L4+efr10ZM0J80nDeO5mHw25nq9LC5UBrYtP8T1I9n4=
+Endpoint=usw.vm.whojk.com:23128
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64

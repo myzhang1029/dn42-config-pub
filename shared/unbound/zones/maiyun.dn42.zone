@@ -1,0 +1,34 @@
+$TTL 86400 ; 24 hours
+$ORIGIN maiyun.dn42.
+
+@  1D  IN SOA ns1 dn42admin.maiyun.me. (
+              20240415002 ; serial
+              3H ; refresh
+              15 ; retry
+              1w ; expire
+              3h ; minimum
+             )
+@  1D  IN  NS ns1
+@  1D  IN  NS ns2
+
+ca04.inzt    IN A      172.23.6.161
+ab06.inzt    IN A      172.23.6.162
+ca03.inzt    IN A      172.23.6.163
+ab01.inzt    IN A      172.23.6.164
+cn05.inzt    IN A      172.23.6.165
+jp02.inzt    IN A      172.23.6.166
+ca04.inzt    IN AAAA   fdc0:d227:306:ee01::1
+ab06.inzt    IN AAAA   fdc0:d227:306:ee01::2
+ca03.inzt    IN AAAA   fdc0:d227:306:ee01::3
+ab01.inzt    IN AAAA   fdc0:d227:306:ee01::4
+cn05.inzt    IN AAAA   fdc0:d227:306:ee01::5
+jp02.inzt    IN AAAA   fdc0:d227:306:ee01::6
+
+ns1          IN CNAME  ca04.inzt
+ns2          IN CNAME  ab06.inzt
+
+ca04         IN CNAME  ca04.inzt
+ab01         IN CNAME  ab01.inzt
+ab06         IN CNAME  ab06.inzt
+pico         IN A      172.23.6.178
+pico         IN AAAA   fdc0:d227:306:ab06:2acd:c1ff:fe04:c40d

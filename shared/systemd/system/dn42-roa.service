@@ -1,0 +1,8 @@
+[Unit]
+Description=Update DN42 ROA
+
+[Service]
+Type=oneshot
+ExecStart=curl -sfSLR -o /etc/bird/roa_dn42_v4.conf -z /etc/bird/roa_dn42_v4.conf https://dn42.burble.com/roa/dn42_roa_bird2_4.conf
+ExecStart=curl -sfSLR -o /etc/bird/roa_dn42_v6.conf -z /etc/bird/roa_dn42_v6.conf https://dn42.burble.com/roa/dn42_roa_bird2_6.conf
+ExecStart=birdc configure

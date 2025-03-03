@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-iedon-sjc.netdev
+
+[NetDev]
+Name=wg2189iedonsjc
+Kind=wireguard
+Description=WireGuard tunnel to AS4242422189 iedon SJC
+
+[WireGuard]
+ListenPort=24203
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=Sz0UhewjDk2yRKI0QL9rB+5daWpXFVlbbz9cLfVVLn4=
+Endpoint=us-sjc.dn42.kuu.moe:40160
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64

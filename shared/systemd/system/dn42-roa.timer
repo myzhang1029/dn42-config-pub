@@ -1,0 +1,10 @@
+[Unit]
+Description=Update DN42 ROA periodically
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=15m
+AccuracySec=1m
+
+[Install]
+WantedBy=timers.target
