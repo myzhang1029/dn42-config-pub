@@ -43,7 +43,7 @@ table inet main {
     }
 
     chain filter_INPUT {
-        type filter hook input priority filter + 10; policy accept;
+        type filter hook input priority filter + 10; policy drop;
         ct state { established, related } accept
         ct status dnat accept
         iifname "lo" accept
@@ -56,7 +56,7 @@ table inet main {
     }
 
     chain filter_FORWARD {
-        type filter hook forward priority filter + 10; policy accept;
+        type filter hook forward priority filter + 10; policy drop;
         ct state { established, related } accept
         ct status dnat accept
         iifname "lo" accept
