@@ -28,6 +28,10 @@ table inet main {
         elements = { "wlrpi", "eth0" }
     }
 
+    include "/etc/nftables/dn42-chains.nft"
+    include "/etc/nftables/shared-chains.nft"
+    include "/etc/nftables/public-chains.nft"
+
     chain nat_POSTROUTING {
         type nat hook postrouting priority srcnat + 10; policy accept;
         oifname @public_interfaces goto nat_POST_public
@@ -63,8 +67,4 @@ table inet main {
         # Should have reached a decision by now
         log prefix "filter_FORWARD_FINAL_REJECT: " counter reject with icmpx admin-prohibited
     }
-
-    include "/etc/nftables/dn42-chains.nft"
-    include "/etc/nftables/shared-chains.nft"
-    include "/etc/nftables/public-chains.nft"
 }

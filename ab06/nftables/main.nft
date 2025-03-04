@@ -42,6 +42,12 @@ table inet main {
         elements = { "wgarednkk6uc" }
     }
 
+    include "/etc/nftables/dn42-chains.nft"
+    include "/etc/nftables/shared-chains.nft"
+    include "/etc/nftables/public-chains.nft"
+    include "/etc/nftables/aredn-chains.nft"
+    include "/etc/nftables/lan-chains.nft"
+
     # LAN bridge flowtable
     flowtable fastpath {
         hook ingress priority filter + 10
@@ -92,10 +98,4 @@ table inet main {
         # Should have reached a decision by now
         log prefix "filter_FORWARD_FINAL_REJECT: " counter reject with icmpx admin-prohibited
     }
-
-    include "/etc/nftables/dn42-chains.nft"
-    include "/etc/nftables/shared-chains.nft"
-    include "/etc/nftables/public-chains.nft"
-    include "/etc/nftables/aredn-chains.nft"
-    include "/etc/nftables/lan-chains.nft"
 }
