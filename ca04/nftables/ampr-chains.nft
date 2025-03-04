@@ -1,0 +1,27 @@
+# vi: ft=nftables
+# /etc/nftables/ampr-chains.nft
+
+# Chains for 44Net interfaces
+
+define ampr_self_prefix = 44.63.16.192/28
+
+chain filter_IN_ampr {
+    jump filter_IN_policy_allow-host-ipv6
+    tcp dport ssh accept
+    udp dport ntp accept
+    ip daddr 224.0.0.9 udp dport 520 accept comment "RIP44"
+    meta l4proto { icmp, ipv6-icmp } accept
+    log prefix "filter_IN_apr_REJECT: " reject with icmpx admin-prohibited
+}
+
+chain filter_FWD_ampr {
+    # Again likely not needed, but just in case
+    # @ampr_interfaces needs to be defined in `main.nft`
+    oifname @ampr_interfaces counter accept
+    log prefix "filter_FWD_ampr_REJECT: " reject with icmpx admin-prohibited
+}
+
+chain nat_POST_ampr {
+    # Accept 44Net access only from my devices (might change later)
+    iifname @dn42_interfaces ip saddr $dn42_self_ipv4_prefix oifname @ampr_interfaces meta nfproto ipv4 masquerade
+}
