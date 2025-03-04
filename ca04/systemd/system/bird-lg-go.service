@@ -4,12 +4,14 @@ Wants=syslog.service local-fs.target network-online.target
 After=local-fs.target network-online.target
 
 [Service]
+User=nginx
+Group=nginx
 Restart=always
-ExecStartPre=/bin/rm -f /run/bird-lg-go.sock
-ExecStart=/usr/local/sbin/bird-lg-go --servers ab01,ab06,ca04,jp02 --domain inzt.maiyun.me --listen /run/bird-lg-go.sock
-ExecStartPost=/bin/chgrp nginx /run/bird-lg-go.sock
-ExecStartPost=/bin/chmod 0660 /run/bird-lg-go.sock
-ExecStartPost=/bin/chcon -t httpd_var_run_t /run/bird-lg-go.sock
+# semanage fcontext -a -t httpd_var_run_t "/var/run/bird-lg-go(/.*)?"
+ExecStartPre=+/usr/bin/mkdir -p /run/bird-lg-go
+ExecStartPre=+/usr/bin/chown nginx:nginx /run/bird-lg-go
+ExecStartPre=/bin/rm -f /run/bird-lg-go/bird-lg-go.sock
+ExecStart=/usr/local/sbin/bird-lg-go --servers ab01,ab06,ca04,jp02 --domain inzt.maiyun.me --listen /run/bird-lg-go/bird-lg-go.sock
 
 [Install]
 WantedBy=multi-user.target
