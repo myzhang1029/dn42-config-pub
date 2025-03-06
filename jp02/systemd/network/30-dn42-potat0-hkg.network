@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-potat0-hkg.network
+
+[Match]
+Name=wg1816potat0hkg
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+
+[Network]
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=fe80::893/64
+Peer=fe80::1816/64

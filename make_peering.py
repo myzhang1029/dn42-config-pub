@@ -296,7 +296,7 @@ Peer={}
         if lines[i+1].strip() != "}":
             raise MalformedConfig("misplaced __MAKE_PEERING_MARKER in nftables/main.nft")
         indents = lines[i].find("#")
-        new = f'"{self.answers["iface"]}"\n'
+        new = f'"{self.answers["iface"]}",\n'
         lines.insert(i, ' ' * indents + new)
         with open(file, "w", encoding="utf-8") as f:
             f.writelines(lines)
