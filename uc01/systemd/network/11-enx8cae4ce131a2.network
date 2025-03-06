@@ -1,0 +1,21 @@
+# vi: ft=systemd
+# /etc/systemd/network/11-enx8cae4ce131a2.network
+
+[Match]
+Name=enx8cae4ce131a2
+Type=ether
+
+[Link]
+RequiredForOnline=no
+
+[Network]
+Description=Ethernet to kk6uc-qi-hap.ucsd.edu
+LinkLocalAddressing=ipv6
+DNS=132.239.0.250 1.1.1.1
+Domains=ucsd.edu
+MulticastDNS=no
+RouteMetric=490
+
+[DHCP]
+RouteMetric=490
+UseMTU=true
