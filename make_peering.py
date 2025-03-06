@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import inspect
 import readline as _
 from pathlib import Path
 from pprint import pprint
 
+class MalformedConfig(Exception):
+    pass
 
 class MakePeer:
     SITES = ("ca03", "ca04", "ab01", "ab06", "jp02")
@@ -65,7 +66,8 @@ Peer={}
         print("Now, insert this rule into firewalld:")
         print('<interface name="{}"/>'.format(self.answers["iface"]))
 
-    def _parse_choice(self, choices: tuple[str], answer: str) -> int | None:
+    @staticmethod
+    def _parse_choice(choices: tuple[str], answer: str) -> int | None:
         """Parse a user choice."""
         # As a string
         for i, choice in enumerate(choices):
@@ -80,7 +82,8 @@ Peer={}
             pass
         return None
 
-    def _ask_numeric(self, question: str, can_strip_prefix: str = "") -> int:
+    @staticmethod
+    def _ask_numeric(question: str, can_strip_prefix: str = "") -> int:
         """Ask a numeric question."""
         while True:
             try:
@@ -91,11 +94,13 @@ Peer={}
             except ValueError:
                 print("Invalid input, try again.\n")
 
-    def _ask_string(self, question: str) -> str:
+    @staticmethod
+    def _ask_string(question: str) -> str:
         """Ask a string question."""
         return input(question)
 
-    def _ask_wgkey(self, question: str) -> str:
+    @staticmethod
+    def _ask_wgkey(question: str) -> str:
         """Ask for a WireGuard key."""
         def valid_key(key: str) -> bool:
             if len(key) != 44:
@@ -122,6 +127,35 @@ Peer={}
                 return self.SITES[site]
             print("Invalid choice, try again.\n")
 
+    def _ask_listen_port(self) -> int:
+        """Ask for listening port and check for duplicates."""
+        # Defined in each nftables/main.nft
+        PORT_RANGE = range(24201, 24300)
+        site = self.answers["site"]
+        systemd_network_path = Path(f"{site}/systemd/network")
+        netdevs = systemd_network_path.glob("30-dn42-*.netdev")
+        LOOKFOR = "ListenPort="
+        site_used_ports = set()
+        for netdev in netdevs:
+            lines = netdev.open().readlines()
+            this_port = None
+            for line in lines:
+                if line.startswith(LOOKFOR):
+                    if this_port is not None:
+                        raise MalformedConfig(f"multiple {LOOKFOR}")
+                    this_port = int(line[len(LOOKFOR):])
+            if this_port is None:
+                raise MalformedConfig(f"missing {LOOKFOR}")
+            site_used_ports.add(this_port)
+        print(f"Please select a listening port in {PORT_RANGE}")
+        print("These ports are in use:")
+        pprint(site_used_ports)
+        while True:
+            port = self._ask_numeric("Which port should we listen on? ")
+            if port not in site_used_ports and port in PORT_RANGE:
+                return port
+            print("This port is unavailable.\n")
+
     def ask_questions(self):
         """Ask all questions."""
         self.answers["site"] = self._ask_site()
@@ -133,8 +167,7 @@ Peer={}
         self._generate_names()
         self.answers["ppub"] = self._ask_wgkey(
             "What is the peer's public key? ")
-        self.answers["listen_port"] = self._ask_numeric(
-            "Which port should we listen on? ")
+        self.answers["listen_port"] = self._ask_listen_port()
         print("Note: if the peer does not have a public endpoint, leave this blank.")
         self.answers["endpoint"] = self._ask_string(
             "What is the endpoint for the peer? ")
