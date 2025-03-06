@@ -13,7 +13,7 @@ class MakePeer:
     PORT_RANGE = range(24201, 24300)
     OUR_ASN = 4242420893
     DOMAIN = "dn42.maiyun.me"
-    SITES = ("ca03", "ca04", "ab01", "ab06", "jp02")
+    SITES = ("ca04", "ab06", "jp02")
     BIRD_TEMPLATE = """protocol bgp {} from dnpeers {{
     neighbor {}%{} as {};
     direct;
