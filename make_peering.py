@@ -85,8 +85,6 @@ Peer={}
         print("Will generate based on the following answers:")
         pprint(self.answers)
         self._generate_files()
-        print("Now, insert this rule into firewalld:")
-        print('<interface name="{}"/>'.format(self.answers["iface"]))
 
     @staticmethod
     def _parse_choice(choices: tuple[str, ...], answer: str) -> int | None:
@@ -276,11 +274,33 @@ Peer={}
         file = self._systemd_network / f"{self.answers["file"]}.network"
         self._maybe_write_file(file, network)
 
+    def _add_interface_to_firewall(self) -> None:
+        """Add the interface to nftables/main.nft."""
+        site = self.answers["site"]
+        file = Path(f"{site}/nftables/main.nft")
+        if not file.exists():
+            raise MalformedConfig("missing nftables/main.nft")
+        lines = file.open(encoding="utf-8").readlines()
+        for i, line in enumerate(lines):
+            if "__MAKE_PEERING_MARKER" in line:
+                break
+        else:
+            raise MalformedConfig("missing __MAKE_PEERING_MARKER in nftables/main.nft")
+        if lines[i+1].strip() != "}":
+            raise MalformedConfig("misplaced __MAKE_PEERING_MARKER in nftables/main.nft")
+        indents = lines[i].find("#")
+        new = f'"{self.answers["iface"]}"\n'
+        lines.insert(i, ' ' * indents + new)
+        with open(file, "w", encoding="utf-8") as f:
+            f.writelines(lines)
+        print("Please manually check the nftables/main.nft file for correctness.")
+
     def _generate_files(self) -> None:
         """Generate the configuration files."""
         self._generate_netdev()
         self._generate_network()
         self._generate_bird()
+        self._add_interface_to_firewall()
 
 
 if __name__ == "__main__":

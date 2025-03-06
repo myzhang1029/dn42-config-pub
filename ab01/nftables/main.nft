@@ -9,7 +9,10 @@ table inet main {
     # dn42 interfaces
     set dn42_interfaces {
         type ifname
-        elements = { "ztbtosre7x" }
+        elements = {
+            "ztbtosre7x",
+            # __MAKE_PEERING_MARKER Do not remove this comment
+        }
     }
     # dn42 assigned addresses
     define dn42_self_ipv4 = 172.23.6.164
