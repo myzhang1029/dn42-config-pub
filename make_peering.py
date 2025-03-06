@@ -56,9 +56,29 @@ KeepConfiguration=yes
 Address={}
 Peer={}
 """
-    answers = {}
+    answers: dict[str, str] = {}
 
-    def __init__(self):
+    @property
+    def _systemd_network(self) -> Path:
+        if "site" not in self.answers:
+            raise ValueError("site not set")
+        site = self.answers["site"]
+        path = Path(f"{site}/systemd/network")
+        if not path.exists():
+            path.mkdir(parents=True)
+        return path
+
+    @property
+    def _birdconf(self) -> Path:
+        if "site" not in self.answers:
+            raise ValueError("site not set")
+        site = self.answers["site"]
+        path = Path(f"{site}/bird/conf.d")
+        if not path.exists():
+            path.mkdir(parents=True)
+        return path
+
+    def __init__(self) -> None:
         self.ask_questions()
         print("Will generate based on the following answers:")
         pprint(self.answers)
@@ -67,7 +87,7 @@ Peer={}
         print('<interface name="{}"/>'.format(self.answers["iface"]))
 
     @staticmethod
-    def _parse_choice(choices: tuple[str], answer: str) -> int | None:
+    def _parse_choice(choices: tuple[str, ...], answer: str) -> int | None:
         """Parse a user choice."""
         # As a string
         for i, choice in enumerate(choices):
@@ -75,9 +95,9 @@ Peer={}
                 return i
         # As a number
         try:
-            choice = int(answer)
-            if 0 < choice <= len(choices):
-                return choice - 1
+            choiceidx = int(answer)
+            if 0 < choiceidx <= len(choices):
+                return choiceidx - 1
         except ValueError:
             pass
         return None
@@ -119,8 +139,8 @@ Peer={}
         """Ask for a site name."""
         while True:
             print("Which site is this peer for?")
-            for i, site in enumerate(self.SITES):
-                print(f"{i+1}. {site}")
+            for i, name in enumerate(self.SITES):
+                print(f"{i+1}. {name}")
             choice = input("Answer: ")
             site = self._parse_choice(self.SITES, choice)
             if site is not None:
@@ -132,8 +152,7 @@ Peer={}
         # Defined in each nftables/main.nft
         PORT_RANGE = range(24201, 24300)
         site = self.answers["site"]
-        systemd_network_path = Path(f"{site}/systemd/network")
-        netdevs = systemd_network_path.glob("30-dn42-*.netdev")
+        netdevs = self._systemd_network.glob("30-dn42-*.netdev")
         LOOKFOR = "ListenPort="
         site_used_ports = set()
         for netdev in netdevs:
@@ -156,10 +175,10 @@ Peer={}
                 return port
             print("This port is unavailable.\n")
 
-    def ask_questions(self):
+    def ask_questions(self) -> None:
         """Ask all questions."""
         self.answers["site"] = self._ask_site()
-        self.answers["asn"] = self._ask_numeric("What is the peer ASN? ", "AS")
+        self.answers["asn"] = str(self._ask_numeric("What is the peer ASN? ", "AS"))
         self.answers["pname"] = self._ask_string(
             "What is a descriptive name for the peer? ")
         self.answers["ploc"] = self._ask_string(
@@ -167,7 +186,7 @@ Peer={}
         self._generate_names()
         self.answers["ppub"] = self._ask_wgkey(
             "What is the peer's public key? ")
-        self.answers["listen_port"] = self._ask_listen_port()
+        self.answers["listen_port"] = str(self._ask_listen_port())
         print("Note: if the peer does not have a public endpoint, leave this blank.")
         self.answers["endpoint"] = self._ask_string(
             "What is the endpoint for the peer? ")
@@ -183,7 +202,7 @@ Peer={}
         if '/' not in self.answers["ownaddr"]:
             self.answers["ownaddr"] += "/64"
 
-    def _generate_names(self):
+    def _generate_names(self) -> None:
         """Generate interface, file, and bird names."""
         # WireGuard interface name
         if len(self.answers["pname"] + self.answers["ploc"]) > 10:
@@ -216,7 +235,7 @@ Peer={}
         self.answers["systemd"] = systemd_desc
         self.answers["bird"] = bird_name
 
-    def _maybe_write_file(self, file: Path, content: str):
+    def _maybe_write_file(self, file: Path, content: str) -> None:
         """Write a file if it doesn't exist."""
         if file.exists():
             resp = input(f"File {file} already exists, overwrite? [y/N] ")
@@ -226,16 +245,15 @@ Peer={}
         with open(file, "w") as f:
             f.write(content)
 
-    def _generate_bird(self):
+    def _generate_bird(self) -> None:
         """Generate the BIRD configuration."""
         peerip_nocidr = self.answers["peeraddr"].split("/")[0]
         bird = self.BIRD_TEMPLATE.format(
             self.answers["bird"], peerip_nocidr, self.answers["iface"], self.answers["asn"])
-        file = Path(
-            "{}/bird/conf.d/{}.conf".format(self.answers["site"], self.answers["file"]))
+        file = self._birdconf / f"{self.answers["file"]}.conf"
         self._maybe_write_file(file, bird)
 
-    def _generate_netdev(self):
+    def _generate_netdev(self) -> None:
         """Generate the systemd-networkd .netdev file."""
         netdev = self.SYSTEMD_NETDEV_TEMPLATE.format(
             self.answers["file"],
@@ -245,11 +263,10 @@ Peer={}
             self.answers["ppub"],
             f"\nEndpoint={self.answers['endpoint']}" if self.answers["endpoint"] else ""
         )
-        file = Path(
-            "{}/systemd/network/{}.netdev".format(self.answers["site"], self.answers["file"]))
+        file = self._systemd_network / f"{self.answers["file"]}.netdev"
         self._maybe_write_file(file, netdev)
 
-    def _generate_network(self):
+    def _generate_network(self) -> None:
         """Generate the systemd-networkd .network file."""
         network = self.SYSTEMD_NETWORK_TEMPLATE.format(
             self.answers["file"],
@@ -257,11 +274,10 @@ Peer={}
             self.answers["ownaddr"],
             self.answers["peeraddr"]
         )
-        file = Path(
-            "{}/systemd/network/{}.network".format(self.answers["site"], self.answers["file"]))
+        file = self._systemd_network / f"{self.answers["file"]}.network"
         self._maybe_write_file(file, network)
 
-    def _generate_files(self):
+    def _generate_files(self) -> None:
         """Generate the configuration files."""
         self._generate_netdev()
         self._generate_network()
