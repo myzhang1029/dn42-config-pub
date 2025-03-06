@@ -9,6 +9,8 @@ class MalformedConfig(Exception):
     pass
 
 class MakePeer:
+    # Defined in each nftables/main.nft
+    PORT_RANGE = range(24201, 24300)
     SITES = ("ca03", "ca04", "ab01", "ab06", "jp02")
     BIRD_TEMPLATE = """protocol bgp {} from dnpeers {{
     neighbor {}%{} as {};
@@ -149,14 +151,11 @@ Peer={}
 
     def _ask_listen_port(self) -> int:
         """Ask for listening port and check for duplicates."""
-        # Defined in each nftables/main.nft
-        PORT_RANGE = range(24201, 24300)
-        site = self.answers["site"]
         netdevs = self._systemd_network.glob("30-dn42-*.netdev")
         LOOKFOR = "ListenPort="
         site_used_ports = set()
         for netdev in netdevs:
-            lines = netdev.open().readlines()
+            lines = netdev.open(encoding="utf-8").readlines()
             this_port = None
             for line in lines:
                 if line.startswith(LOOKFOR):
@@ -166,12 +165,12 @@ Peer={}
             if this_port is None:
                 raise MalformedConfig(f"missing {LOOKFOR}")
             site_used_ports.add(this_port)
-        print(f"Please select a listening port in {PORT_RANGE}")
+        print(f"Please select a listening port in {self.PORT_RANGE}")
         print("These ports are in use:")
         pprint(site_used_ports)
         while True:
             port = self._ask_numeric("Which port should we listen on? ")
-            if port not in site_used_ports and port in PORT_RANGE:
+            if port not in site_used_ports and port in self.PORT_RANGE:
                 return port
             print("This port is unavailable.\n")
 
@@ -242,7 +241,7 @@ Peer={}
             if resp.lower() != "y":
                 print(f"Skipping {file} generation.")
                 return
-        with open(file, "w") as f:
+        with open(file, "w", encoding="utf-8") as f:
             f.write(content)
 
     def _generate_bird(self) -> None:
