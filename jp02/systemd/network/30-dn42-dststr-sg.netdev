@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-dststr-sg.netdev
+
+[NetDev]
+Name=wg1771dststrsg
+Kind=wireguard
+Description=WireGuard tunnel to AS4242421771 Duststars Singapore
+
+[WireGuard]
+ListenPort=24212
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=1cBgDK3+i0Yw3oguDAU0MxbU9E/I30JS6qMedx8ZKAk=
+Endpoint=sg1.exploro.one:32593
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64
