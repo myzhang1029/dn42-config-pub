@@ -11,6 +11,8 @@ class MalformedConfig(Exception):
 class MakePeer:
     # Defined in each nftables/main.nft
     PORT_RANGE = range(24201, 24300)
+    OUR_ASN = 4242420893
+    DOMAIN = "dn42.maiyun.me"
     SITES = ("ca03", "ca04", "ab01", "ab06", "jp02")
     BIRD_TEMPLATE = """protocol bgp {} from dnpeers {{
     neighbor {}%{} as {};
@@ -84,6 +86,11 @@ Peer={}
         self.ask_questions()
         print("Will generate based on the following answers:")
         pprint(self.answers)
+        self._print_additional_info()
+        resp = input("Continue? [Y/n] ")
+        if resp.lower() == "n":
+            print("Will not generate files.")
+            return
         self._generate_files()
 
     @staticmethod
@@ -294,6 +301,29 @@ Peer={}
         with open(file, "w", encoding="utf-8") as f:
             f.writelines(lines)
         print("Please manually check the nftables/main.nft file for correctness.")
+
+    def _print_additional_info(self) -> None:
+        """Print node information."""
+        node_info = f"{self.answers['site']}.{self.DOMAIN}"
+        print(f"Our ASN is {self.OUR_ASN}.")
+        try:
+            import dns.resolver
+            try:
+                answers = dns.resolver.resolve(node_info, "TXT")
+                for answer in answers:
+                    for item in answer.strings:
+                        print(item.decode("utf-8"))
+            except dns.resolver.NoAnswer:
+                print("Could not find any additional information.")
+            try:
+                _ = dns.resolver.resolve(node_info, "A")
+            except dns.resolver.NoAnswer:
+                print("This node does not have a public endpoint.")
+            else:
+                print(f"WireGuard endpoint: {node_info}:{self.answers['listen_port']}")
+        except ImportError:
+            print("Unable to automatically retrieve node information.")
+            print(f"Such information can be found by querying `TXT {node_info}`.")
 
     def _generate_files(self) -> None:
         """Generate the configuration files."""
