@@ -1,0 +1,34 @@
+#!/usr/sbin/nft -f
+# vi: ft=nftables
+# /etc/nftables/main.nft
+
+flush ruleset
+
+table inet main {
+    include "/etc/nftables/shared-chains.nft"
+    include "/etc/nftables/public-chains.nft"
+
+    chain input {
+        type filter hook input priority filter + 10; policy drop;
+        ct state { established, related } accept
+        ct status dnat accept
+        iifname "lo" accept
+        ct state invalid log prefix "INPUT_STATE_INVALID_DROP: " drop
+        iifname "eth0" tcp dport { 22, 8073 } accept
+        jump filter_IN_public
+        # Should have reached a decision by now
+        log prefix "filter_INPUT_FINAL_REJECT: " counter reject with icmpx admin-prohibited
+    }
+    chain forward {
+        type filter hook forward priority filter + 10; policy drop;
+        ct state { established, related } accept
+        ct status dnat accept
+        iifname "lo" accept
+        jump filter_FWD_public
+        jump filter_policy_drop_martian
+        ct state invalid log prefix "FORWARD_STATE_INVALID_DROP: " drop
+        # Should have reached a decision by now
+        log prefix "filter_FORWARD_FINAL_REJECT: " counter reject with icmpx admin-prohibited
+    }
+}
+
