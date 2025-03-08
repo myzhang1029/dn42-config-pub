@@ -8,7 +8,7 @@ chain filter_IN_public {
     tcp dport http accept
     udp dport 4589 accept comment "ASL Asterisk"
     ip6 daddr fe80::/64 udp dport 546 accept comment "DHCPv6"
-    ip saddr 169.228.34.84 meta l4proto ipv4 accept comment "AMPR IPIPencap"
+    ip saddr 169.228.34.84 meta l4proto ipip accept comment "AMPR IPIPencap"
     meta l4proto { icmp, ipv6-icmp } accept
     meta pkttype host log prefix "filter_IN_public_REJECT: "
     reject with icmpx admin-prohibited

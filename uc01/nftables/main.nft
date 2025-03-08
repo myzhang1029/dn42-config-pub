@@ -5,8 +5,27 @@
 flush ruleset
 
 table inet main {
+    # dn42 interfaces
+    set dn42_interfaces {
+        type ifname
+    }
+    # dn42 assigned addresses
+    define dn42_self_ipv4 = 172.23.6.166
+    define dn42_self_ipv6 = fdc0:d227:306:ee01::6
+    # dn42 services on this host
+    set dn42_ports {
+        type inet_proto . inet_service
+    }
+
+    # 44Net interfaces
+    set ampr_interfaces {
+        type ifname
+        elements = { "tunl0" }
+    }
+
     include "/etc/nftables/shared-chains.nft"
     include "/etc/nftables/public-chains.nft"
+    include "/etc/nftables/dn42-chains.nft"
     include "/etc/nftables/ampr-chains.nft"
 
     chain input {
@@ -15,21 +34,37 @@ table inet main {
         ct status dnat accept
         iifname "lo" accept
         ct state invalid log prefix "INPUT_STATE_INVALID_DROP: " drop
+        iifname @public_interfaces jump filter_IN_public
+        iifname @dn42_interfaces jump filter_IN_dn42
+        iifname @ampr_interfaces jump filter_IN_ampr
         jump filter_IN_public
         # Should have reached a decision by now
         log prefix "filter_INPUT_FINAL_REJECT: " counter reject with icmpx admin-prohibited
     }
+
     chain forward {
         type filter hook forward priority filter + 10; policy drop;
         ct state { established, related } accept
         ct status dnat accept
         iifname "lo" accept
+        # Putting this here is slightly not ideal
+        iifname @dn42_interfaces ip saddr $dn42_self_ipv4_prefix oifname @ampr_interfaces counter accept
+        iifname @dn42_interfaces jump filter_FWD_dn42
+        iifname @public_interfaces jump filter_FWD_public
         iifname @ampr_interfaces jump filter_FWD_ampr
         jump filter_FWD_public
         jump filter_policy_drop_martian
         ct state invalid log prefix "FORWARD_STATE_INVALID_DROP: " drop
         # Should have reached a decision by now
         log prefix "filter_FORWARD_FINAL_REJECT: " counter reject with icmpx admin-prohibited
+    }
+
+    chain nat_postrouting {
+        type nat hook postrouting priority srcnat + 10; policy accept;
+        oifname @public_interfaces goto nat_POST_public
+        oifname @dn42_interfaces goto nat_POST_dn42
+        oifname @ampr_interfaces goto nat_POST_ampr
+        goto nat_POST_public
     }
 }
 
