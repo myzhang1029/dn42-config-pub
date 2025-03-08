@@ -24,13 +24,12 @@ table inet main {
     define dn42_self_ipv4 = 172.23.6.162
     define dn42_self_ipv6 = fdc0:d227:306:ee01::2
     # dn42 services on this host
-    set dn42_tcp_ports {
-        type inet_service
-        elements = { 53 }
-    }
-    set dn42_udp_ports {
-        type inet_service
-        elements = { 53 }
+    set dn42_ports {
+        type inet_proto . inet_service
+        elements = {
+            tcp . domain,
+            udp . domain,
+        }
     }
 
     # Public interface

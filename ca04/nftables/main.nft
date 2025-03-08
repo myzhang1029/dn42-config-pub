@@ -27,14 +27,17 @@ table inet main {
     define dn42_self_ipv4 = 172.23.6.161
     define dn42_self_ipv6 = fdc0:d227:306:ee01::1
     # dn42 services on this host
-    set dn42_tcp_ports {
-        type inet_service
+    set dn42_ports {
+        type inet_proto . inet_service
         # Has dns, http, and squid (squid has its ACL)
-        elements = { 53, http, 3128 }
-    }
-    set dn42_udp_ports {
-        type inet_service
-        elements = { 53, ntp }
+        elements = {
+            tcp . domain,
+            udp . domain,
+            tcp . http,
+            udp . http,
+            tcp . 3128,
+            udp . ntp,
+        }
     }
 
     # Public interface

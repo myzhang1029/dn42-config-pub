@@ -17,8 +17,7 @@ chain filter_IN_dn42 {
     # bird-lg
     ip6 daddr $dn42_self_ipv6 ip6 saddr fdc0:d227:306:ee01::1 tcp dport 8000 accept
     # Other services
-    tcp dport @dn42_tcp_ports accept
-    udp dport @dn42_udp_ports accept
+    meta l4proto . th dport @dn42_ports accept
     meta l4proto { icmp, ipv6-icmp } accept
     log prefix "filter_IN_dn42_REJECT: " reject with icmpx admin-prohibited
 }
