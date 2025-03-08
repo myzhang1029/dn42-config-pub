@@ -17,6 +17,12 @@ table inet main {
         type inet_proto . inet_service
     }
 
+    # Public interface
+    set public_interfaces {
+        type ifname
+        elements = { "wlp3s0", "enp2s0", "enx8cae4ce131a2" }
+    }
+
     # 44Net interfaces
     set ampr_interfaces {
         type ifname

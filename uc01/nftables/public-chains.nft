@@ -4,8 +4,7 @@
 # Chains for WAN interfaces
 
 chain filter_IN_public {
-    tcp dport ssh accept
-    tcp dport http accept
+    tcp dport { ssh, http } accept
     udp dport 4589 accept comment "ASL Asterisk"
     ip6 daddr fe80::/64 udp dport 546 accept comment "DHCPv6"
     ip saddr 169.228.34.84 meta l4proto ipip accept comment "AMPR IPIPencap"
