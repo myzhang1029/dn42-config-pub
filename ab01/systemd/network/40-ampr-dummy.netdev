@@ -1,0 +1,6 @@
+# vi: ft=systemd
+# /etc/systemd/network/40-ampr-dummy.netdev
+
+[NetDev]
+Name=dummy44
+Kind=dummy
