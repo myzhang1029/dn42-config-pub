@@ -5,7 +5,10 @@ filter kernel_export4 {
     }
     # AMPR should be handled via policy routing on table 44
     # except for our internal routes
-    if net ~ ampr_netset then accept;
+    if net ~ ampr_netset then {
+        krt_prefsrc = ampr_myip;
+        accept;
+    }
     if net ~ ampr_valid_netset then reject;
     accept;
 }
