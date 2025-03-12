@@ -6,6 +6,9 @@ Internet configuration files for AS4242420893 and related devices
 
 Raspberry Pi LAN allocates from `172.23.6.176/28`. Its IPv6 range is `fdc0:d227:306:ab01::/64` (might use SLAAC).
 
+## 44Net
+Routes for `44.63.16.192/28` are propagated via Babel. On each 44Net-connected device, Policy-Based Routing is set up to return 44Net traffic to the same gateway.
+
 # Ports
 Allocated from a continuous range to ease firewall configuration:
 - 24201=hujk

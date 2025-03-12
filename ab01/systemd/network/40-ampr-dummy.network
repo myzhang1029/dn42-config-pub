@@ -26,3 +26,8 @@ Priority=45
 To=44.63.16.192/28
 Table=main
 Priority=43
+
+[Route]
+Destination=0.0.0.0/0
+Gateway=172.23.6.161
+Table=44
