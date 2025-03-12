@@ -5,4 +5,24 @@
 Name=dummy44
 
 [Network]
-Address=44.63.16.202/32
+Address=44.63.16.203/32
+
+[RoutingPolicyRule]
+To=44.0.0.0/9
+Table=44
+Priority=44
+
+[RoutingPolicyRule]
+To=44.128.0.0/10
+Table=44
+Priority=44
+
+[RoutingPolicyRule]
+From=44.63.16.192/28
+Table=44
+Priority=45
+
+[RoutingPolicyRule]
+To=44.63.16.192/28
+Table=main
+Priority=43
