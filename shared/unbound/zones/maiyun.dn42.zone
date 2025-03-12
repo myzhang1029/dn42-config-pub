@@ -26,6 +26,7 @@ jp02.inzt    IN AAAA   fdc0:d227:306:ee01::6
 
 ns1          IN CNAME  ca04.inzt
 ns2          IN CNAME  ab06.inzt
+lg           IN CNAME  ca04.inzt
 
 ca04         IN CNAME  ca04.inzt
 ab01         IN CNAME  ab01.inzt
