@@ -20,3 +20,4 @@ Allocated from a continuous range to ease firewall configuration:
 - 24210=SUNNET
 - 24211=Tech 9
 - 24212=Duststars
+- 24300=Internal Things
