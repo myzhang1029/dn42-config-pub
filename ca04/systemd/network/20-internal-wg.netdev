@@ -8,7 +8,7 @@ Description=Internal WireGuard tunnel
 
 [WireGuard]
 ListenPort=24300
-PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+PrivateKeyFile=/etc/systemd/network/internal.wgkey
 
 [WireGuardPeer]
 PublicKey=zKX+3pDCcYji0QWaDCcZUmOZPUoTfSkhS9Cgq3NqlWk=
