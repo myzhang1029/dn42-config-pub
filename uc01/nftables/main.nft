@@ -54,7 +54,10 @@ table inet main {
         ct status dnat accept
         iifname "lo" accept
         # Putting this here is slightly not ideal
+        # Allow our traffic to access 44Net
         iifname @dn42_interfaces ip saddr $dn42_self_ipv4_prefix oifname @ampr_interfaces counter accept
+        # Allow 44Net to access our services
+        iifname @ampr_interfaces oifname @dn42_interfaces ip daddr $ampr_self_prefix counter accept
         iifname @dn42_interfaces jump filter_FWD_dn42
         iifname @public_interfaces jump filter_FWD_public
         iifname @ampr_interfaces jump filter_FWD_ampr
