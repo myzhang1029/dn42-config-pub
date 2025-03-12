@@ -8,6 +8,7 @@ table inet main {
     # dn42 interfaces
     set dn42_interfaces {
         type ifname
+        elements = { "wginternal" }
     }
     # dn42 assigned addresses
     define dn42_self_ipv4 = 172.23.6.166
