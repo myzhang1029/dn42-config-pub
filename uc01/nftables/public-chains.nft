@@ -4,8 +4,9 @@
 # Chains for WAN interfaces
 
 chain filter_IN_public {
-    tcp dport { ssh, http } accept
-    udp dport 4589 accept comment "ASL Asterisk"
+    tcp dport { ssh, http, https } accept
+    udp dport 4569 accept comment "ASL Asterisk"
+    udp dport { 5198, 5199 } accept comment "EchoLink"
     ip6 daddr fe80::/64 udp dport 546 accept comment "DHCPv6"
     udp dport 24201-24300 accept comment "dn42 WireGuard"
     ip saddr 169.228.34.84 meta l4proto ipip accept comment "AMPR IPIPencap"
