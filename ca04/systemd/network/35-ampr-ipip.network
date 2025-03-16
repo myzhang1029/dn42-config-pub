@@ -30,8 +30,15 @@ From=44.63.16.192/28
 Table=44
 Priority=45
 
+# Internal routes distributed by babel
 [RoutingPolicyRule]
 To=44.63.16.192/28
+Table=main
+Priority=43
+
+# dn42 routes distributed by bird
+[RoutingPolicyRule]
+To=172.20.0.0/14
 Table=main
 Priority=43
 
