@@ -1,0 +1,23 @@
+# vi: ft=systemd
+# /etc/systemd/network/20-ztbtosre7x.network
+
+[Match]
+Name=ztbtosre7x
+
+[Link]
+RequiredForOnline=no
+
+[Network]
+Description=ZeroTier
+Domains=maiyun.me dn42
+
+[Address]
+Address=172.23.6.162/28
+
+[Address]
+Address=fdc0:d227:306:ee01::2/112
+
+[Route]
+Destination=0.0.0.0/0
+Gateway=fdc0:d227:306:ee01::1
+Table=44

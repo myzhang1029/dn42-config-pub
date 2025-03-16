@@ -32,6 +32,9 @@ table inet main {
         }
     }
 
+    # 44Net routed from dn42
+    define ampr_self_prefix = 44.63.16.192/28
+
     # Public interface
     set public_interfaces {
         type ifname
@@ -78,9 +81,10 @@ table inet main {
         iifname "lo" accept
         ct state invalid log prefix "INPUT_STATE_INVALID_DROP: " drop
         iifname @public_interfaces jump filter_IN_public
+        iifname @lan_interfaces jump filter_IN_lan
+        iifname @dn42_interfaces ip daddr $ampr_self_prefix jump filter_IN_public
         iifname @dn42_interfaces jump filter_IN_dn42
         iifname @aredn_interfaces jump filter_IN_aredn
-        iifname @lan_interfaces jump filter_IN_lan
         jump filter_IN_public
         # Should have reached a decision by now
         log prefix "filter_INPUT_FINAL_REJECT: " counter reject with icmpx admin-prohibited
