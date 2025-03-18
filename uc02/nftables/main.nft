@@ -14,7 +14,6 @@ table inet main {
         ct status dnat accept
         iifname "lo" accept
         ct state invalid log prefix "INPUT_STATE_INVALID_DROP: " drop
-        iifname "eth0" tcp dport { 22, 8073 } accept
         jump filter_IN_public
         # Should have reached a decision by now
         log prefix "filter_INPUT_FINAL_REJECT: " counter reject with icmpx admin-prohibited
