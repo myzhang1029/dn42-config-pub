@@ -16,5 +16,5 @@ chain filter_FWD_public {
 }
 
 chain nat_POST_public {
-    iifname @lan_interfaces oifname @public_interfaces meta nfproto ipv4 masquerade
+    iifname @lan_interfaces meta nfproto ipv4 masquerade
 }
