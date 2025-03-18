@@ -1,5 +1,0 @@
-interface "eth0" {
-    type wired;
-    authentication mac;
-    password "ZNwo4uaIZy78qbi";
-};

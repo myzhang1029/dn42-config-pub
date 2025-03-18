@@ -9,7 +9,6 @@ chain filter_IN_public {
     udp dport { 5198, 5199 } accept comment "EchoLink"
     ip6 daddr fe80::/64 udp dport 546 accept comment "DHCPv6"
     udp dport 24201-24300 accept comment "dn42 WireGuard"
-    iifname "enp2s0" ip6 saddr fe80::/64 udp dport 6696 accept comment "Local Babel"
     ip saddr 169.228.34.84 meta l4proto ipip accept comment "AMPR IPIPencap"
     meta l4proto { icmp, ipv6-icmp } accept
     meta pkttype host log prefix "filter_IN_public_REJECT: "
