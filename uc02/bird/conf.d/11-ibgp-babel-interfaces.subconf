@@ -1,7 +1,4 @@
-interface "wginternal" {
-    type tunnel;
-};
-interface "enp2s0" {
+interface "eth0" {
     type wired;
     authentication mac;
     password "ZNwo4uaIZy78qbi";

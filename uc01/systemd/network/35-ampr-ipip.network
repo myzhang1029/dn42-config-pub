@@ -42,6 +42,12 @@ To=172.20.0.0/14
 Table=main
 Priority=43
 
+# local routes distributed by babel
+[RoutingPolicyRule]
+To=137.110.116.0/24
+Table=main
+Priority=43
+
 [Route]
 Destination=0.0.0.0/0
 Gateway=169.228.34.84

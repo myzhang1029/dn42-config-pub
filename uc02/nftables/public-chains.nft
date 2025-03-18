@@ -1,1 +1,20 @@
-../../shared/nftables/minimal-public-chains.nft
+# vi: ft=nftables
+# /etc/nftables/public-chains.nft
+
+# Chains for WAN interfaces
+
+chain filter_IN_public {
+    tcp dport { ssh, http, https } accept
+    ip6 daddr fe80::/64 udp dport 546 accept comment "DHCPv6"
+    iifname "eth0" ip6 saddr fe80::/64 udp dport 6696 accept comment "Local Babel"
+    meta l4proto { icmp, ipv6-icmp } accept
+    meta pkttype host log prefix "filter_IN_public_REJECT: "
+    reject with icmpx admin-prohibited
+}
+
+chain filter_FWD_public {
+    log prefix "filter_FWD_public_REJECT: " reject with icmpx admin-prohibited
+}
+
+chain nat_POST_public {
+}
