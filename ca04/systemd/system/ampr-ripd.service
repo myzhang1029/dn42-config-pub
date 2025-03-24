@@ -5,7 +5,8 @@ After=local-fs.target network-online.target
 
 [Service]
 Restart=always
-ExecStart=/usr/local/sbin/ampr-ripd -d -s -i tunl0 -t 44 -a 44.63.16.192/29 -L VE7ZMY@FN03hp
+ExecStartPre=/usr/bin/bash -c 'while ! ip a show dev tunl0|grep 44.63; do :; done'
+ExecStart=/usr/local/sbin/ampr-ripd -d -s -i tunl0 -t 44 -a 44.63.16.192/29,44.63.16.200/29 -L VE7ZMY@FN03hp
 
 [Install]
 WantedBy=multi-user.target
