@@ -10,6 +10,7 @@ PIDFile=/run/nginx.pid
 # https://bugzilla.redhat.com/show_bug.cgi?id=1268621
 ExecStartPre=/usr/bin/rm -f /run/nginx.pid
 ExecStartPre=/usr/bin/bash -c 'while ! ip a show dev ztbtosre7x|grep 172.23.6; do :; done'
+ExecStartPre=/usr/bin/bash -c 'while ! ip a show dev enp0s6|grep 10.0.0.33; do :; done'
 ExecStartPre=/usr/sbin/nginx -t
 ExecStart=/usr/sbin/nginx
 ExecReload=/bin/kill -s HUP $MAINPID

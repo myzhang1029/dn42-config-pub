@@ -12,7 +12,7 @@ PrivateKeyFile=/etc/systemd/network/dn42.wgkey
 
 [WireGuardPeer]
 PublicKey=dZzVdXbQPnWPpHk8QfW/p+MfGzAkMBuWpxEIXzQCggY=
-Endpoint=6.us.kskb.eu.org:20893
+Endpoint=4.us.kskb.eu.org:20893
 AllowedIPs=10.0.0.0/8
 AllowedIPs=172.20.0.0/14
 AllowedIPs=172.31.0.0/16
