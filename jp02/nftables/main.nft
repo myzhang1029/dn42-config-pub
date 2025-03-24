@@ -16,6 +16,7 @@ table inet main {
             "wg1588tech9tyo",
             "wg1816potat0hkg",
             "wg1771dststrsg",
+            "wg1111kskbneotyo",
             # __MAKE_PEERING_MARKER Do not remove this comment
         }
     }
