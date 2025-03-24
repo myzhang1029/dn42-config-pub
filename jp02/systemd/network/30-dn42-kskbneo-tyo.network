@@ -2,7 +2,7 @@
 # /etc/systemd/network/30-dn42-kskbneo-tyo.network
 
 [Match]
-Name=wg1111kskbneotyo
+Name=wg1111kskbneoty
 
 [Link]
 RequiredForOnline=degraded:routable
