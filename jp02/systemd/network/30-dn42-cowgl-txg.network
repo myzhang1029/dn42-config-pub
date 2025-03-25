@@ -16,5 +16,9 @@ IPv4ReversePathFilter=no
 KeepConfiguration=yes
 
 [Address]
+Address=172.23.6.166/32
+Peer=172.22.144.64/32
+
+[Address]
 Address=fe80::893/64
 Peer=fe80::3999/64
