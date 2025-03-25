@@ -254,7 +254,7 @@ Peer={}
         peerip_nocidr = self.answers["peeraddr"].split("/")[0]
         bird = self.BIRD_TEMPLATE.format(
             self.answers["bird"], peerip_nocidr, self.answers["iface"], self.answers["asn"])
-        file = self._birdconf / f"{self.answers["file"]}.conf"
+        file = self._birdconf / f"{self.answers['file']}.conf"
         self._maybe_write_file(file, bird)
 
     def _generate_netdev(self) -> None:
@@ -267,7 +267,7 @@ Peer={}
             self.answers["ppub"],
             f"\nEndpoint={self.answers['endpoint']}" if self.answers["endpoint"] else ""
         )
-        file = self._systemd_network / f"{self.answers["file"]}.netdev"
+        file = self._systemd_network / f"{self.answers['file']}.netdev"
         self._maybe_write_file(file, netdev)
 
     def _generate_network(self) -> None:
@@ -278,7 +278,7 @@ Peer={}
             self.answers["ownaddr"],
             self.answers["peeraddr"]
         )
-        file = self._systemd_network / f"{self.answers["file"]}.network"
+        file = self._systemd_network / f"{self.answers['file']}.network"
         self._maybe_write_file(file, network)
 
     def _add_interface_to_firewall(self) -> None:
