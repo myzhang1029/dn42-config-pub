@@ -22,6 +22,7 @@ table inet main {
             "wg0207rbitstor",
             "wg2225maraunus",
             "wg3035lareuse2",
+            "wg2016sdrltor",
             # __MAKE_PEERING_MARKER Do not remove this comment
         }
     }
