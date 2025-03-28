@@ -24,4 +24,5 @@ Allocated from a continuous range to ease firewall configuration:
 - 24211=Tech 9
 - 24212=Duststars
 - 24213=Sidereal
+- 24239=cowgl
 - 24300=Internal Things
