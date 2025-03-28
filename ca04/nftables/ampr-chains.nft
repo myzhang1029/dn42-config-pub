@@ -26,3 +26,17 @@ chain nat_POST_ampr {
     # Do not masquerade those using 44Net saddr
     ip saddr $dn42_self_ipv4_prefix meta nfproto ipv4 counter masquerade
 }
+
+chain mark44in {
+    type filter hook prerouting priority mangle; policy accept;
+    # See systemd/network/35-ampr-ipip.network
+    # This workaround is unreliable for UDP
+    define prefix44 = { 44.0.0.0/9, 44.128.0.0/10 }
+    ip saddr $prefix44 ip daddr != 224.0.0.0/4 ip daddr != $prefix44 counter meta mark set 4401 ct mark set 4401
+}
+
+chain mark44out {
+    # Need a route chain so that policy-based routing is re-evaluated
+    type route hook output priority mangle; policy accept;
+    ct mark 4401 counter meta mark set 4401 log prefix "reroute 44: "
+}

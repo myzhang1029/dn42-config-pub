@@ -30,6 +30,13 @@ From=44.63.16.192/28
 Table=44
 Priority=45
 
+# nftables will mark connections established from inside 44 to
+# our non-44 with mark 4401 (see nftables)
+[RoutingPolicyRule]
+FirewallMark=4401
+Table=main
+Priority=42
+
 # Internal routes distributed by babel
 [RoutingPolicyRule]
 To=44.63.16.192/28
