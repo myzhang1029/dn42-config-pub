@@ -96,8 +96,9 @@ table inet main {
         ct state established flow offload @fastpath
         ct status dnat accept
         iifname "lo" accept
+        ip saddr $dn42_self_ipv4_prefix oifname @aredn_interfaces counter accept
+        iifname @dn42_interfaces oifname @lan_interfaces counter accept
         iifname @dn42_interfaces jump filter_FWD_dn42
-        iifname @dn42_interfaces oifname @lan_interfaces accept
         iifname @public_interfaces jump filter_FWD_public
         iifname @aredn_interfaces jump filter_FWD_aredn
         iifname @lan_interfaces jump filter_FWD_lan
