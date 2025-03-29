@@ -9,7 +9,11 @@ table inet main {
     # TODO: Separate things for aredn
     set dn42_interfaces {
         type ifname
-        elements = { "wginternal", "arednvlan" }
+        elements = {
+            "wginternal",
+            "arednvlan",
+            # __MAKE_PEERING_MARKER Do not remove this comment
+        }
     }
     # dn42 assigned addresses
     define dn42_self_ipv4 = 172.23.6.166
