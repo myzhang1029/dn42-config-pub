@@ -17,3 +17,8 @@ KeepConfiguration=yes
 
 [Address]
 Address=fe80::ab06/64
+
+[Route]
+Destination=0.0.0.0/0
+Gateway=fe80::2c01
+Table=44
