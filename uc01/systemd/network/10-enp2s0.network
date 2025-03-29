@@ -17,6 +17,8 @@ DNS=132.239.0.250 1.1.1.1
 Domains=ucsd.edu
 MulticastDNS=no
 RouteMetric=400
+# VLAN tag 2 = AREDN dtdlink
+VLAN=arednvlan
 
 [DHCP]
 RouteMetric=400

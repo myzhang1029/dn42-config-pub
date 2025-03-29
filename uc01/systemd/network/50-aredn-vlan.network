@@ -1,0 +1,23 @@
+# vi: ft=systemd
+# /etc/systemd/network/50-aredn-vlan.network
+
+[Match]
+Name=arednvlan
+Type=vlan
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+
+[Network]
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=10.250.230.126/32
+
+[Address]
+Address=fe80::2c01/64

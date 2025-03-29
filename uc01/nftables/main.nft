@@ -6,9 +6,10 @@ flush ruleset
 
 table inet main {
     # dn42 interfaces
+    # TODO: Separate things for aredn
     set dn42_interfaces {
         type ifname
-        elements = { "wginternal" }
+        elements = { "wginternal", "enp2s0.2" }
     }
     # dn42 assigned addresses
     define dn42_self_ipv4 = 172.23.6.166
