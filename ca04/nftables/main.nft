@@ -12,7 +12,7 @@ table inet main {
         # TODO: distinguish our interfaces from others
         elements = {
             "ztbtosre7x",
-            "wginternal",
+            "wginternal0",
             "wg1816potat0las",
             "wg1817kskbusf",
             "wg2189iedonsjc",

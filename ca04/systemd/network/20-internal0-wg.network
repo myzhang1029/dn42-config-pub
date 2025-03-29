@@ -1,8 +1,8 @@
 # vi: ft=systemd
-# /etc/systemd/network/20-internal-wg.network
+# /etc/systemd/network/20-internal0-wg.network
 
 [Match]
-Name=wginternal
+Name=wginternal0
 
 [Link]
 RequiredForOnline=degraded:routable
