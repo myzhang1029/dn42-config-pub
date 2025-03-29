@@ -7,7 +7,7 @@ define ampr_self_prefix = 44.63.16.192/28
 
 chain filter_IN_ampr {
     jump filter_IN_policy_allow-host-ipv6
-    tcp dport ssh accept
+    tcp dport { ssh, http, https } accept
     udp dport ntp accept
     ip daddr 224.0.0.9 udp dport 520 accept comment "RIP44"
     meta l4proto { icmp, ipv6-icmp } accept

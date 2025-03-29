@@ -6,8 +6,9 @@
 define ampr_self_prefix = 44.63.16.192/28
 
 chain filter_IN_ampr {
-    jump filter_IN_policy_allow-host-ipv6
-    tcp dport ssh accept
+    tcp dport { ssh, http, https } accept
+    udp dport 4569 accept comment "ASL Asterisk"
+    udp dport { 5198, 5199 } accept comment "EchoLink"
     ip daddr 224.0.0.9 udp dport 520 accept comment "RIP44"
     meta l4proto { icmp, ipv6-icmp } accept
     log prefix "filter_IN_ampr_REJECT: " reject with icmpx admin-prohibited

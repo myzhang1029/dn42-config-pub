@@ -4,6 +4,7 @@
 # Chains for WAN interfaces
 
 chain filter_IN_public {
+    jump filter_IN_policy_allow-host-ipv6
     tcp dport { ssh, http, https } accept
     udp dport 4569 accept comment "ASL Asterisk"
     udp dport { 5198, 5199 } accept comment "EchoLink"
