@@ -12,6 +12,7 @@ table inet main {
         elements = {
             "wginternal",
             "arednvlan",
+            "wg0253moe233lv",
             # __MAKE_PEERING_MARKER Do not remove this comment
         }
     }
