@@ -1,0 +1,19 @@
+# vi: ft=systemd
+# /etc/systemd/network/20-internal1-wg.network
+
+[Match]
+Name=wginternal1
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+
+[Network]
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=fe80::ab06/64

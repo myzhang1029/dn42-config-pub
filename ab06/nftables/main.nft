@@ -11,6 +11,7 @@ table inet main {
         type ifname
         elements = {
             "ztbtosre7x",
+            "wginternal1",
             "wg0207rbitslax",
             "wg2189iedonlax",
             "wg2717hujklax",

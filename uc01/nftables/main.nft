@@ -11,6 +11,7 @@ table inet main {
         type ifname
         elements = {
             "wginternal0",
+            "wginternal1",
             "arednvlan",
             "wg0253moe233lv",
             # __MAKE_PEERING_MARKER Do not remove this comment
