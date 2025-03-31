@@ -1,8 +1,8 @@
 # vi: ft=systemd
-# /etc/systemd/network/30-dn42-cowgl-txg.network
+# /etc/systemd/network/30-dn42-cowgl-tyo.network
 
 [Match]
-Name=wg3999cowgltxg
+Name=wg3999cowgltyo
 
 [Link]
 RequiredForOnline=degraded:routable
@@ -17,4 +17,4 @@ KeepConfiguration=yes
 
 [Address]
 Address=fe80::893/64
-Peer=fe80::3999/64
+Peer=fe80::1:3999/64
