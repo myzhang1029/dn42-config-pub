@@ -1,0 +1,7 @@
+interface: 127.0.0.153
+interface: 172.23.6.161
+interface: fdc0:d227:306:ee01::1
+interface-automatic: no # also using systemd-resolved on 127.0.0.53
+ip-transparent: yes
+so-reuseport: yes
+port: 53

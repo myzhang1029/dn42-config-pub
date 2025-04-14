@@ -9,7 +9,8 @@ RequiredForOnline=no
 
 [Network]
 Description=ZeroTier
-Domains=maiyun.me dn42
+DNS=172.23.6.161
+Domains=dn42
 DuplicateAddressDetection=none
 
 [Address]
