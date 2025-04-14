@@ -1,6 +1,0 @@
-interface: 0.0.0.0
-interface: ::
-interface-automatic: yes
-ip-transparent: yes
-so-reuseport: yes
-port: 53
