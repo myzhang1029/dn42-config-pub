@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/20-ztbtosre7x.network
+
+[Match]
+Name=ztbtosre7x
+
+[Link]
+RequiredForOnline=no
+
+[Network]
+Description=ZeroTier
+DNS=fdc0:d227:306:ee01::1 172.23.6.161
+Domains=dn42
+DuplicateAddressDetection=none
+
+[Address]
+Address=172.23.6.166/28
+
+[Address]
+Address=fdc0:d227:306:ee01::6/112
