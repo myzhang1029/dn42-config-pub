@@ -11,7 +11,6 @@ RequiredForOnline=no
 Description=Raspberry Pi Built-in Ethernet
 DHCP=ipv4
 LinkLocalAddressing=ipv6
-Domains=maiyun.me dn42
 MulticastDNS=yes
 
 [DHCP]

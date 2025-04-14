@@ -11,8 +11,7 @@ RequiredForOnline=no
 Description=Raspberry Pi Built-in WLAN
 DHCP=ipv4
 LinkLocalAddressing=ipv6
-DNS=127.0.0.1 1.1.1.1
-Domains=maiyun.me dn42
+DNS=127.0.0.153
 MulticastDNS=yes
 
 [DHCP]
