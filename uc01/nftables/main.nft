@@ -38,6 +38,12 @@ table inet main {
         elements = { "tunl0" }
     }
 
+    # AREDN interfaces
+    set aredn_interfaces {
+        type ifname
+        elements = { "wgarednkk6uc" }
+    }
+
     include "/etc/nftables/shared-chains.nft"
     include "/etc/nftables/public-chains.nft"
     include "/etc/nftables/dn42-chains.nft"

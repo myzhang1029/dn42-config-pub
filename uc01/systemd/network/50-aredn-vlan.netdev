@@ -1,9 +1,0 @@
-# vi: ft=systemd
-# /etc/systemd/network/50-aredn-vlan.netdev
-
-[NetDev]
-Name=arednvlan
-Kind=vlan
-
-[VLAN]
-Id=2
