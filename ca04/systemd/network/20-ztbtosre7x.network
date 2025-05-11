@@ -18,9 +18,3 @@ Address=172.23.6.161/28
 
 [Address]
 Address=fdc0:d227:306:ee01::1/112
-
-[Address]
-Address=172.23.6.161/32
-
-[Address]
-Address=fdc0:d227:306:ee01::1/128
