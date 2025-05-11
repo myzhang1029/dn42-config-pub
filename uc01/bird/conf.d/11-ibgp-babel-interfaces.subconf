@@ -4,3 +4,6 @@ interface "wginternal0" {
 interface "wginternal1" {
     type tunnel;
 };
+interface "wginternal3" {
+    type tunnel;
+};

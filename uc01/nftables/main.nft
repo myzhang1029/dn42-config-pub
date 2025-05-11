@@ -11,6 +11,7 @@ table inet main {
         elements = {
             "wginternal0",
             "wginternal1",
+            "wginternal3",
             "wg0253moe233lv",
             "wg2717hujklax",
             "wg3914kiouus3",
@@ -24,6 +25,7 @@ table inet main {
         elements = {
             24300,
             24301,
+            24303,
             24201,
             24215,
             24205,
