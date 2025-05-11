@@ -16,7 +16,4 @@ IPv4ReversePathFilter=no
 KeepConfiguration=yes
 
 [Address]
-Address=fdc0:d227:306:ee01::6/128
-
-[Address]
 Address=fe80::aa02/64
