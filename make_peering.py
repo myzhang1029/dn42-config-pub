@@ -282,7 +282,7 @@ Peer={}
         self._maybe_write_file(file, network)
 
     def _add_interface_to_firewall(self) -> None:
-        """Add the interface to nftables/main.nft."""
+        """Add the interface and the WG port to nftables/main.nft."""
         site = self.answers["site"]
         file = Path(f"{site}/nftables/main.nft")
         if not file.exists():
@@ -298,9 +298,19 @@ Peer={}
         indents = lines[i].find("#")
         new = f'"{self.answers["iface"]}",\n'
         lines.insert(i, ' ' * indents + new)
+        for i, line in enumerate(lines):
+            if "__MAKE_PEERING_PORT_MARKER" in line:
+                break
+        else:
+            raise MalformedConfig("missing __MAKE_PEERING_PORT_MARKER in nftables/main.nft")
+        if lines[i+1].strip() != "}":
+            raise MalformedConfig("misplaced __MAKE_PEERING_PORT_MARKER in nftables/main.nft")
+        indents = lines[i].find("#")
+        new = f'"{self.answers["listen_port"]}",\n'
+        lines.insert(i, ' ' * indents + new)
         with open(file, "w", encoding="utf-8") as f:
             f.writelines(lines)
-        print("Please manually check the nftables/main.nft file for correctness.")
+        print(f"Please manually check `{site}/nftables/main.nft` for correctness.")
 
     def _print_additional_info(self) -> None:
         """Print node information."""

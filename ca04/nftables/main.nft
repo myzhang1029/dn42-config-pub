@@ -26,6 +26,24 @@ table inet main {
             # __MAKE_PEERING_MARKER Do not remove this comment
         }
     }
+    # dn42 WireGuard listening ports
+    set dn42_wg_ports {
+        type inet_service
+        elements = {
+            24300,
+            24202,
+            24204,
+            24203,
+            24211,
+            24205,
+            24206,
+            24207,
+            24208,
+            24209,
+            24213,
+            # __MAKE_PEERING_PORT_MARKER Do not remove this comment
+        }
+    }
     # dn42 assigned addresses
     define dn42_self_ipv4 = 172.23.6.161
     define dn42_self_ipv6 = fdc0:d227:306:ee01::1

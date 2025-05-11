@@ -6,16 +6,25 @@ flush ruleset
 
 table inet main {
     # dn42 interfaces
-    # TODO: Separate things for aredn
     set dn42_interfaces {
         type ifname
         elements = {
             "wginternal0",
             "wginternal1",
-            "arednvlan",
             "wg0253moe233lv",
             "wg2717hujklax",
             # __MAKE_PEERING_MARKER Do not remove this comment
+        }
+    }
+    # dn42 WireGuard listening ports
+    set dn42_wg_ports {
+        type inet_service
+        elements = {
+            24300,
+            24301,
+            24201,
+            24215,
+            # __MAKE_PEERING_PORT_MARKER Do not remove this comment
         }
     }
     # dn42 assigned addresses
