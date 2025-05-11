@@ -12,13 +12,13 @@ RequiredForOnline=no
 Description=Ethernet to UCSD agg-b-mcore
 Address=137.110.116.194/24
 Gateway=137.110.116.1
+# Upstream has no IPv6 route yet
+IPv6AcceptRA=no
 LinkLocalAddressing=ipv6
 DNS=132.239.0.250 1.1.1.1
 Domains=ucsd.edu
 MulticastDNS=no
 RouteMetric=400
-# VLAN tag 2 = AREDN dtdlink
-VLAN=arednvlan
 
 [DHCP]
 RouteMetric=400
