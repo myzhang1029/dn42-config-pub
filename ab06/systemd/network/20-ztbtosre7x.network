@@ -16,7 +16,13 @@ DuplicateAddressDetection=none
 Address=172.23.6.162/28
 
 [Address]
+Address=172.23.6.162/32
+
+[Address]
 Address=fdc0:d227:306:ee01::2/112
+
+[Address]
+Address=fdc0:d227:306:ee01::2/128
 
 [Route]
 Destination=0.0.0.0/0
