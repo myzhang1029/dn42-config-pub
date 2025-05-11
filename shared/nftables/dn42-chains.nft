@@ -22,12 +22,5 @@ chain filter_IN_dn42 {
     log prefix "filter_IN_dn42_REJECT: " reject with icmpx admin-prohibited
 }
 
-chain filter_FWD_dn42 {
-    # @dn42_interfaces needs to be defined in `main.nft`
-    # Accept all traffic within the dn42 network
-    oifname @dn42_interfaces counter accept
-    log prefix "filter_FWD_dn42_REJECT: " reject with icmpx admin-prohibited
-}
-
 chain nat_POST_dn42 {
 }

@@ -16,7 +16,3 @@ chain filter_IN_public {
 
 chain nat_POST_public {
 }
-
-chain filter_FWD_public {
-    log prefix "filter_FWD_public_REJECT: " reject with icmpx admin-prohibited
-}

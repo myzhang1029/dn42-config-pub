@@ -93,13 +93,11 @@ table inet main {
         iifname @dn42_interfaces ip saddr $dn42_self_ipv4_prefix oifname @ampr_interfaces counter accept
         # Allow 44Net to access our services
         iifname @ampr_interfaces oifname @dn42_interfaces ip daddr $ampr_self_prefix counter accept
-        iifname @dn42_interfaces jump filter_FWD_dn42
-        iifname @public_interfaces jump filter_FWD_public
-        iifname @ampr_interfaces jump filter_FWD_ampr
-        jump filter_FWD_public
+        # Accept all traffic within the dn42 network
+        iifname @dn42_interfaces oifname @dn42_interfaces counter accept
+        # likely not needed, but just in case
+        iifname @ampr_interfaces oifname @ampr_interfaces counter accept
         jump filter_policy_drop_martian
-        # These are immune from conntrack drop
-        iifname @dn42_interfaces oifname @dn42_interfaces return
         ct state invalid log prefix "FORWARD_STATE_INVALID_DROP: " drop
         # Should have reached a decision by now
         log prefix "filter_FORWARD_FINAL_REJECT: " counter reject with icmpx admin-prohibited

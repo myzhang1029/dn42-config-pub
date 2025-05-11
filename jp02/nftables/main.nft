@@ -72,12 +72,9 @@ table inet main {
         ct state { established, related } accept
         ct status dnat accept
         iifname "lo" accept
-        iifname @public_interfaces jump filter_FWD_public
-        iifname @dn42_interfaces jump filter_FWD_dn42
-        jump filter_FWD_public
+        # Accept all traffic within the dn42 network
+        iifname @dn42_interfaces oifname @dn42_interfaces counter accept
         jump filter_policy_drop_martian
-        # These are immune from conntrack drop
-        iifname @dn42_interfaces oifname @dn42_interfaces return
         ct state invalid log prefix "STATE_INVALID_DROP: " drop
         # Should have reached a decision by now
         log prefix "filter_FORWARD_FINAL_REJECT: " counter reject with icmpx admin-prohibited

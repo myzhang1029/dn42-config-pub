@@ -11,10 +11,6 @@ chain filter_IN_public {
     reject with icmpx admin-prohibited
 }
 
-chain filter_FWD_public {
-    log prefix "filter_FWD_public_REJECT: " reject with icmpx admin-prohibited
-}
-
 chain nat_POST_public {
     iifname @lan_interfaces oifname @public_interfaces meta nfproto ipv4 masquerade
 }
