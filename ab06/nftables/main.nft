@@ -12,7 +12,6 @@ table inet main {
         elements = {
             "ztbtosre7x",
             "wginternal1",
-            "wg0207rbitslax",
             "wg2189iedonlax",
             "wg3035lareusw1",
             "wg3088sunnetlax",
