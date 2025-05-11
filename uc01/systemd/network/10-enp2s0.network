@@ -18,6 +18,7 @@ LinkLocalAddressing=ipv6
 DNS=132.239.0.250 1.1.1.1
 Domains=ucsd.edu
 MulticastDNS=no
+RouteMetric=400
 
 [DHCP]
 RouteMetric=400
