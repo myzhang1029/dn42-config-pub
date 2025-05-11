@@ -3,7 +3,7 @@
 
 # Chains for LAN interfaces
 
-chain filter_IN_lan {
+chain input_lan {
     tcp dport ssh accept
     ip daddr 224.0.0.251 udp dport 5353 accept comment "mDNS"
     ip6 daddr ff02::fb udp dport 5353 accept comment "mDNS"
@@ -13,19 +13,19 @@ chain filter_IN_lan {
     udp dport 53 accept comment "DNS"
     tcp dport 8080 accept comment "PiAware"
     meta l4proto { icmp, ipv6-icmp } accept
-    meta pkttype host log prefix "filter_IN_aredn_REJECT: "
+    meta pkttype host log prefix "input_lan_REJECT: "
     reject with icmpx admin-prohibited
 }
 
-chain filter_FWD_lan {
+chain forward_lan {
     # LAN bridge forwarding
     oifname @lan_interfaces accept
     # Allow forwarding from LAN to WAN
     oifname @public_interfaces accept
     # Allow forwarding from LAN to dn42
     oifname @dn42_interfaces accept
-    log prefix "filter_FWD_lan_REJECT: " reject with icmpx admin-prohibited
+    log prefix "forward_lan_REJECT: " reject with icmpx admin-prohibited
 }
 
-chain nat_POST_lan {
+chain nat_post_lan {
 }

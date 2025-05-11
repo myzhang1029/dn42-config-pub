@@ -5,16 +5,16 @@
 
 define ampr_self_prefix = 44.63.16.192/28
 
-chain filter_IN_ampr {
-    jump filter_IN_policy_allow-host-ipv6
+chain input_ampr {
+    jump input_policy_allow-host-ipv6
     tcp dport { ssh, http, https } accept
     udp dport ntp accept
     ip daddr 224.0.0.9 udp dport 520 accept comment "RIP44"
     meta l4proto { icmp, ipv6-icmp } accept
-    log prefix "filter_IN_ampr_REJECT: " reject with icmpx admin-prohibited
+    log prefix "input_ampr_REJECT: " reject with icmpx admin-prohibited
 }
 
-chain nat_POST_ampr {
+chain nat_post_ampr {
     # Accept 44Net access only from my devices using dn42 saddr
     # Do not masquerade those using 44Net saddr
     ip saddr $dn42_self_ipv4_prefix meta nfproto ipv4 counter masquerade

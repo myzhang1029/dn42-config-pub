@@ -3,14 +3,14 @@
 
 # Chains for WAN interfaces
 
-chain filter_IN_public {
+chain input_public {
     tcp dport ssh accept
     ip6 daddr fe80::/64 udp dport 546 accept comment "DHCPv6"
     meta l4proto { icmp, ipv6-icmp } accept
-    meta pkttype host log prefix "filter_IN_public_REJECT: "
+    meta pkttype host log prefix "input_public_REJECT: "
     reject with icmpx admin-prohibited
 }
 
-chain nat_POST_public {
+chain nat_post_public {
     iifname @lan_interfaces oifname @public_interfaces meta nfproto ipv4 masquerade
 }

@@ -1,16 +1,28 @@
 # vi: ft=nftables
 # /etc/nftables/shared-chains.nft
 
-# Output, and protocol chains (adopted from FirewallD)
+# Output, forward common, and protocol chains (adopted from FirewallD)
 
-chain filter_OUTPUT {
+chain output {
     type filter hook output priority filter + 10; policy accept;
     oifname "lo" accept
     jump filter_policy_drop_martian
     # Accept outbound traffic everywhere
 }
 
-chain filter_IN_policy_allow-host-ipv6 {
+chain forward {
+    type filter hook forward priority filter + 10; policy drop;
+    ct state { established, related } accept
+    ct status dnat accept
+    iifname "lo" accept
+    # Check system-specific configurations
+    jump forward_machdep
+    jump filter_policy_drop_martian
+    ct state invalid log prefix "forward_STATE_INVALID_DROP: " drop
+    log prefix "forward_REJECT: " counter reject with icmpx admin-prohibited
+}
+
+chain input_policy_allow-host-ipv6 {
     icmpv6 type { nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert, nd-redirect } accept
 }
 

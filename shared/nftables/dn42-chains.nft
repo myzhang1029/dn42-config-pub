@@ -6,8 +6,8 @@
 define dn42_self_ipv4_prefix = 172.23.6.160/27
 define dn42_self_ipv6_prefix = fdc0:d227:306::/48
 
-chain filter_IN_dn42 {
-    jump filter_IN_policy_allow-host-ipv6
+chain input_dn42 {
+    jump input_policy_allow-host-ipv6
     # BGP
     tcp dport 179 accept
     # Babel
@@ -19,8 +19,8 @@ chain filter_IN_dn42 {
     # Other services
     meta l4proto . th dport @dn42_ports accept
     meta l4proto { icmp, ipv6-icmp } accept
-    log prefix "filter_IN_dn42_REJECT: " reject with icmpx admin-prohibited
+    log prefix "input_dn42_REJECT: " reject with icmpx admin-prohibited
 }
 
-chain nat_POST_dn42 {
+chain nat_post_dn42 {
 }

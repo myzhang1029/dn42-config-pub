@@ -3,19 +3,13 @@
 
 # Chains for AREDN interfaces
 
-chain filter_IN_aredn {
+chain input_aredn {
     udp dport 698 accept comment "OLSR"
     udp dport 6696 accept comment "Babel"
     meta l4proto { icmp, ipv6-icmp } accept
-    log prefix "filter_IN_aredn_REJECT: " reject with icmpx admin-prohibited
+    log prefix "input_aredn_REJECT: " reject with icmpx admin-prohibited
 }
 
-chain filter_FWD_aredn {
-    # Likely not needed, but just in case
-    oifname @aredn_interfaces counter accept
-    log prefix "filter_FWD_aredn_REJECT: " reject with icmpx admin-prohibited
-}
-
-chain nat_POST_aredn {
+chain nat_post_aredn {
     ip saddr $dn42_self_ipv4_prefix oifname @aredn_interfaces counter masquerade
 }

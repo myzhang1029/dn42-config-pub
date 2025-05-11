@@ -40,43 +40,35 @@ table inet main {
     include "/etc/nftables/shared-chains.nft"
     include "/etc/nftables/public-chains.nft"
 
+    chain forward_machdep {
+        # Accept all traffic within the dn42 network
+        iifname @dn42_interfaces oifname @dn42_interfaces counter accept
+    }
+
     # Bare Metal Instance Services (at iptables (higher) priority)
-    chain oci_filter_OUTPUT {
+    chain oci_filter_output {
         type filter hook output priority filter; policy accept;
         ip daddr 169.254.0.0/16 oifname @public_interfaces counter jump BareMetalInstanceServices
         ip6 daddr fd00:c1::a9fe:0/120 oifname @public_interfaces counter jump BareMetalInstanceServices
     }
 
-    chain nat_POSTROUTING {
+    chain nat_post {
         type nat hook postrouting priority srcnat + 10; policy accept;
-        oifname @public_interfaces goto nat_POST_public
-        oifname @dn42_interfaces goto nat_POST_dn42
-        goto nat_POST_public
+        oifname @public_interfaces goto nat_post_public
+        oifname @dn42_interfaces goto nat_post_dn42
+        goto nat_post_public
     }
 
-    chain filter_INPUT {
+    chain input {
         type filter hook input priority filter + 10; policy drop;
         ct state { established, related } accept
         ct status dnat accept
         iifname "lo" accept
-        ct state invalid log prefix "STATE_INVALID_DROP: " drop
-        iifname @public_interfaces jump filter_IN_public
-        iifname @dn42_interfaces jump filter_IN_dn42
-        jump filter_IN_public
+        ct state invalid log prefix "input_STATE_INVALID_DROP: " drop
+        iifname @public_interfaces jump input_public
+        iifname @dn42_interfaces jump input_dn42
+        jump input_public
         # Should have reached a decision by now
-        log prefix "filter_INPUT_FINAL_REJECT: " counter reject with icmpx admin-prohibited
-    }
-
-    chain filter_FORWARD {
-        type filter hook forward priority filter + 10; policy drop;
-        ct state { established, related } accept
-        ct status dnat accept
-        iifname "lo" accept
-        # Accept all traffic within the dn42 network
-        iifname @dn42_interfaces oifname @dn42_interfaces counter accept
-        jump filter_policy_drop_martian
-        ct state invalid log prefix "STATE_INVALID_DROP: " drop
-        # Should have reached a decision by now
-        log prefix "filter_FORWARD_FINAL_REJECT: " counter reject with icmpx admin-prohibited
+        log prefix "input_FINAL_REJECT: " counter reject with icmpx admin-prohibited
     }
 }

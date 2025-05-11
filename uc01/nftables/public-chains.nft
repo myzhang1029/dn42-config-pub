@@ -3,8 +3,8 @@
 
 # Chains for WAN interfaces
 
-chain filter_IN_public {
-    jump filter_IN_policy_allow-host-ipv6
+chain input_public {
+    jump input_policy_allow-host-ipv6
     tcp dport { ssh, http, https } accept
     udp dport 4569 accept comment "ASL Asterisk"
     udp dport { 5198, 5199 } accept comment "EchoLink"
@@ -12,9 +12,9 @@ chain filter_IN_public {
     udp dport 24201-24301 accept comment "dn42 WireGuard"
     ip saddr 169.228.34.84 meta l4proto ipip accept comment "AMPR IPIPencap"
     meta l4proto { icmp, ipv6-icmp } accept
-    meta pkttype host log prefix "filter_IN_public_REJECT: "
+    meta pkttype host log prefix "input_public_REJECT: "
     reject with icmpx admin-prohibited
 }
 
-chain nat_POST_public {
+chain nat_post_public {
 }
