@@ -16,7 +16,6 @@ table inet main {
             "wg2189iedonlax",
             "wg3035lareusw1",
             "wg3088sunnetlax",
-            "wg3914kiouus3",
             # __MAKE_PEERING_MARKER Do not remove this comment
         }
     }
