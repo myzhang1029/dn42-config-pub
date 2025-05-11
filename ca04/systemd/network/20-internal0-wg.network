@@ -17,3 +17,6 @@ KeepConfiguration=yes
 
 [Address]
 Address=fe80::ca04/64
+
+[Address]
+Address=fdc0:d227:306:ee01::1/128
