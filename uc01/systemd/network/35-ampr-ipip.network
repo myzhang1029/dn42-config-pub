@@ -9,7 +9,8 @@ Multicast=yes
 
 [Network]
 DHCP=no
-IPForward=yes
+IPv4Forwarding=yes
+IPv6Forwarding=yes
 KeepConfiguration=yes
 
 [Address]

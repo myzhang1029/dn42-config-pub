@@ -10,7 +10,6 @@ RequiredForOnline=no
 [Network]
 Description=ZeroTier
 Domains=maiyun.me dn42
-DuplicateAddressDetection=none
 
 [Address]
 Address=172.23.6.162/28

@@ -11,7 +11,8 @@ RequiredFamilyForOnline=ipv6
 [Network]
 DHCP=no
 IPv6AcceptRA=false
-IPForward=yes
+IPv4Forwarding=yes
+IPv6Forwarding=yes
 IPv4ReversePathFilter=no
 KeepConfiguration=yes
 
