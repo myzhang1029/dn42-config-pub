@@ -4,12 +4,13 @@ filter kernel_export4 {
         krt_prefsrc = dn42_thisaddr4;
         accept;
     }
-    # AMPR should be handled via policy routing on table 44
-    # except for our internal routes
-    if net ~ ampr_netset then {
-        krt_prefsrc = ampr_myip;
+    # AREDN traffic is NAT'ed at the gateway
+    if net ~ [10.0.0.0/8+] then {
+        krt_prefsrc = dn42_thisaddr4;
         accept;
     }
+    # AMPR should be handled via policy routing on table 44
+    # including our internal routes
     if net ~ ampr_valid_netset then reject;
     accept;
 }

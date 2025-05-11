@@ -15,8 +15,7 @@ chain input_ampr {
 }
 
 chain nat_post_ampr {
-    # Accept 44Net access only from my devices using dn42 saddr
-    # Do not masquerade those using 44Net saddr
+    # Do not masquerade those already using 44Net saddr
     ip saddr $dn42_self_ipv4_prefix meta nfproto ipv4 counter masquerade
 }
 
