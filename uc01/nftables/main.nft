@@ -67,9 +67,10 @@ table inet main {
     chain forward_machdep {
         # Accept all traffic within the dn42 network
         iifname @dn42_interfaces oifname @dn42_interfaces counter accept
-        # Allow our traffic to access 44Net
+        # Allow our traffic to access 44Net and AREDN
         iifname @dn42_interfaces ip saddr $dn42_self_ipv4_prefix oifname @ampr_interfaces counter accept
         iifname @dn42_interfaces ip saddr $ampr_self_prefix oifname @ampr_interfaces counter accept
+        iifname @dn42_interfaces ip saddr $dn42_self_ipv4_prefix oifname @aredn_interfaces counter accept
         # Allow 44Net to access our services
         iifname @ampr_interfaces oifname @dn42_interfaces ip daddr $ampr_self_prefix counter accept
         # likely not needed, but just in case
@@ -96,6 +97,7 @@ table inet main {
         oifname @public_interfaces goto nat_post_public
         oifname @dn42_interfaces goto nat_post_dn42
         oifname @ampr_interfaces goto nat_post_ampr
+        oifname @aredn_interfaces goto nat_post_aredn
         goto nat_post_public
     }
 }
