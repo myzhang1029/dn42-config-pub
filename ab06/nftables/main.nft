@@ -6,17 +6,6 @@ flush ruleset
 
 
 table inet main {
-    # dn42 interfaces
-    set dn42_interfaces {
-        type ifname
-        elements = {
-            "ztbtosre7x",
-            "wginternal1",
-            "wg2189iedonlax",
-            "wg3088sunnetlax",
-            # __MAKE_PEERING_MARKER Do not remove this comment
-        }
-    }
     # dn42 assigned addresses
     define dn42_self_ipv4 = 172.23.6.162
     define dn42_self_ipv6 = fdc0:d227:306:ee01::2

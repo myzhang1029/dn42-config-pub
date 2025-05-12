@@ -6,26 +6,6 @@ flush ruleset
 
 
 table inet main {
-    # dn42 interfaces
-    set dn42_interfaces {
-        type ifname
-        # TODO: distinguish our interfaces from others
-        elements = {
-            "ztbtosre7x",
-            "wginternal0",
-            "wg1816potat0las",
-            "wg1817kskbusf",
-            "wg2189iedonsjc",
-            "wg2717hujknyb",
-            "wg3914kiouus2",
-            "wg1111kskbneoca",
-            "wg0207rbitstor",
-            "wg2225maraunus",
-            "wg3035lareuse2",
-            "wg2016sdrltor",
-            # __MAKE_PEERING_MARKER Do not remove this comment
-        }
-    }
     # dn42 WireGuard listening ports
     set dn42_wg_ports {
         type inet_service
