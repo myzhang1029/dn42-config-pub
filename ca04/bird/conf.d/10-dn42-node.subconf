@@ -1,2 +1,2 @@
 define dn42_thisaddr4 = 172.23.6.161;
-define dn42_thisaddr6 = fdc0:d227:306:ee01::1;
+define dn42_thisaddr6 = fdc0:d227:306:ca04::1;
