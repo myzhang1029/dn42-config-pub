@@ -81,12 +81,12 @@ table inet main {
 
     chain forward_machdep {
         # Accept all traffic within the dn42 network
-        iifname @dn42_interfaces oifname @dn42_interfaces counter accept
+        iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter accept
         # Allow our traffic to access 44Net
-        iifname @dn42_interfaces ip saddr $dn42_self_ipv4_prefix oifname @ampr_interfaces counter accept
-        iifname @dn42_interfaces ip saddr $ampr_self_prefix oifname @ampr_interfaces counter accept
+        iifgroup { $dn42_ifgroup, $internal_ifgroup } ip saddr $dn42_self_ipv4_prefix oifname @ampr_interfaces counter accept
+        iifgroup { $dn42_ifgroup, $internal_ifgroup } ip saddr $ampr_self_prefix oifname @ampr_interfaces counter accept
         # Allow 44Net to access our services
-        iifname @ampr_interfaces oifname @dn42_interfaces ip daddr $ampr_self_prefix counter accept
+        iifname @ampr_interfaces oifgroup { $dn42_ifgroup, $internal_ifgroup } ip daddr $ampr_self_prefix counter accept
         # likely not needed, but just in case
         iifname @ampr_interfaces oifname @ampr_interfaces counter accept
     }
@@ -94,7 +94,7 @@ table inet main {
     chain nat_post {
         type nat hook postrouting priority srcnat + 10; policy accept;
         oifname @public_interfaces goto nat_post_public
-        oifname @dn42_interfaces goto nat_post_dn42
+        oifgroup { $dn42_ifgroup, $internal_ifgroup } goto nat_post_dn42
         oifname @ampr_interfaces goto nat_post_ampr
         goto nat_post_public
     }
@@ -106,7 +106,7 @@ table inet main {
         iifname "lo" accept
         ct state invalid log prefix "input_STATE_INVALID_DROP: " drop
         iifname @public_interfaces jump input_public
-        iifname @dn42_interfaces jump input_dn42
+        iifgroup { $dn42_ifgroup, $internal_ifgroup } jump input_dn42
         iifname @ampr_interfaces jump input_ampr
         jump input_public
         # Should have reached a decision by now

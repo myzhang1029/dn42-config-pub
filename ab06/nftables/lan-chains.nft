@@ -23,7 +23,7 @@ chain forward_lan {
     # Allow forwarding from LAN to WAN
     oifname @public_interfaces accept
     # Allow forwarding from LAN to dn42
-    oifname @dn42_interfaces accept
+    oifgroup { $dn42_ifgroup, $internal_ifgroup } accept
     log prefix "forward_lan_REJECT: " reject with icmpx admin-prohibited
 }
 

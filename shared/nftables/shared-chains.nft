@@ -3,6 +3,8 @@
 
 # Output, forward common, and protocol chains (adopted from FirewallD)
 
+define internal_ifgroup = 4040
+
 chain output {
     type filter hook output priority filter + 10; policy accept;
     oifname "lo" accept

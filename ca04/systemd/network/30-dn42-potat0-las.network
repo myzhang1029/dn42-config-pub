@@ -4,6 +4,11 @@
 [Match]
 Name=wg1816potat0las
 
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+Group=4242
+
 [Network]
 DHCP=no
 IPv6AcceptRA=false

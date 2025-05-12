@@ -60,7 +60,7 @@ table inet main {
 
     chain forward_machdep {
         # Accept all traffic within the dn42 network
-        iifname @dn42_interfaces oifname @dn42_interfaces counter accept
+        iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter accept
     }
 
     # Bare Metal Instance Services (at iptables (higher) priority)
@@ -73,7 +73,7 @@ table inet main {
     chain nat_post {
         type nat hook postrouting priority srcnat + 10; policy accept;
         oifname @public_interfaces goto nat_post_public
-        oifname @dn42_interfaces goto nat_post_dn42
+        oifgroup { $dn42_ifgroup, $internal_ifgroup } goto nat_post_dn42
         goto nat_post_public
     }
 
@@ -84,7 +84,7 @@ table inet main {
         iifname "lo" accept
         ct state invalid log prefix "input_STATE_INVALID_DROP: " drop
         iifname @public_interfaces jump input_public
-        iifname @dn42_interfaces jump input_dn42
+        iifgroup { $dn42_ifgroup, $internal_ifgroup } jump input_dn42
         jump input_public
         # Should have reached a decision by now
         log prefix "input_FINAL_REJECT: " counter reject with icmpx admin-prohibited

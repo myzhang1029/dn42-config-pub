@@ -48,6 +48,7 @@ Name={}
 [Link]
 RequiredForOnline=degraded:routable
 RequiredFamilyForOnline=ipv6
+Group=4242
 
 [Network]
 DHCP=no
@@ -288,16 +289,6 @@ Peer={}
         if not file.exists():
             raise MalformedConfig("missing nftables/main.nft")
         lines = file.open(encoding="utf-8").readlines()
-        for i, line in enumerate(lines):
-            if "__MAKE_PEERING_MARKER" in line:
-                break
-        else:
-            raise MalformedConfig("missing __MAKE_PEERING_MARKER in nftables/main.nft")
-        if lines[i+1].strip() != "}":
-            raise MalformedConfig("misplaced __MAKE_PEERING_MARKER in nftables/main.nft")
-        indents = lines[i].find("#")
-        new = f'"{self.answers["iface"]}",\n'
-        lines.insert(i, ' ' * indents + new)
         for i, line in enumerate(lines):
             if "__MAKE_PEERING_PORT_MARKER" in line:
                 break

@@ -6,6 +6,7 @@ Name=ztbtosre7x
 
 [Link]
 RequiredForOnline=no
+Group=4040
 
 [Network]
 Description=ZeroTier
