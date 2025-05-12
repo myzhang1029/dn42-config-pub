@@ -16,6 +16,7 @@ table inet main {
             "wg2717hujklax",
             "wg3914kiouus3",
             "wg0207rbitslax",
+            "wg3035lareusw1",
             # __MAKE_PEERING_MARKER Do not remove this comment
         }
     }
@@ -30,6 +31,7 @@ table inet main {
             24215,
             24205,
             24207,
+            24209,
             # __MAKE_PEERING_PORT_MARKER Do not remove this comment
         }
     }
