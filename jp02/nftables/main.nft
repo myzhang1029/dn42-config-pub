@@ -19,6 +19,7 @@ table inet main {
             "wg1771dststrsg",
             "wg1111kskbneoty",
             "wg3999cowgltyo",
+            "wg3035larejp01",
             # __MAKE_PEERING_MARKER Do not remove this comment
         }
     }
@@ -34,6 +35,7 @@ table inet main {
             24212,
             24206,
             24239,
+            24209,
             # __MAKE_PEERING_PORT_MARKER Do not remove this comment
         }
     }
