@@ -5,7 +5,7 @@ After=local-fs.target
 
 [Service]
 Restart=always
-ExecStart=/usr/local/sbin/bird-lgproxy-go --allowed=fdc0:d227:306:ee01::1
+ExecStart=/usr/local/sbin/bird-lgproxy-go --allowed=fdc0:d227:306:ee01::1,fdc0:d227:306:ca04::1
 
 [Install]
 WantedBy=multi-user.target

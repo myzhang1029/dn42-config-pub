@@ -15,7 +15,7 @@ chain input_dn42 {
     # SSH
     tcp dport 22 accept
     # bird-lg
-    ip6 daddr $dn42_self_ipv6 ip6 saddr fdc0:d227:306:ee01::1 tcp dport 8000 accept
+    ip6 daddr $dn42_self_ipv6 ip6 saddr { fdc0:d227:306:ee01::1, fdc0:d227:306:ca04::1 } tcp dport 8000 accept
     # Other services
     meta l4proto . th dport @dn42_ports accept
     meta l4proto { icmp, ipv6-icmp } accept
