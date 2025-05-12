@@ -19,9 +19,6 @@ KeepConfiguration=yes
 [Address]
 Address=fe80::ab06/64
 
-[Address]
-Address=fdc0:d227:306:ee01::2/128
-
 [Route]
 Destination=0.0.0.0/0
 Gateway=fe80::2c01
