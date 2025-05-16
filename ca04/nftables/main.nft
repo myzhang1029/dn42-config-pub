@@ -71,6 +71,13 @@ table inet main {
         iifname @ampr_interfaces oifname @ampr_interfaces counter accept
     }
 
+    # Bare Metal Instance Services (at iptables (higher) priority)
+    chain oci_filter_output {
+        type filter hook output priority filter; policy accept;
+        ip daddr 169.254.0.0/16 oifname @public_interfaces counter jump BareMetalInstanceServices
+        ip6 daddr fd00:c1::a9fe:0/120 oifname @public_interfaces counter jump BareMetalInstanceServices
+    }
+
     chain nat_post {
         type nat hook postrouting priority srcnat + 10; policy accept;
         oifname @public_interfaces goto nat_post_public
