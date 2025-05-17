@@ -30,7 +30,7 @@ table inet main {
     # Public interface
     set public_interfaces {
         type ifname
-        elements = { "wlp3s0", "enp2s0" }
+        elements = { "wlp0s20f3", "enusb", "enbuiltin", "ztiv5i5ann" }
     }
 
     # 44Net interfaces
