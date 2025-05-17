@@ -15,4 +15,5 @@ chain input_public {
 }
 
 chain nat_post_public {
+    iifgroup $internal_ifgroup masquerade
 }

@@ -29,6 +29,7 @@ table inet main {
     # dn42 services on this host
     set dn42_ports {
         type inet_proto . inet_service
+        elements = { tcp . 180 }
     }
 
     # Public interface
@@ -45,6 +46,7 @@ table inet main {
     chain forward_machdep {
         # Accept all traffic within the dn42 network
         iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter accept
+        iifgroup $internal_ifgroup oifname @public_interfaces counter accept
     }
 
     # Bare Metal Instance Services (at iptables (higher) priority)
