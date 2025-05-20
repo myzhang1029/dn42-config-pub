@@ -47,7 +47,7 @@ table inet main {
     chain forward_machdep {
         iifgroup { $dn42_ifgroup, $internal_ifgroup } oifname @lan_interfaces counter accept
         # Accept all traffic within the dn42 network
-        iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter accept
+        iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter name dn42_fwd_packets accept
         iifname @lan_interfaces jump forward_lan
     }
 

@@ -61,7 +61,7 @@ table inet main {
 
     chain forward_machdep {
         # Accept all traffic within the dn42 network
-        iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter accept
+        iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter name dn42_fwd_packets accept
         # Allow our traffic to access 44Net
         iifgroup { $dn42_ifgroup, $internal_ifgroup } ip saddr $dn42_self_ipv4_prefix oifname @ampr_interfaces counter accept
         iifgroup { $dn42_ifgroup, $internal_ifgroup } ip saddr $ampr_self_prefix oifname @ampr_interfaces counter accept

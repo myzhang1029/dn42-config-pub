@@ -7,6 +7,10 @@ define dn42_self_ipv4_prefix = 172.23.6.160/27
 define dn42_self_ipv6_prefix = fdc0:d227:306::/48
 define dn42_ifgroup = 4242
 
+counter dn42_fwd_packets {
+    comment "dn42 packets"
+}
+
 chain input_dn42 {
     jump input_policy_allow-host-ipv6
     # BGP
