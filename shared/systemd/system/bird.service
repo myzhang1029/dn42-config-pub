@@ -1,6 +1,6 @@
 [Unit]
 Description=BIRD Internet Routing Daemon
-After=network.target
+After=network-online.target
 
 [Service]
 Type=simple
