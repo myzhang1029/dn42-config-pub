@@ -7,9 +7,9 @@ Type=simple
 ExecStartPre=/usr/bin/mkdir -p /run/bird
 ExecStartPre=/usr/bin/chown bird:bird /run/bird
 ExecStartPre=/usr/bin/chmod 755 /run/bird
-ExecStartPre=/usr/sbin/bird -p -c /etc/bird.conf
-ExecStart=/usr/sbin/bird -f -u bird -g bird -c /etc/bird.conf
-ExecReload=/usr/sbin/birdc configure
+ExecStartPre=/usr/local/sbin/bird -p -c /etc/bird.conf
+ExecStart=/usr/local/sbin/bird -f -u bird -g bird -c /etc/bird.conf
+ExecReload=/usr/local/sbin/birdc configure
 Restart=on-failure
 
 [Install]
