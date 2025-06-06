@@ -1,0 +1,54 @@
+#!/usr/sbin/nft -f
+# vi: ft=nftables
+# /etc/nftables/main.nft
+
+flush ruleset
+
+table inet main {
+    # dn42 WireGuard listening ports
+    set dn42_wg_ports {
+        type inet_service
+        elements = {
+            24300,
+            24301,
+            24303,
+            24201,
+            24215,
+            24205,
+            24207,
+            24209,
+            # __MAKE_PEERING_PORT_MARKER Do not remove this comment
+        }
+    }
+    # dn42 assigned addresses
+    define dn42_self_ipv6 = fdc0:d227:306:2c01::1
+    # dn42 services on this host
+    set dn42_ports {
+        type inet_proto . inet_service
+    }
+
+    # Public interface
+    set public_interfaces {
+        type ifname
+        elements = { "wlp0s20f3", "enbuiltin" }
+    }
+
+    # 44Net interfaces
+    set ampr_interfaces {
+        type ifname
+        elements = { "tunl0" }
+    }
+
+    # AREDN interfaces
+    set aredn_interfaces {
+        type ifname
+        elements = { "wgarednkk6uc" }
+    }
+
+    include "/etc/nftables/shared-chains.nft"
+    include "/etc/nftables/public-chains.nft"
+    include "/etc/nftables/dn42-chains.nft"
+    include "/etc/nftables/ampr-chains.nft"
+    include "/etc/nftables/aredn-chains.nft"
+    include "/etc/nftables/private-chains.nft"
+}
