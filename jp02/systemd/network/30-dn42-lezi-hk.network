@@ -1,0 +1,21 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-lezi-hk.network
+
+[Match]
+Name=wg3377lezihk
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+Group=4242
+
+[Network]
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=fe80::893/64
+Peer=fe80::3377/64
