@@ -2,7 +2,7 @@
 # /etc/systemd/network/30-dn42-lezi-us-los.network
 
 [Match]
-Name=wg3377lezius-los
+Name=wg3377lezilos
 
 [Link]
 RequiredForOnline=degraded:routable
