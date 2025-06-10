@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-pflb-us03.netdev
+
+[NetDev]
+Name=wg1240pflbus03
+Kind=wireguard
+Description=WireGuard tunnel to AS4242421240 PrefixLabs us03
+
+[WireGuard]
+ListenPort=24211
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=oNabDMpFKum4CRbvPcwVE0Y4QsAfH0Sh439dfQYhnkQ=
+Endpoint=us-03.prefixlabs.net:20893
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64

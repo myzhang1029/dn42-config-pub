@@ -1,0 +1,21 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-pflb-us03.network
+
+[Match]
+Name=wg1240pflbus03
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+Group=4242
+
+[Network]
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=fe80::893/64
+Peer=fe80::1240:4/64
