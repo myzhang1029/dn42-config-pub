@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-cowgl-lax.netdev
+
+[NetDev]
+Name=wg3999cowgllax
+Kind=wireguard
+Description=WireGuard tunnel to AS4242423999 cowgl Los Angeles
+
+[WireGuard]
+ListenPort=24239
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=jhOukGNAKHI8Ivn8uI1TS25n5ho/rVlKFfenGmwCVlg=
+Endpoint=lax.node.cowgl.xyz:30893
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64
