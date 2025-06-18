@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-sirayuki-LV.netdev
+
+[NetDev]
+Name=wg1216sirayukiLV
+Kind=wireguard
+Description=WireGuard tunnel to AS4242421216 SIRAYUKI Las Vegas
+
+[WireGuard]
+ListenPort=24216
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=vP7tl7bcXIVprCz0xlLhNYhLH0kMuifODtJ/X3g/5RY=
+Endpoint=zero.sakurano.date
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64
