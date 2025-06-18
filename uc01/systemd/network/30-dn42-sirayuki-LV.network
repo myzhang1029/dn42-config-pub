@@ -2,7 +2,7 @@
 # /etc/systemd/network/30-dn42-sirayuki-LV.network
 
 [Match]
-Name=wg1216sirayukiLV
+Name=wg1216srykLV
 
 [Link]
 RequiredForOnline=degraded:routable

@@ -2,7 +2,7 @@
 # /etc/systemd/network/30-dn42-sirayuki-LV.netdev
 
 [NetDev]
-Name=wg1216sirayukiLV
+Name=wg1216srykLV
 Kind=wireguard
 Description=WireGuard tunnel to AS4242421216 SIRAYUKI Las Vegas
 
