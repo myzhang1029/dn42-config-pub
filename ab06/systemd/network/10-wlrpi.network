@@ -5,14 +5,16 @@
 Name=wlrpi
 
 [Link]
-RequiredForOnline=no
+RequiredForOnline=yes
 
 [Network]
 Description=Raspberry Pi Built-in WLAN
 DHCP=ipv4
-LinkLocalAddressing=ipv6
+LinkLocalAddressing=yes
 DNS=127.0.0.153
 MulticastDNS=yes
+UseDelegatedPrefix=yes
+PrefixDelegationHint=::/60
 
 [DHCP]
 RouteMetric=500
