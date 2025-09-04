@@ -1,0 +1,6 @@
+[Unit]
+Description=Wait for address %I to appear
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -c 'while ! ip a show dev "$(echo "%I"|cut -f2 -d%)" | grep -v tentative | grep "$(echo "%I"|cut -f1 -d%)"; do :; done'
