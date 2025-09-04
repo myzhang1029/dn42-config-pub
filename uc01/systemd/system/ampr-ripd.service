@@ -1,7 +1,7 @@
 [Unit]
 Description=AMPR RIP44 Daemon
-Wants=syslog.service local-fs.target network-online.target wait-address@44.63.16.193\x25tunl0.service
-After=local-fs.target network-online.target sys-subsystem-net-devices-tunl0.device wait-address@44.63.16.193\x25tunl0.service
+Wants=syslog.service local-fs.target network-online.target wait-address@44.63.16.201\x25tunl0.service
+After=local-fs.target network-online.target sys-subsystem-net-devices-tunl0.device wait-address@44.63.16.201\x25tunl0.service
 
 [Service]
 Restart=always
