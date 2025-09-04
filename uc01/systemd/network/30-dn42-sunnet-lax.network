@@ -12,11 +12,10 @@ Group=4242
 [Network]
 DHCP=no
 IPv6AcceptRA=false
-IPv4Forwarding=yes
-IPv6Forwarding=yes
+IPForward=yes
 IPv4ReversePathFilter=no
 KeepConfiguration=yes
 
 [Address]
-Address=fe80::abcd/64
+Address=fe80::893/64
 Peer=fe80::3088:193/64

@@ -4,7 +4,7 @@
 [NetDev]
 Name=wg3088sunnetlax
 Kind=wireguard
-Description=WireGuard tunnel to AS4242423088 SUNNET Los Angeles
+Description=WireGuard tunnel to AS4242423088 SUNNET LAX
 
 [WireGuard]
 ListenPort=24210
