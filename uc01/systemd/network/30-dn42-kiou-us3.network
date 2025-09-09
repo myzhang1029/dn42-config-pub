@@ -10,6 +10,7 @@ RequiredFamilyForOnline=ipv6
 Group=4242
 
 [Network]
+Description=WireGuard tunnel to AS4242423914 Kioubit us3
 DHCP=no
 IPv6AcceptRA=false
 IPv4Forwarding=yes

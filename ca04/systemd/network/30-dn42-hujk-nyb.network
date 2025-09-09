@@ -10,6 +10,7 @@ RequiredFamilyForOnline=ipv6
 Group=4242
 
 [Network]
+Description=WireGuard tunnel to AS4242422717 hujk NY Buffalo
 DHCP=no
 IPv6AcceptRA=false
 IPForward=yes

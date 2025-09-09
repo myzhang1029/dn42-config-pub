@@ -4,7 +4,7 @@
 [NetDev]
 Name=wginternal0
 Kind=wireguard
-Description=Internal WireGuard tunnel
+Description=Internal WireGuard tunnel between ca04 and uc01
 
 [WireGuard]
 ListenPort=24300

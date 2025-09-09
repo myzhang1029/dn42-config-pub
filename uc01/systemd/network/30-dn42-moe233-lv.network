@@ -10,6 +10,7 @@ RequiredFamilyForOnline=ipv6
 Group=4242
 
 [Network]
+Description=WireGuard tunnel to AS4242420253 Moe233 Las Vegas
 DHCP=no
 IPv6AcceptRA=false
 IPv4Forwarding=yes

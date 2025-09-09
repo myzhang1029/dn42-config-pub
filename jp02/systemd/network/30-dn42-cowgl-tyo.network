@@ -10,6 +10,7 @@ RequiredFamilyForOnline=ipv6
 Group=4242
 
 [Network]
+Description=WireGuard tunnel to AS4242423999 cowgl Tokyo, Japan
 DHCP=no
 IPv6AcceptRA=false
 IPForward=yes

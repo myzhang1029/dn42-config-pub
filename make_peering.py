@@ -51,6 +51,7 @@ RequiredFamilyForOnline=ipv6
 Group=4242
 
 [Network]
+Description={}
 DHCP=no
 IPv6AcceptRA=false
 IPForward=yes
@@ -281,6 +282,7 @@ Peer={}
         network = self.SYSTEMD_NETWORK_TEMPLATE.format(
             self.answers["file"],
             self.answers["iface"],
+            self.answers["systemd"],
             self.answers["ownaddr"],
             self.answers["peeraddr"]
         )

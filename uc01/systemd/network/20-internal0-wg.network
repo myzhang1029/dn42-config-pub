@@ -10,6 +10,7 @@ RequiredFamilyForOnline=ipv6
 Group=4040
 
 [Network]
+Description=Internal WireGuard tunnel between ca04 and uc01
 DHCP=no
 IPv6AcceptRA=false
 IPv4Forwarding=yes

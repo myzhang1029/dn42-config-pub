@@ -9,6 +9,7 @@ RequiredForOnline=degraded:routable
 RequiredFamilyForOnline=ipv4
 
 [Network]
+Description=WireGuard tunnel to KK6UC-SUPERNODE AREDN Node
 DHCP=no
 IPv6AcceptRA=false
 IPv4Forwarding=yes
