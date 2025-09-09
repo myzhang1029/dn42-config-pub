@@ -10,11 +10,19 @@ Group=4040
 
 [Network]
 Description=ZeroTier
-DNS=172.23.6.161
-Domains=dn42
+DNS=fdc0:d227:306:ee01::1 172.23.6.161
+Domains=maiyun.me dn42
+DHCP=no
+IPv6AcceptRA=false
+IPv4Forwarding=yes
+IPv6Forwarding=yes
+LinkLocalAddressing=no
 
 [Address]
 Address=172.23.6.161/28
 
 [Address]
 Address=fdc0:d227:306:ee01::1/112
+
+[Address]
+Address=fe80::ca04/64
