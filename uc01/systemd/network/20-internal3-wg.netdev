@@ -12,6 +12,6 @@ PrivateKeyFile=/etc/systemd/network/internal.wgkey
 
 [WireGuardPeer]
 PublicKey=kegyJkWyQHjqa9n2XDr/u+daAC6Iw+C/CVqRyBTrNhw=
-Endpoint=uc01.dn42.maiyun.me:24303
+Endpoint=jp02.dn42.maiyun.me:24303
 AllowedIPs=0.0.0.0/0
 AllowedIPs=::/0

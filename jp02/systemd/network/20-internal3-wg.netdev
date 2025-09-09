@@ -7,7 +7,7 @@ Kind=wireguard
 Description=Internal WireGuard tunnel
 
 [WireGuard]
-ListenPort=24300
+ListenPort=24303
 PrivateKeyFile=/etc/systemd/network/internal.wgkey
 
 [WireGuardPeer]
