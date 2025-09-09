@@ -125,7 +125,7 @@ Peer={}
     @staticmethod
     def _ask_string(question: str) -> str:
         """Ask a string question."""
-        return input(question)
+        return input(question).strip()
 
     @staticmethod
     def _ask_wgkey(question: str) -> str:
@@ -142,6 +142,11 @@ Peer={}
             if valid_key(key):
                 return key
             print("Invalid key, try again.\n")
+
+    @staticmethod
+    def _translate_underscore(original: str) -> str:
+        tr = str.maketrans({'.':'_', '-':'_', ' ':''})
+        return original.translate(tr)
 
     def _ask_site(self) -> str:
         """Ask for a site name."""
@@ -212,10 +217,10 @@ Peer={}
         # WireGuard interface name
         if len(self.answers["pname"] + self.answers["ploc"]) > 10:
             print("Warning: names are too long, please specify a shorter name for the interface name generation.")
-        maybe = self.answers["pname"].lower().replace(" ", "")
+        maybe = self._translate_underscore(self.answers["pname"].lower())
         short_name = self._ask_string(
             f"What is the short name for the peer? [default: {maybe}] ") or maybe
-        maybe = self.answers["ploc"].lower().replace(" ", "")
+        maybe = self._translate_underscore(self.answers["ploc"].lower())
         short_loc = self._ask_string(
             f"What is the short location for the peer? [default: {maybe}] ") or maybe
         maybe = "wg{}{}{}".format(
@@ -238,7 +243,7 @@ Peer={}
         self.answers["iface"] = iface_name
         self.answers["file"] = file_name
         self.answers["systemd"] = systemd_desc
-        self.answers["bird"] = bird_name
+        self.answers["bird"] = self._translate_underscore(bird_name)
 
     def _maybe_write_file(self, file: Path, content: str) -> None:
         """Write a file if it doesn't exist."""
@@ -306,22 +311,25 @@ Peer={}
     def _print_additional_info(self) -> None:
         """Print node information."""
         node_info = f"{self.answers['site']}.{self.DOMAIN}"
-        print(f"Our ASN is {self.OUR_ASN}.")
+        print("\nPeering Information:")
+        print(f"\tOurASN={self.OUR_ASN}")
+        print(f"\tOurIPv6={self.answers['ownaddr']}")
+        print("\tOptions=MP-BPG + Extended Next Hop")
         try:
             import dns.resolver
+            try:
+                _ = dns.resolver.resolve(node_info, "A")
+            except dns.resolver.NoAnswer:
+                print("\tWGEndpoint=This node does not have a public endpoint.")
+            else:
+                print(f"\tWGEndpoint={node_info}:{self.answers['listen_port']}")
             try:
                 answers = dns.resolver.resolve(node_info, "TXT")
                 for answer in answers:
                     for item in answer.strings:
-                        print(item.decode("utf-8"))
+                        print('\t' + item.decode("utf-8"))
             except dns.resolver.NoAnswer:
-                print("Could not find any additional information.")
-            try:
-                _ = dns.resolver.resolve(node_info, "A")
-            except dns.resolver.NoAnswer:
-                print("This node does not have a public endpoint.")
-            else:
-                print(f"WireGuard endpoint: {node_info}:{self.answers['listen_port']}")
+                print("Could not retrieve more node information.")
         except ImportError:
             print("Unable to automatically retrieve node information.")
             print(f"Such information can be found by querying `TXT {node_info}`.")
