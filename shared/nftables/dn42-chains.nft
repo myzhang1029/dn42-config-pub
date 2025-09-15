@@ -24,7 +24,7 @@ chain input_dn42 {
     # Other services
     meta l4proto . th dport @dn42_ports accept
     meta l4proto { icmp, ipv6-icmp } accept
-    log prefix "input_dn42_REJECT: " reject with icmpx admin-prohibited
+    reject with icmpx admin-prohibited
 }
 
 chain nat_post_dn42 {
