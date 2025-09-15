@@ -40,7 +40,8 @@ table inet main {
             tcp . domain,
             udp . domain,
             tcp . http,
-            udp . http,
+            tcp . https,
+            udp . https,
             tcp . 3128,
             udp . ntp,
         }
