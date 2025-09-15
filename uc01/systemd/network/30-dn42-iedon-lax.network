@@ -1,8 +1,8 @@
 # vi: ft=systemd
-# /etc/systemd/network/30-dn42-iedon-sjc.network
+# /etc/systemd/network/30-dn42-iedon-lax.network
 
 [Match]
-Name=wg2189iedonsjc
+Name=wg2189iedonlax
 
 [Link]
 RequiredForOnline=degraded:routable
@@ -10,7 +10,7 @@ RequiredFamilyForOnline=ipv6
 Group=4242
 
 [Network]
-Description=WireGuard tunnel to AS4242422189 iedon SJC
+Description=WireGuard tunnel to AS4242422189 iedon LAX
 DHCP=no
 IPv6AcceptRA=false
 IPForward=yes
@@ -19,4 +19,4 @@ KeepConfiguration=yes
 
 [Address]
 Address=fe80::893/64
-Peer=fe80::2189:e8/64
+Peer=fe80::2189:ef/64

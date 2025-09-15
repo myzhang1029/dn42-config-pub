@@ -7,12 +7,12 @@ Kind=wireguard
 Description=WireGuard tunnel to AS4242422189 iedon LAX
 
 [WireGuard]
-ListenPort=24203
+ListenPort=24217
 PrivateKeyFile=/etc/systemd/network/dn42.wgkey
 
 [WireGuardPeer]
 PublicKey=DIw4TKAQelurK10Sh1qE6IiDKTqL1yciI5ItwBgcHFA=
-Endpoint=us-lax.dn42.kuu.moe:45399
+Endpoint=us-lax.dn42.iedon.net:34103
 AllowedIPs=10.0.0.0/8
 AllowedIPs=172.20.0.0/14
 AllowedIPs=172.31.0.0/16
