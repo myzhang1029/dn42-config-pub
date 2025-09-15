@@ -1,0 +1,22 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-highdef-tyo.network
+
+[Match]
+Name=wg1080hideftyo
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+Group=4242
+
+[Network]
+Description=WireGuard tunnel to AS4242421080 highdef Tokyo
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=fe80::893/64
+Peer=fe80::124/64
