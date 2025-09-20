@@ -4,3 +4,6 @@ interface "ztbtosre7x" {
 interface "wginternal0" {
     type tunnel;
 };
+interface "wginternal2" {
+    type tunnel;
+};
