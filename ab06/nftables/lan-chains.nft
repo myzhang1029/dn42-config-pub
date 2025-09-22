@@ -4,11 +4,11 @@
 # Chains for LAN interfaces
 
 chain input_lan {
-    tcp dport { ssh, dns } accept
+    tcp dport { ssh, domain } accept
     ip daddr 224.0.0.251 udp dport mdns accept
     ip6 daddr ff02::fb udp dport mdns accept
     ip6 daddr fe80::/64 udp dport dhcpv6-client accept
-    udp dport { bootps, dns } accept
+    udp dport { bootps, domain } accept
     tcp dport 8080 accept comment "PiAware"
     meta l4proto { icmp, ipv6-icmp } accept
     meta pkttype host log prefix "input_lan_REJECT: "

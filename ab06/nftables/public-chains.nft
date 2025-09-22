@@ -4,7 +4,7 @@
 # Chains for WAN interfaces
 
 chain input_public {
-    tcp dport ssh accept
+    tcp dport { https, ssh } accept
     ip6 daddr fe80::/64 udp dport dhcpv6-client accept
     meta l4proto { icmp, ipv6-icmp } accept
     meta pkttype host log prefix "input_public_REJECT: "
