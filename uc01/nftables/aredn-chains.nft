@@ -5,7 +5,7 @@
 
 chain input_aredn {
     udp dport 698 accept comment "OLSR"
-    udp dport 6696 accept comment "Babel"
+    udp dport babel accept
     meta l4proto { icmp, ipv6-icmp } accept
     log prefix "input_aredn_REJECT: " reject with icmpx admin-prohibited
 }

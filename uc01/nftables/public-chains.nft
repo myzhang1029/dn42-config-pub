@@ -6,9 +6,9 @@
 chain input_public {
     jump input_policy_allow-host-ipv6
     tcp dport { ssh, http, https } accept
-    udp dport 4569 accept comment "ASL Asterisk"
+    udp dport iax accept comment "ASL Asterisk"
     udp dport { 5198, 5199 } accept comment "EchoLink"
-    ip6 daddr fe80::/64 udp dport 546 accept comment "DHCPv6"
+    ip6 daddr fe80::/64 udp dport dhcpv6-client accept
     udp dport @dn42_wg_ports accept comment "dn42 WireGuard"
     ip saddr 169.228.34.84 meta l4proto ipip accept comment "AMPR IPIPencap"
     meta l4proto { icmp, ipv6-icmp } accept

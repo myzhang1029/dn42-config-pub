@@ -5,7 +5,7 @@
 
 chain input_public {
     tcp dport ssh accept
-    ip6 daddr fe80::/64 udp dport 546 accept comment "DHCPv6"
+    ip6 daddr fe80::/64 udp dport dhcpv6-client accept
     meta l4proto { icmp, ipv6-icmp } accept
     meta pkttype host log prefix "input_public_REJECT: "
     reject with icmpx admin-prohibited
