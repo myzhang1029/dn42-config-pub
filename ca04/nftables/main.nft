@@ -50,7 +50,7 @@ table inet main {
     # Public interface
     set public_interfaces {
         type ifname
-        elements = { "enp0s3" }
+        elements = { "enp0s3", "wginternal10" }
     }
 
     # 44Net interfaces
