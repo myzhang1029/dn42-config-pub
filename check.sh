@@ -60,7 +60,7 @@ if [ -z "$N" ]; then
     exit 1
 fi
 
-find "$N" -follow -type f -not -path "$N/README.md" -print0 | while IFS= read -r -d '' name; do
+find "$N" -follow -type f \! -path "$N/README.md" -print0 | while IFS= read -r -d '' name; do
     # sed "s|^$N/|/etc/|"
     etcname="/etc/${name#"$N"/}"
     diff "$qopt" "$name" "$etcname" | $filt
