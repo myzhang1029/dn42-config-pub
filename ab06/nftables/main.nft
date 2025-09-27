@@ -30,7 +30,7 @@ table inet main {
     # LAN interface
     set lan_interfaces {
         type ifname
-        elements = { "eth0" }
+        elements = { "brlan" }
     }
 
     include "/etc/nftables/dn42-chains.nft"
@@ -41,7 +41,7 @@ table inet main {
     # LAN bridge flowtable
     flowtable fastpath {
         hook ingress priority filter + 10
-        devices = { "eth0", "wlrpi" }
+        devices = { "brlan", "wlrpi" }
     }
 
     chain forward_machdep {
