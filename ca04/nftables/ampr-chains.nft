@@ -10,7 +10,6 @@ chain input_ampr {
     tcp dport { ssh, http, https } accept
     udp dport ntp accept
     ip daddr 224.0.0.9 udp dport route accept comment "RIP44"
-    meta l4proto { icmp, ipv6-icmp } accept
     log prefix "input_ampr_REJECT: " reject with icmpx admin-prohibited
 }
 
