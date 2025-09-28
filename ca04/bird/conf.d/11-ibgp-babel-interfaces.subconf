@@ -1,9 +1,12 @@
 interface "ztbtosre7x" {
     type tunnel;
+    rxcost 120;
 };
 interface "wginternal0" {
     type tunnel;
+    rxcost 100;
 };
 interface "wginternal2" {
     type tunnel;
+    rxcost 100;
 };

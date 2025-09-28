@@ -1,9 +1,12 @@
 interface "wginternal0" {
     type tunnel;
+    rxcost 100;
 };
 interface "wginternal1" {
     type tunnel;
+    rxcost 100;
 };
 interface "wginternal3" {
     type tunnel;
+    rxcost 100;
 };
