@@ -11,8 +11,8 @@ ListenPort=24272
 PrivateKeyFile=/etc/systemd/network/dn42.wgkey
 
 [WireGuardPeer]
-PublicKey=+fsugl10n3lH1LNgidv3tlV+Yfc2LznIxByILWZfolc=
-Endpoint=us-lax1.rc.badaimweeb.me:5604
+PublicKey=xQdTyVYKvF3tzKlRvORGv29e1/0sj014BnqBBrz+Dlk=
+Endpoint=us-lax1.rc.badaimweeb.me:50010
 AllowedIPs=10.0.0.0/8
 AllowedIPs=172.20.0.0/14
 AllowedIPs=172.31.0.0/16
