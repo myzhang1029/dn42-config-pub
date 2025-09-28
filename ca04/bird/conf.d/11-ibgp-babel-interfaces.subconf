@@ -1,12 +1,15 @@
 interface "ztbtosre7x" {
     type tunnel;
     rxcost 120;
+    rtt max 240 ms;
 };
 interface "wginternal0" {
     type tunnel;
     rxcost 100;
+    rtt max 240 ms;
 };
 interface "wginternal2" {
     type tunnel;
     rxcost 100;
+    rtt max 240 ms;
 };

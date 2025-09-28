@@ -1,12 +1,15 @@
 interface "wginternal0" {
     type tunnel;
     rxcost 100;
+    rtt max 240 ms;
 };
 interface "wginternal1" {
     type tunnel;
     rxcost 100;
+    rtt max 240 ms;
 };
 interface "wginternal3" {
     type tunnel;
     rxcost 100;
+    rtt max 240 ms;
 };

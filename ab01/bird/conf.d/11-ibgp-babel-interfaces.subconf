@@ -1,6 +1,9 @@
 interface "ztbtosre7x" {
     type tunnel;
+    rtt max 240 ms;
+    rxcost 270;
 };
 interface "eth0" {
     type wired;
+    rtt max 240 ms;
 };
