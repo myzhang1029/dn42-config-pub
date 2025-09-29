@@ -1,5 +1,3 @@
 interface "ztbtosre7x" {
     type tunnel;
-    rxcost 120;
-    rtt max 1000 ms;
 };
