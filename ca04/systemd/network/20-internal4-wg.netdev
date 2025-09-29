@@ -1,0 +1,17 @@
+# vi: ft=systemd
+# /etc/systemd/network/20-internal4-wg.netdev
+
+[NetDev]
+Name=wginternal4
+Kind=wireguard
+Description=Internal WireGuard tunnel between jp02 and ca04
+
+[WireGuard]
+ListenPort=24304
+PrivateKeyFile=/etc/systemd/network/internal.wgkey
+
+[WireGuardPeer]
+PublicKey=kegyJkWyQHjqa9n2XDr/u+daAC6Iw+C/CVqRyBTrNhw=
+Endpoint=jp02.dn42.maiyun.me:24304
+AllowedIPs=0.0.0.0/0
+AllowedIPs=::/0

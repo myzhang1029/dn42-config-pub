@@ -13,3 +13,8 @@ interface "wginternal2" {
     rxcost 100;
     rtt max 240 ms;
 };
+interface "wginternal4" {
+    type tunnel;
+    rxcost 100;
+    rtt max 240 ms;
+};
