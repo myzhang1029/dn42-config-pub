@@ -8,8 +8,3 @@ interface "wginternal3" {
     rxcost 100;
     rtt max 1000 ms;
 };
-interface "wginternal4" {
-    type tunnel;
-    rxcost 100;
-    rtt max 1000 ms;
-};
