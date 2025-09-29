@@ -1,15 +1,5 @@
-interface "wginternal0" {
+interface "ztbtosre7x" {
     type tunnel;
-    rxcost 100;
-    rtt max 1000 ms;
-};
-interface "wginternal1" {
-    type tunnel;
-    rxcost 100;
-    rtt max 1000 ms;
-};
-interface "wginternal3" {
-    type tunnel;
-    rxcost 100;
+    rxcost 120;
     rtt max 1000 ms;
 };

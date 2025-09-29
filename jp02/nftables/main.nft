@@ -10,7 +10,6 @@ table inet main {
     set dn42_wg_ports {
         type inet_service
         elements = {
-            24303,
             24201,
             24203,
             24211,
