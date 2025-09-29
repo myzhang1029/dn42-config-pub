@@ -1,10 +1,10 @@
-# Reject the global table
 filter kernel_export4 {
     if source = RTS_STATIC then reject;
     if source = RTS_BGP && is_valid_network_v4() then {
         krt_prefsrc = dn42_thisaddr4;
         accept;
     }
+    if source = RTS_BGP then reject;
     # AMPR should be handled via policy routing on table 44
     if net ~ ampr_valid_netset then reject;
     accept;
@@ -16,5 +16,6 @@ filter kernel_export6 {
         krt_prefsrc = dn42_thisaddr6;
         accept;
     }
+    if source = RTS_BGP then reject;
     accept;
 }
