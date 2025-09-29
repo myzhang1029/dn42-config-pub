@@ -4,8 +4,3 @@ interface "ztbtosre7x" {
     rtt max 1000 ms;
     rtt decay 60;
 };
-interface "wginternal1" {
-    type tunnel;
-    rxcost 260;
-    rtt max 1000 ms;
-};
