@@ -72,8 +72,8 @@ table inet main {
         iifgroup { $dn42_ifgroup, $internal_ifgroup } ip saddr $dn42_self_ipv4_prefix oifname @ampr_interfaces counter accept
         iifgroup { $dn42_ifgroup, $internal_ifgroup } ip saddr $ampr_self_prefix oifname @ampr_interfaces counter accept
         # AS211585
-        iifgroup { 211585, $internal_ifgroup } ip6 daddr 2a0b:4b81:1008::/48 counter accept
-        oifgroup { 211585, $internal_ifgroup } ip6 saddr 2a0b:4b81:1008::/48 counter accept
+        iifgroup { 211585, $internal_ifgroup } ip6 daddr { 2a0b:4b81:1003::/48, 2a0b:4b81:1008::/48 } counter accept
+        oifgroup { 211585, $internal_ifgroup } ip6 saddr { 2a0b:4b81:1003::/48, 2a0b:4b81:1008::/48 } counter accept
         # Allow 44Net to access our services
         iifname @ampr_interfaces oifgroup { $dn42_ifgroup, $internal_ifgroup } ip daddr $ampr_self_prefix counter accept
         # likely not needed, but just in case
