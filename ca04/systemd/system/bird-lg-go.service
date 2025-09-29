@@ -11,7 +11,7 @@ Restart=always
 ExecStartPre=+/usr/bin/mkdir -p /run/bird-lg-go
 ExecStartPre=+/usr/bin/chown nginx:nginx /run/bird-lg-go
 ExecStartPre=/bin/rm -f /run/bird-lg-go/bird-lg-go.sock
-ExecStart=/usr/local/sbin/bird-lg-go --servers ab01,ab06,ca04,jp02,uc01 --domain indn42.maiyun.me --listen /run/bird-lg-go/bird-lg-go.sock
+ExecStart=/usr/local/sbin/bird-lg-go --servers ab01,ab06,ca04,jp02,uc01,uk07 --domain indn42.maiyun.me --listen /run/bird-lg-go/bird-lg-go.sock
 
 [Install]
 WantedBy=multi-user.target
