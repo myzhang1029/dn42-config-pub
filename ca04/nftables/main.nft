@@ -48,7 +48,7 @@ table inet main {
     # Public interface
     set public_interfaces {
         type ifname
-        elements = { "enp0s3", "wginternal10" }
+        elements = { "enp0s3" }
     }
 
     # 44Net interfaces
@@ -101,6 +101,7 @@ table inet main {
         iifname "lo" accept
         ct state invalid log prefix "input_STATE_INVALID_DROP: " drop
         iifname @public_interfaces jump input_public
+        iifgroup 211585 jump input_public
         iifgroup { $dn42_ifgroup, $internal_ifgroup } jump input_dn42
         iifname @ampr_interfaces jump input_ampr
         jump input_public
