@@ -1,7 +1,8 @@
 interface "ztbtosre7x" {
-    type tunnel;
+    type wireless; # Enable LQM
     hello interval 15s;
     limit 1;
+    rtt cost 96;
 };
 interface "eth0" {
     type wired;
