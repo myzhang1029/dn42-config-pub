@@ -1,5 +1,7 @@
 interface "ztbtosre7x" {
     type tunnel;
+    hello interval 15s;
+    limit 1;
 };
 interface "eth0" {
     type wired;
