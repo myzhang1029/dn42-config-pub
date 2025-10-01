@@ -1,2 +1,2 @@
 define dn42_thisaddr6 = fdc0:d227:306:ee01::8;
-define dn42_node_import_lc = (4242428093, 40, 8);
+define dn42_node_import_lc = (4242420893, 40, 8);
