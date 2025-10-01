@@ -1,6 +1,14 @@
-interface "ztbtosre7x", "gre-ca04" {
+interface "ztbtosre7x" {
     type wireless; # Enable LQM
     hello interval 15s;
     limit 1;
+    rxcost 100;
+    rtt cost 96;
+};
+interface "gre-ca04" {
+    type wireless; # Enable LQM
+    hello interval 15s;
+    limit 1;
+    rxcost 30;
     rtt cost 96;
 };

@@ -2,5 +2,6 @@ interface "ztbtosre7x" {
     type wireless; # Enable LQM
     hello interval 15s;
     limit 1;
+    rxcost 100;
     rtt cost 96;
 };
