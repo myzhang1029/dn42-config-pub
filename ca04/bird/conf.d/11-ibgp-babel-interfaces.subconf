@@ -1,10 +1,4 @@
-interface "ztbtosre7x" {
-    type wireless; # Enable LQM
-    hello interval 15s;
-    limit 1;
-    rtt cost 96;
-};
-interface "gre-uk07" {
+interface "ztbtosre7x", "gre-jp02", "gre-uk07" {
     type wireless; # Enable LQM
     hello interval 15s;
     limit 1;

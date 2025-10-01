@@ -1,0 +1,23 @@
+# vi: ft=systemd
+# /etc/systemd/network/20-ca04.network
+
+[Match]
+Name=gre-ca04
+
+[Link]
+Group=4040
+
+[Network]
+Description=GRE tunnel to ca04
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+LinkLocalAddressing=no
+
+[Address]
+Address=fe80::aa02/64
+
+[Address]
+Address=fdc0:d227:306:aa02::1/128

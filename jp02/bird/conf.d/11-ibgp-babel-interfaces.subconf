@@ -1,4 +1,4 @@
-interface "ztbtosre7x" {
+interface "ztbtosre7x", "gre-ca04" {
     type wireless; # Enable LQM
     hello interval 15s;
     limit 1;

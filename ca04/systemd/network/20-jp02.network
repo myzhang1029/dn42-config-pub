@@ -1,0 +1,23 @@
+# vi: ft=systemd
+# /etc/systemd/network/20-jp02.network
+
+[Match]
+Name=gre-jp02
+
+[Link]
+Group=4040
+
+[Network]
+Description=GRE tunnel to jp02
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+LinkLocalAddressing=no
+
+[Address]
+Address=fe80::ca04/64
+
+[Address]
+Address=fdc0:d227:306:ca04::1/128
