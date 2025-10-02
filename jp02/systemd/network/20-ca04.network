@@ -6,6 +6,8 @@ Name=gre-ca04
 
 [Link]
 Group=4040
+# 9000-40-12
+MTUBytes=8948
 
 [Network]
 Description=GRE tunnel to ca04
