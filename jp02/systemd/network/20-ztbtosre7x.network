@@ -19,10 +19,10 @@ IPv6Forwarding=yes
 LinkLocalAddressing=no
 
 [Address]
-Address=172.23.6.166/28
+Address=172.23.6.162/28
 
 [Address]
-Address=fdc0:d227:306:ee01::6/112
+Address=fdc0:d227:306:ee01::2/112
 
 [Address]
 Address=fe80::aa02/64
