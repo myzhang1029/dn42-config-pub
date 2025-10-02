@@ -12,7 +12,7 @@ PrivateKeyFile=/etc/systemd/network/dn42.wgkey
 
 [WireGuardPeer]
 PublicKey=WaZeqXfSRRr/O2tWoDBB6a8LQHuI8TsXTtPOTKYUilk=
-Endpoint=jp-hnd1.rc.badaimweeb.dn42:50011
+Endpoint=jp-hnd1.rc.badaimweeb.me:50011
 AllowedIPs=10.0.0.0/8
 AllowedIPs=172.20.0.0/14
 AllowedIPs=172.31.0.0/16
