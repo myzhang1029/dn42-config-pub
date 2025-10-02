@@ -1,0 +1,16 @@
+# vi: ft=systemd
+# /etc/systemd/network/20-internal1-wg.netdev
+
+[NetDev]
+Name=wginternal1
+Kind=wireguard
+Description=Internal WireGuard tunnel between be05 and ca04
+
+[WireGuard]
+ListenPort=24301
+PrivateKeyFile=/etc/systemd/network/internal.wgkey
+
+[WireGuardPeer]
+PublicKey=Upm/5Bf8ZcXeGQ8ZyoIGnwcgCJnGhv4C3jRPc/kK+3I=
+AllowedIPs=0.0.0.0/0
+AllowedIPs=::/0

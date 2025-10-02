@@ -11,6 +11,7 @@ table inet main {
         type inet_service
         elements = {
             24300,
+            24301,
             24202,
             24204,
             24211,
