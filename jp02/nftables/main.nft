@@ -34,7 +34,11 @@ table inet main {
     # dn42 services on this host
     set dn42_ports {
         type inet_proto . inet_service
-        elements = { tcp . 180 }
+        elements = {
+            tcp . domain,
+            udp . domain,
+            tcp . 180,
+        }
     }
 
     # Public interface
