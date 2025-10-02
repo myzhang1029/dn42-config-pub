@@ -12,3 +12,10 @@ interface "gre-ca04" {
     rxcost 30;
     rtt cost 96;
 };
+interface "wginternal3" {
+    type wireless; # Enable LQM
+    hello interval 15s;
+    limit 1;
+    rxcost 60;
+    rtt cost 96;
+};

@@ -5,3 +5,10 @@ interface "ztbtosre7x" {
     rxcost 100;
     rtt cost 96;
 };
+interface "wginternal0", "wginternal3" {
+    type wireless; # Enable LQM
+    hello interval 15s;
+    limit 1;
+    rxcost 60;
+    rtt cost 96;
+};

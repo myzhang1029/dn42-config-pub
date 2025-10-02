@@ -1,0 +1,25 @@
+# vi: ft=systemd
+# /etc/systemd/network/20-internal0-wg.network
+
+[Match]
+Name=wginternal0
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+Group=4040
+
+[Network]
+Description=Internal WireGuard tunnel between ca04 and uc01
+DHCP=no
+IPv6AcceptRA=false
+IPv4Forwarding=yes
+IPv6Forwarding=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=fdc0:d227:306:2c01::1/64
+
+[Address]
+Address=fe80::2c01/64
