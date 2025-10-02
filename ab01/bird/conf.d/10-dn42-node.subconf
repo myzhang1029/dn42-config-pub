@@ -1,3 +1,3 @@
 define dn42_thisaddr4 = 172.23.6.164;
 define dn42_thisaddr6 = fdc0:d227:306:ee01::4;
-define dn42_node_import_lc = (4242420893, 40, 1);
+define dn42_node_import_lc = (4242420893, 40, 0xab01);
