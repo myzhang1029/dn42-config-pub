@@ -27,7 +27,7 @@ table inet main {
         }
     }
     # dn42 assigned addresses
-    define dn42_self_ipv6 = fdc0:d227:306:ee01::8
+    define dn42_self_ipv6 = fdc0:d227:306:2c01::1
     # dn42 services on this host
     set dn42_ports {
         type inet_proto . inet_service
