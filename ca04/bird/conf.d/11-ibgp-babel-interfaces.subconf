@@ -12,7 +12,7 @@ interface  "gre-jp02", "gre-uk07" {
     rxcost 30;
     rtt cost 96;
 };
-interface "wginternal0", "wginternal1" {
+interface "wginternal0" {
     type wireless; # Enable LQM
     hello interval 15s;
     limit 1;
