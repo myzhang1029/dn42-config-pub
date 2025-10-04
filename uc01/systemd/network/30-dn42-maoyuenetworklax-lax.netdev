@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-maoyuenetworklax-lax.netdev
+
+[NetDev]
+Name=wg3942maoyuenetworklaxlax
+Kind=wireguard
+Description=WireGuard tunnel to AS4242423942 Maoyue Network LAX lax
+
+[WireGuard]
+ListenPort=24202
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=vUtdpRO5g/sTLW005E8nZAMoYEkoJk9qU+aHIK2iYTM=
+Endpoint=192.161.163.236:20893
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64

@@ -1,0 +1,22 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-maoyuenetworklax-lax.network
+
+[Match]
+Name=wg3942maoyuenetworklaxlax
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+Group=4242
+
+[Network]
+Description=WireGuard tunnel to AS4242423942 Maoyue Network LAX lax
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=fe80::893/64
+Peer=fe80::3942/64

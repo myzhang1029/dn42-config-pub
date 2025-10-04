@@ -23,6 +23,7 @@ table inet main {
             24210,
             24272,
             24217,
+            24202,
             # __MAKE_PEERING_PORT_MARKER Do not remove this comment
         }
     }
