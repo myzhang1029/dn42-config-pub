@@ -1,10 +1,10 @@
 # vi: ft=systemd
-# /etc/systemd/network/30-dn42-maoyuenetworklax-lax.netdev
+# /etc/systemd/network/30-dn42-maoyuenetwork-lax.netdev
 
 [NetDev]
-Name=wg3942maoyuenetworklaxlax
+Name=wg3942maoyuelax
 Kind=wireguard
-Description=WireGuard tunnel to AS4242423942 Maoyue Network LAX lax
+Description=WireGuard tunnel to AS4242423942 Maoyue Network LAX
 
 [WireGuard]
 ListenPort=24202
