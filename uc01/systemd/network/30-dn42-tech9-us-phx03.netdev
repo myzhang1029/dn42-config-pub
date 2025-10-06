@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-tech9-us-phx03.netdev
+
+[NetDev]
+Name=wg1588tech9phx
+Kind=wireguard
+Description=WireGuard tunnel to AS4242421588 tech9 us-phx03
+
+[WireGuard]
+ListenPort=24204
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=bRkI8aGjwwgm1I6WeqsfL6jrxu72ifs3xSaTLCY22mw=
+Endpoint=us-phx03.dn42.tech9.io:57100
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64
