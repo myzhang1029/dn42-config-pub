@@ -59,6 +59,7 @@ table inet main {
         elements = { "tunl0" }
     }
 
+    include "/etc/nftables/blacklist.nft"
     include "/etc/nftables/oracle.nft"
     include "/etc/nftables/dn42-chains.nft"
     include "/etc/nftables/ampr-chains.nft"
