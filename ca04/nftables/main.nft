@@ -35,7 +35,6 @@ table inet main {
     # dn42 services on this host
     set dn42_ports {
         type inet_proto . inet_service
-        # Has dns, http, and squid (squid has its ACL)
         elements = {
             tcp . domain,
             udp . domain,
@@ -44,6 +43,7 @@ table inet main {
             udp . https,
             tcp . 3128,
             udp . ntp,
+            tcp . 8282,
         }
     }
 
