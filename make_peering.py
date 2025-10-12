@@ -89,7 +89,7 @@ Peer={}
         print("Will generate based on the following answers:")
         pprint(self.answers)
         self._print_additional_info()
-        resp = input("Continue? [Y/n] ")
+        resp = input("Continue? [Y/n] ").strip()
         if resp.lower() == "n":
             print("Will not generate files.")
             return
@@ -116,7 +116,7 @@ Peer={}
         """Ask a numeric question."""
         while True:
             try:
-                ans = input(question)
+                ans = input(question).strip()
                 if can_strip_prefix and ans.startswith(can_strip_prefix):
                     ans = ans[len(can_strip_prefix):]
                 return int(ans)
@@ -139,7 +139,7 @@ Peer={}
             chrs = set(key[:-1]) - {'+', '/'}
             return all(c.isalnum() for c in chrs)
         while True:
-            key = input(question)
+            key = input(question).strip()
             if valid_key(key):
                 return key
             print("Invalid key, try again.\n")
@@ -155,7 +155,7 @@ Peer={}
             print("Which site is this peer for?")
             for i, name in enumerate(self.SITES):
                 print(f"{i+1}. {name}")
-            choice = input("Answer: ")
+            choice = input("Answer: ").strip()
             site = self._parse_choice(self.SITES, choice)
             if site is not None:
                 return self.SITES[site]
@@ -249,7 +249,7 @@ Peer={}
     def _maybe_write_file(self, file: Path, content: str) -> None:
         """Write a file if it doesn't exist."""
         if file.exists():
-            resp = input(f"File {file} already exists, overwrite? [y/N] ")
+            resp = input(f"File {file} already exists, overwrite? [y/N] ").strip()
             if resp.lower() != "y":
                 print(f"Skipping {file} generation.")
                 return
