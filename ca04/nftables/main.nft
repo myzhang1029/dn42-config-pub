@@ -41,9 +41,9 @@ table inet main {
             tcp . http,
             tcp . https,
             udp . https,
-            tcp . 3128,
             udp . ntp,
-            tcp . 8282,
+            tcp . 8082, # StayRTR dn42
+            tcp . 8282, # StayRTR inet
         }
     }
 

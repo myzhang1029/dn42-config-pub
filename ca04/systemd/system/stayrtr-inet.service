@@ -1,0 +1,11 @@
+[Unit]
+Description=StayRTR for inet routes
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/usr/share/stayrtr
+ExecStart=/usr/bin/stayrtr -bind :8282 -cache https://console.rpki-client.org/rpki.json
+
+[Install]
+WantedBy=multi-user.target
