@@ -8,6 +8,7 @@ Name=wginternal3
 RequiredForOnline=degraded:routable
 RequiredFamilyForOnline=ipv6
 Group=4040
+MTUBytes=1440
 
 [Network]
 Description=Internal WireGuard tunnel between jp02 and uc01
