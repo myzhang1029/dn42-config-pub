@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/usr/share/stayrtr
-ExecStart=/usr/bin/stayrtr -bind :8082 -cache https://dn42.burble.com/roa/dn42_roa_46.json
+ExecStart=/usr/bin/stayrtr -bind :8082 -metrics.addr :9647 -cache https://dn42.burble.com/roa/dn42_roa_46.json
 
 [Install]
 WantedBy=multi-user.target
