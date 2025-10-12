@@ -1,7 +1,0 @@
-[Unit]
-Description=Update DN42 ROA
-After=network-online.target bird.service
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/update-roa.sh
