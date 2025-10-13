@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/usr/share/stayrtr
-ExecStart=/usr/bin/stayrtr -bind :8282 -cache https://console.rpki-client.org/rpki.json
+ExecStart=/usr/bin/stayrtr -bind=:8282 -protocol=0 -cache=https://console.rpki-client.org/rpki.json
 
 [Install]
 WantedBy=multi-user.target
