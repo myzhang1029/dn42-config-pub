@@ -67,15 +67,15 @@ find "$N" -follow -type f \! -path "$N/README.md" | {
     while IFS= read -r name; do
         # sed "s|^$N/|/etc/|"
         etcname="/etc/${name#"$N"/}"
-        diffout="$(diff "$qopt" "$name" "$etcname")"
-        diffresult="$?"
-        echo "$diffout" | $filt
-        if [ "$diffresult" -ne 0 ] && [ "$apply" -eq 1 ]; then
-            # need to get another stdin to get the answer
-            read -r -p "Apply changes to $etcname? (y/n) " ans < /dev/tty
-            if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
-                cat "$name" > "$etcname"
-                updated=1
+        if ! diffout="$(diff "$qopt" "$name" "$etcname")"; then
+            echo "$diffout" | $filt
+            if [ "$apply" -eq 1 ]; then
+                # need to get another stdin to get the answer
+                read -r -p "Apply changes to $etcname? (y/n) " ans < /dev/tty
+                if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
+                    cat "$name" > "$etcname"
+                    updated=1
+                fi
             fi
         fi
     done
