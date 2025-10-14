@@ -5,7 +5,7 @@ interface "ztbtosre7x" {
     rxcost 100;
     rtt cost 96;
 };
-interface  "gre-jp02", "gre-uk07" {
+interface  "gre-jp02", "gre-uk07", "gre-us08" {
     type wireless; # Enable LQM
     hello interval 15s;
     limit 1;
