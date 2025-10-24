@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-cowgl-yyz.netdev
+
+[NetDev]
+Name=wg3999cowglyyz
+Kind=wireguard
+Description=WireGuard tunnel to AS4242423999 cowgl Toronto
+
+[WireGuard]
+ListenPort=24239
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=XGIBvqoUOgb8IiLIWtO9JVNZc4SEpEAM1eWh26MtoRE=
+Endpoint=yyz.node.cowgl.xyz:30893
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64
