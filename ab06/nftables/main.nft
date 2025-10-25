@@ -61,7 +61,7 @@ table inet main {
 
     chain input {
         type filter hook input priority filter + 10; policy drop;
-        meta l4proto { icmp, ipv6-icmp } accept
+        meta l4proto { icmp, ipv6-icmp } limit rate 100/second accept
         ct state { established, related } accept
         ct status dnat accept
         iifname "lo" accept
