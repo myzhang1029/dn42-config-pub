@@ -11,8 +11,6 @@ filter kernel_export4 {
         krt_prefsrc = dn42_thisaddr4;
         accept;
     }
-    # AMPR should be handled via policy routing on table 44
-    if net ~ ampr_valid_netset then reject;
     accept;
 }
 
