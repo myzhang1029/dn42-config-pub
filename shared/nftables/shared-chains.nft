@@ -21,6 +21,7 @@ chain forward {
     jump forward_machdep
     jump filter_policy_drop_martian
     ct state invalid log prefix "forward_STATE_INVALID_DROP: " drop
+    iifgroup 211585 drop
     log prefix "forward_REJECT: " counter reject with icmpx admin-prohibited
 }
 
