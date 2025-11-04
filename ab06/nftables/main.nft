@@ -33,6 +33,7 @@ table inet main {
         elements = { "brlan" }
     }
 
+    include "/etc/nftables/blacklist.nft"
     include "/etc/nftables/dn42-chains.nft"
     include "/etc/nftables/shared-chains.nft"
     include "/etc/nftables/public-chains.nft"
