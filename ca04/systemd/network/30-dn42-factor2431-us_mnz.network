@@ -2,7 +2,7 @@
 # /etc/systemd/network/30-dn42-factor2431-us_mnz.network
 
 [Match]
-Name=wg1534factor2431us_mnz
+Name=wg1534factormnz
 
 [Link]
 RequiredForOnline=degraded:routable

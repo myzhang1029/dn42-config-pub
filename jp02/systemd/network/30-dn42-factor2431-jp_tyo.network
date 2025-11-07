@@ -2,7 +2,7 @@
 # /etc/systemd/network/30-dn42-factor2431-jp_tyo.network
 
 [Match]
-Name=wg1534factor2431jp_tyo
+Name=wg1534factortyo
 
 [Link]
 RequiredForOnline=degraded:routable

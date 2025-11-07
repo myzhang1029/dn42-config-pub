@@ -2,7 +2,7 @@
 # /etc/systemd/network/30-dn42-factor2431-us_lax.netdev
 
 [NetDev]
-Name=wg1534factor2431us_lax
+Name=wg1534factorlax
 Kind=wireguard
 Description=WireGuard tunnel to AS4242421534 factor2431 us_lax
 
