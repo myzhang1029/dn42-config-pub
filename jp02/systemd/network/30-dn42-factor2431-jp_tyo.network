@@ -1,0 +1,22 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-factor2431-jp_tyo.network
+
+[Match]
+Name=wg1534factor2431jp_tyo
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+Group=4242
+
+[Network]
+Description=WireGuard tunnel to AS4242421534 factor2431 jp-tyo
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=fe80::893/64
+Peer=fe80::1534/64

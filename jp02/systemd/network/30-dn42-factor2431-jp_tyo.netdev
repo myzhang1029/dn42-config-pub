@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-factor2431-jp_tyo.netdev
+
+[NetDev]
+Name=wg1534factor2431jp_tyo
+Kind=wireguard
+Description=WireGuard tunnel to AS4242421534 factor2431 jp-tyo
+
+[WireGuard]
+ListenPort=24234
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=XYyk/uk3LTHk7vOqtDsDh/AcPtdT3qQptqhggzZCRio=
+Endpoint=jp-tyo.factor2431.com:20893
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64

@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-factor2431-us_lax.netdev
+
+[NetDev]
+Name=wg1534factor2431us_lax
+Kind=wireguard
+Description=WireGuard tunnel to AS4242421534 factor2431 us_lax
+
+[WireGuard]
+ListenPort=24208
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=2ULgc/w+4jx5CKqpTeT1FoZhL3DrlELrI8Nvl/Hq7To=
+Endpoint=us-lax.factor2431.com:20893
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64
