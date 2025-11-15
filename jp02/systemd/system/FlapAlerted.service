@@ -1,0 +1,11 @@
+[Unit]
+Description=FlapAlerted
+Wants=syslog.service local-fs.target
+After=local-fs.target
+
+[Service]
+Restart=always
+ExecStart=/usr/local/bin/FlapAlerted -asn 4242420893 -routeChangeCounter 10
+
+[Install]
+WantedBy=multi-user.target
