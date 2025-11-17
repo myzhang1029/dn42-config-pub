@@ -4,6 +4,10 @@ Wants=syslog.service local-fs.target
 After=local-fs.target
 
 [Service]
+DynamicUser=true
+NoNewPrivileges=true
+ProtectSystem=strict
+RestrictNamespaces=true
 Restart=always
 ExecStart=/usr/local/bin/FlapAlerted -asn 4242420893 -routeChangeCounter 10
 
