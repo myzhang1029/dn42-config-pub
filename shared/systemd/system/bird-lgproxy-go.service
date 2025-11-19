@@ -5,6 +5,25 @@ After=local-fs.target
 
 [Service]
 Restart=always
+User=bird
+AmbientCapabilities=CAP_NET_BIND_SERVICE CAP_NET_RAW
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_RAW
+LockPersonality=true
+MemoryDenyWriteExecute=true
+PrivateDevices=true
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectHostname=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectKernelTunables=true
+ProtectProc=invisible
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+SystemCallArchitectures=native
+UMask=0077
 ExecStart=/usr/local/sbin/bird-lgproxy-go --allowed=fdc0:d227:306:ee01::1,fdc0:d227:306:ca04::1
 
 [Install]
