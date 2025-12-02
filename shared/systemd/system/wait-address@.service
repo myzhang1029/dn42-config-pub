@@ -3,4 +3,5 @@ Description=Wait for address %I to appear
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/bash -c 'while ! ip a show dev "$(echo "%I"|cut -f2 -d%)" | grep -v tentative | grep "$(echo "%I"|cut -f1 -d%)"; do sleep 0.1; done'
+# ExecStart=/usr/bin/bash -c 'addr="$(echo "%I"|cut -f1 -d%)"; dev="$(echo "%I"|cut -f2 -d%)"; while ! ip address show dev "$dev" | grep -v tentative | grep "$addr"; do sleep 0.1; done'
+ExecStart=/usr/bin/bash -c 'addr="$(echo "%I"|cut -f1 -d%)"; dev="$(echo "%I"|cut -f2 -d%)"; while ! ip -j address show dev "$dev" | jq --exit-status "map(.addr_info | map(select((.local == \\""$addr"\\") and (.tentative != true)))) | flatten | length != 0"; do sleep 0.1; done'
