@@ -4,11 +4,32 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStartPre=/usr/bin/mkdir -p /run/bird
-ExecStartPre=/usr/bin/chown bird:bird /run/bird
-ExecStartPre=/usr/bin/chmod 755 /run/bird
+RuntimeDirectory=bird
+User=bird
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+LockPersonality=true
+MemoryDenyWriteExecute=true
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectHostname=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectKernelTunables=true
+ProtectProc=invisible
+ProtectSystem=strict
+RemoveIPC=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+RestrictNamespaces=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+SystemCallArchitectures=native
+UMask=0077
 ExecStartPre=/usr/local/sbin/bird -p -c /etc/bird.conf
-ExecStart=/usr/local/sbin/bird -f -u bird -g bird -c /etc/bird.conf
+ExecStart=/usr/local/sbin/bird -f -c /etc/bird.conf
 ExecReload=/usr/local/sbin/birdc configure
 Restart=on-failure
 
