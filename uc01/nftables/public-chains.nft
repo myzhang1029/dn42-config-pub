@@ -10,8 +10,6 @@ chain input_public {
     udp dport { 5198, 5199 } accept comment "EchoLink"
     ip6 daddr fe80::/64 udp dport dhcpv6-client accept
     udp dport @dn42_wg_ports accept comment "dn42 WireGuard"
-    ip daddr 137.110.116.194 meta l4proto ipip accept comment "AMPR IPIPencap"
-    meta pkttype host log prefix "input_public_REJECT: "
     reject with icmpx admin-prohibited
 }
 
