@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-blt-lax.netdev
+
+[NetDev]
+Name=wg0398bltlax
+Kind=wireguard
+Description=WireGuard tunnel to AS4242420398 Boletus US LAX
+
+[WireGuard]
+ListenPort=24240
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=oAPy0U2qVuSR8PyPLmVLEgWLBKrOq4kcLNLAOVZL10M=
+Endpoint=lax.dn42.boletus.icu:20893
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64
