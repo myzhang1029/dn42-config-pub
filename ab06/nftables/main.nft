@@ -15,6 +15,7 @@ table inet main {
         elements = {
             tcp . domain,
             udp . domain,
+            tcp . 9080,
         }
     }
 
