@@ -12,7 +12,7 @@ PrivateKeyFile=/etc/systemd/network/dn42.wgkey
 
 [WireGuardPeer]
 PublicKey=mMGGxtEqsagrx1Raw57C2H3Stl6ch/cUuF7y08eVgBE=
-Endpoint=tyo.node.cowgl.xyz:30893
+Endpoint=tyo.node.cowgl.tech:30893
 AllowedIPs=10.0.0.0/8
 AllowedIPs=172.20.0.0/14
 AllowedIPs=172.31.0.0/16
