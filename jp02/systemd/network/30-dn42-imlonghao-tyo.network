@@ -2,7 +2,7 @@
 # /etc/systemd/network/30-dn42-imlonghao-tyo.network
 
 [Match]
-Name=wg1888imlonghaotyo
+Name=wg1888imlhtyo
 
 [Link]
 RequiredForOnline=degraded:routable

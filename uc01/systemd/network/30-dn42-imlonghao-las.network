@@ -2,7 +2,7 @@
 # /etc/systemd/network/30-dn42-imlonghao-las.network
 
 [Match]
-Name=wg1888imlonghaolas
+Name=wg1888imlhlas
 
 [Link]
 RequiredForOnline=degraded:routable
