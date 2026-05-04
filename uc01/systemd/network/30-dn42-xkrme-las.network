@@ -1,0 +1,22 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-xkrme-las.network
+
+[Match]
+Name=wg1733xkrmelas
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+Group=4242
+
+[Network]
+Description=WireGuard tunnel to AS4242421733 xkrme LAS
+DHCP=no
+IPv6AcceptRA=false
+IPForward=yes
+IPv4ReversePathFilter=no
+KeepConfiguration=yes
+
+[Address]
+Address=fe80::893/64
+Peer=fe80::1733/64
