@@ -1,0 +1,11 @@
+# vi: ft=systemd
+# /etc/systemd/system/fetch-dn42-ds.timer
+[Unit]
+Description=Daily DN42 DS record fetch
+
+[Timer]
+OnCalendar=*-*-* 18:37:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

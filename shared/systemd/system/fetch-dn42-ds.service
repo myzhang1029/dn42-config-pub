@@ -1,0 +1,37 @@
+# vi: ft=systemd
+# /etc/systemd/system/fetch-dn42-ds.service
+[Unit]
+Description=Fetch DN42 DS records for unbound
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+EnvironmentFile=/etc/sysconfig/dn42-ds
+ExecStart=/usr/bin/fetch-dn42-ds.sh /etc/unbound/unbound.conf.d/39-dn42-ds.conf
+ExecStartPost=chmod 0644 /etc/unbound/unbound.conf.d/39-dn42-ds.conf
+CapabilityBoundingSet=CAP_FOWNER
+LockPersonality=true
+MemoryDenyWriteExecute=true
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+PrivateUsers=true
+ProcSubset=pid
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectHostname=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectKernelTunables=true
+ProtectProc=invisible
+ProtectSystem=strict
+RestrictAddressFamilies=AF_INET AF_INET6
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+SystemCallArchitectures=native
+SystemCallFilter=@system-service @file-system @network-io
+ReadWritePaths=/etc/unbound/unbound.conf.d
