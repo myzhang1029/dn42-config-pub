@@ -13,8 +13,9 @@ Group=4242
 Description=WireGuard tunnel to AS4242421733 xkrme TYO
 DHCP=no
 IPv6AcceptRA=false
-IPForward=yes
 IPv4ReversePathFilter=no
+IPv4Forwarding=yes
+IPv6Forwarding=yes
 KeepConfiguration=yes
 
 [Address]

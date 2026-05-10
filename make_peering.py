@@ -56,8 +56,9 @@ Group=4242
 Description={}
 DHCP=no
 IPv6AcceptRA=false
-IPForward=yes
 IPv4ReversePathFilter=no
+IPv4Forwarding=yes
+IPv6Forwarding=yes
 KeepConfiguration=yes
 
 [Address]
