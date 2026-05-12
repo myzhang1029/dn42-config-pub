@@ -1,0 +1,23 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-hs175-s2.network
+
+[Match]
+Name=wg0842hs175s2
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+Group=4242
+
+[Network]
+Description=WireGuard tunnel to AS4242420842 HEADSCARF175 Los Angeles S2
+DHCP=no
+IPv6AcceptRA=false
+IPv4ReversePathFilter=no
+IPv4Forwarding=yes
+IPv6Forwarding=yes
+KeepConfiguration=yes
+
+[Address]
+Address=fe80::893/64
+Peer=fe80::842/64
