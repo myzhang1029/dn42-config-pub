@@ -29,7 +29,7 @@ RestrictSUIDSGID=true
 SystemCallArchitectures=native
 SystemCallFilter=@system-service
 UMask=0077
-ExecStart=/usr/bin/stayrtr -bind=:8282 -protocol=0 -cache=https://console.rpki-client.org/rpki.json
+ExecStart=/usr/bin/stayrtr -bind=:8282 -metrics.addr=[::1]:9847 -protocol=0 -cache=https://console.rpki-client.org/rpki.json
 
 [Install]
 WantedBy=multi-user.target
