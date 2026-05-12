@@ -130,6 +130,8 @@ Peer={}
                     ans = ans[len(can_strip_prefix) :]
                 return int(ans)
             except ValueError:
+                if default is not None:
+                    return default
                 print("Invalid input; try again\n")
 
     @staticmethod
