@@ -31,6 +31,7 @@ UMask=0077
 ExecStartPre=/usr/local/sbin/bird -p -c /etc/bird.conf
 ExecStart=/usr/local/sbin/bird -f -c /etc/bird.conf
 ExecReload=/usr/local/sbin/birdc configure
+ExecStop=/usr/local/sbin/birdc graceful restart
 Restart=on-failure
 
 [Install]
