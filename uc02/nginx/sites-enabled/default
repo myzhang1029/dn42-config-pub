@@ -35,11 +35,6 @@ server {
 
     add_header Strict-Transport-Security "max-age=15768000" always;
 
-    # OCSP stapling
-    ssl_stapling on;
-    ssl_stapling_verify on;
-    resolver 127.0.0.53;
-
     location /.well-known/acme-challenge/ {
         alias /var/www/acme/.well-known/acme-challenge/;
     }
