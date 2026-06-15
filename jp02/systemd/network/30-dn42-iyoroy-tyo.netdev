@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-iyoroy-tyo.netdev
+
+[NetDev]
+Name=wg2024iyoroytyo
+Kind=wireguard
+Description=WireGuard tunnel to AS4242422024 iYoRoy Tokyo
+
+[WireGuard]
+ListenPort=24224
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=Sh62ZCxnEcXyLq49mLP1jF4C2vWKhKMxjtZHxVUAQg4=
+Endpoint=tyo-jp.ecs.iyoroy-infra.top:20893
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64
