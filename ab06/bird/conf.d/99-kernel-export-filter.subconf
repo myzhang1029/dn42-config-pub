@@ -1,25 +1,20 @@
 filter kernel_export4 {
     if source = RTS_STATIC then reject;
-    if source = RTS_BGP then {
-        krt_prefsrc = dn42_thisaddr4;
-        accept;
-    }
+    # DN42 BGP routes use table 4242
+    # Internet BGP routes use table 211585
+    if source = RTS_BGP then reject;
     # AREDN traffic is NAT'ed at the gateway
     if source = RTS_BABEL && net ~ [10.0.0.0/8+] then {
         krt_prefsrc = dn42_thisaddr4;
         accept;
     }
-    # AMPR should be handled via policy routing on table 44
-    # including our internal routes
-    if net ~ ampr_valid_netset then reject;
     accept;
 }
 
 filter kernel_export6 {
     if source = RTS_STATIC then reject;
-    if source = RTS_BGP then {
-        krt_prefsrc = dn42_thisaddr6;
-        accept;
-    }
+    # DN42 BGP routes use table 4242
+    # Internet BGP routes use table 211585
+    if source = RTS_BGP then reject;
     accept;
 }

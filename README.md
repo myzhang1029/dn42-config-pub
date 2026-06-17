@@ -1,15 +1,20 @@
 # dn42-config
 Internet configuration files for AS4242420893 and related devices
 
-## Plan
+## Address Space Plan
 `172.23.6.160/28` for routing and ZeroTier allocation. Its IPv6 range is `fdc0:d227:306:ee01::/112`.
 
 In general, each router (and thus each site) gets a `/64` (in addition to the ZeroTier allocation if there is one).
 
 My personal LAN allocates from `172.23.6.176/28`. Its IPv6 range is `fdc0:d227:306:be05::/64` (might use SLAAC).
 
-## 44Net
-Routes for `44.63.16.192/28` are propagated via Babel. On each 44Net-connected device, Policy-Based Routing is set up to return 44Net traffic to the same gateway.
+## Route Tables
+
+- The default table contains only local (true clearnet) routes and internal inter-node routes.
+- Table `4242` contains dn42 eBGP routes.
+- Table `211585` contains AS211585 eBGP routes.
+
+`nftables` controls forwarding between eBGP peers.
 
 ## IGP and Babel
 Internal connections use a combination of ZeroTier, GRE, and Wireguard based on the node characteristics.

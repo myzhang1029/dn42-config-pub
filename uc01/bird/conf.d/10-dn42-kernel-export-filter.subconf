@@ -1,0 +1,11 @@
+filter dn42_kernel_export4 {
+    if net = 0.0.0.0/0 then reject;
+    krt_prefsrc = dn42_thisaddr4;
+    accept;
+}
+
+filter dn42_kernel_export6 {
+    if net = ::/0 then reject;
+    krt_prefsrc = dn42_thisaddr6;
+    accept;
+}
