@@ -1,3 +1,15 @@
+filter kernel_import4 {
+    if net ~ dn42_netset4 then accept;
+    if net ~ inet_netset_internal4 then accept;
+    reject;
+}
+
+filter kernel_import6 {
+    if net ~ dn42_netset6 then accept;
+    if net ~ inet_netset_internal6 then accept;
+    reject;
+}
+
 filter kernel_export4 {
     if source = RTS_STATIC then reject;
     # DN42 BGP routes use table 4242
