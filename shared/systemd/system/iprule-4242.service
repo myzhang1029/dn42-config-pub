@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/system/iprule-4242.service
+[Unit]
+Description=Configure route table 4242
+Wants=network.target
+After=local-fs.target network-pre.target systemd-sysctl.service systemd-modules-load.service
+Before=network.target shutdown.target network-online.target
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/sbin/ip -4 rule add from 172.23.6.160/27 table 4242 priority 40
+ExecStart=/usr/sbin/ip -6 rule add from fdc0:d227:306::/48 table 4242 priority 40
+ExecStop=/usr/sbin/ip -6 rule delete from fdc0:d227:306::/48 table 4242 priority 40
+ExecStop=/usr/sbin/ip -4 rule delete from 172.23.6.160/27 table 4242 priority 40
+
+[Install]
+WantedBy=network-online.target
+WantedBy=multi-user.target
