@@ -1,0 +1,6 @@
+interface "gre-ca04" {
+    type wireless;
+    hello interval 15s;
+    rxcost 30;
+    rtt cost 96;
+};
