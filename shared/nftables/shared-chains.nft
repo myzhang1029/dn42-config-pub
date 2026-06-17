@@ -4,6 +4,7 @@
 # Output, forward common, and protocol chains (adopted from FirewallD)
 
 define internal_ifgroup = 4040
+define inet_ifgroup = 211585
 
 chain output {
     type filter hook output priority filter + 10; policy accept;
@@ -20,8 +21,8 @@ chain forward {
     # Check system-specific configurations
     jump forward_machdep
     jump filter_policy_drop_martian
+    iifgroup $inet_ifgroup counter drop
     ct state invalid log prefix "forward_STATE_INVALID_DROP: " drop
-    iifgroup 211585 drop
     log prefix "forward_REJECT: " counter reject with icmpx admin-prohibited
 }
 

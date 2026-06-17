@@ -67,10 +67,10 @@ table inet main {
         # Accept all traffic within the dn42 network
         iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter name dn42_fwd_packets accept
         # AS211585
-        iifgroup { 211585, $internal_ifgroup } ip6 daddr { 2a0f:6282:2100::/44 } counter accept
-        oifgroup { 211585, $internal_ifgroup } ip6 saddr { 2a0f:6282:2100::/44 } counter accept
-        iifgroup { 211585, $internal_ifgroup } ip daddr { 44.30.70.0/24 } counter accept
-        oifgroup { 211585, $internal_ifgroup } ip saddr { 44.30.70.0/24 } counter accept
+        iifgroup { $inet_ifgroup, $internal_ifgroup } ip6 daddr { 2a0f:6282:2100::/44, 2001:67c:878::/48 } counter accept
+        oifgroup { $inet_ifgroup, $internal_ifgroup } ip6 saddr { 2a0f:6282:2100::/44, 2001:67c:878::/48 } counter accept
+        iifgroup { $inet_ifgroup, $internal_ifgroup } ip daddr { 44.30.70.0/24 } counter accept
+        oifgroup { $inet_ifgroup, $internal_ifgroup } ip saddr { 44.30.70.0/24 } counter accept
     }
 
     # Bare Metal Instance Services (at iptables (higher) priority)
@@ -82,9 +82,7 @@ table inet main {
 
     chain nat_post {
         type nat hook postrouting priority srcnat + 10; policy accept;
-        oifname @public_interfaces goto nat_post_public
         oifgroup { $dn42_ifgroup, $internal_ifgroup } goto nat_post_dn42
-        goto nat_post_public
     }
 
     chain input {
@@ -95,7 +93,7 @@ table inet main {
         iifname "lo" accept
         ct state invalid log prefix "input_STATE_INVALID_DROP: " drop
         iifname @public_interfaces jump input_public
-        iifgroup 211585 jump input_public
+        iifgroup $inet_ifgroup jump input_public
         iifgroup { $dn42_ifgroup, $internal_ifgroup } jump input_dn42
         jump input_public
         # Should have reached a decision by now
