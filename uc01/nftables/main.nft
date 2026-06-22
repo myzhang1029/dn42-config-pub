@@ -49,21 +49,6 @@ table inet main {
         elements = { "wlp0s20f3", "enbuiltin" }
     }
 
-    # 44Net interfaces
-    set ampr_interfaces {
-        type ifname
-        elements = { "tunl0" }
-    }
-
-    # AREDN interfaces
-    set aredn_interfaces {
-        type ifname
-        elements = { "wgarednkk6uc" }
-    }
-
     include "/etc/nftables/shared-chains.nft"
-    include "/etc/nftables/public-chains.nft"
-    include "/etc/nftables/ampr-chains.nft"
-    include "/etc/nftables/aredn-chains.nft"
     include "/etc/nftables/private-chains.nft"
 }
