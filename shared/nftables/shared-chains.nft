@@ -23,7 +23,7 @@ chain forward {
     jump filter_policy_drop_martian
     iifgroup $inet_ifgroup counter drop
     ct state invalid log prefix "forward_STATE_INVALID_DROP: " drop
-    log prefix "forward_REJECT: " counter reject with icmpx admin-prohibited
+    counter reject with icmpx admin-prohibited
 }
 
 chain input_policy_allow-host-ipv6 {
