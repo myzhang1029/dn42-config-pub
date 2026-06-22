@@ -63,7 +63,6 @@ table inet main {
 
     include "/etc/nftables/shared-chains.nft"
     include "/etc/nftables/public-chains.nft"
-    include "/etc/nftables/dn42-chains.nft"
     include "/etc/nftables/ampr-chains.nft"
     include "/etc/nftables/aredn-chains.nft"
     include "/etc/nftables/private-chains.nft"

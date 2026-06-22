@@ -54,9 +54,12 @@ table inet main {
         type ifname
         elements = { "enp0s6" }
     }
+    set oracle_interfaces {
+        type ifname
+        elements = { "enp0s6" }
+    }
 
     include "/etc/nftables/oracle.nft"
-    include "/etc/nftables/dn42-chains.nft"
     include "/etc/nftables/shared-chains.nft"
     include "/etc/nftables/public-chains.nft"
 
@@ -66,17 +69,9 @@ table inet main {
         iifgroup $internal_ifgroup oifname @public_interfaces counter accept
     }
 
-    # Bare Metal Instance Services (at iptables (higher) priority)
-    chain oci_filter_output {
-        type filter hook output priority filter; policy accept;
-        ip daddr 169.254.0.0/16 oifname @public_interfaces counter jump BareMetalInstanceServices
-        ip6 daddr fd00:c1::a9fe:0/120 oifname @public_interfaces counter jump BareMetalInstanceServices
-    }
-
     chain nat_post {
         type nat hook postrouting priority srcnat + 10; policy accept;
         oifname @public_interfaces goto nat_post_public
-        oifgroup { $dn42_ifgroup, $internal_ifgroup } goto nat_post_dn42
         goto nat_post_public
     }
 

@@ -36,7 +36,6 @@ table inet main {
     }
 
     include "/etc/nftables/blacklist.nft"
-    include "/etc/nftables/dn42-chains.nft"
     include "/etc/nftables/shared-chains.nft"
     include "/etc/nftables/public-chains.nft"
     include "/etc/nftables/lan-chains.nft"
@@ -57,7 +56,6 @@ table inet main {
     chain nat_post {
         type nat hook postrouting priority srcnat + 10; policy accept;
         oifname @public_interfaces goto nat_post_public
-        oifgroup { $dn42_ifgroup, $internal_ifgroup } goto nat_post_dn42
         oifname @lan_interfaces goto nat_post_lan
         goto nat_post_public
     }

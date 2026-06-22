@@ -2,6 +2,12 @@
 # /etc/nftables/oracle.nft
 
 # Oracle-added rules (hand-edited from /etc/firewalld/direct.xml)
+
+# Usage:
+# main.nft MUST define:
+# - set oracle_interfaces (type ifname)
+
+
 # Comment: See the Oracle-Provided Images section in the Oracle Bare Metal documentation for security impact of modifying or removing this rule
 chain BareMetalInstanceServices {
     # iSCSI network endpoints
@@ -26,4 +32,11 @@ chain BareMetalInstanceServices {
     ip daddr 169.254.0.0/16 meta l4proto udp counter reject
     ip6 daddr fd00:c1::a9fe:0/120 meta l4proto tcp counter reject with tcp reset
     ip6 daddr fd00:c1::a9fe:0/120 meta l4proto udp counter reject
+}
+
+# at iptables (higher) priority
+chain oci_filter_output {
+    type filter hook output priority filter; policy accept;
+    ip daddr 169.254.0.0/16 oifname @oracle_interfaces counter jump BareMetalInstanceServices
+    ip6 daddr fd00:c1::a9fe:0/120 oifname @oracle_interfaces counter jump BareMetalInstanceServices
 }

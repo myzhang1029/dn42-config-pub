@@ -1,10 +1,65 @@
 # vi: ft=nftables
 # /etc/nftables/shared-chains.nft
 
-# Output, forward common, and protocol chains (adopted from FirewallD)
+# Definitions and output, forward common, and protocol chains (adopted from FirewallD)
+
+# Usage:
+# main.nft MUST define:
+# - chain input (type filter hook input)
+# - chain forward_machdep (no hook)
+# - defn dn42_self_ipv6 (type ipv6_addr)
+# - set dn42_ports (type inet_proto . inet_service)
+
+
+### Definitions
 
 define internal_ifgroup = 4040
+define dn42_ifgroup = 4242
 define inet_ifgroup = 211585
+
+set dn42_self_ipv4_prefix {
+    type ipv4_addr
+    flags interval
+    elements = { 172.23.6.160/27 }
+}
+
+set dn42_self_ipv6_prefix {
+    type ipv6_addr
+    flags interval
+    elements = { fdc0:d227:306::/48 }
+}
+
+set inet_self_ipv4_prefix {
+    type ipv4_addr
+    flags interval
+    elements = { 44.30.70.0/24 }
+}
+
+set inet_self_ipv6_prefix {
+    type ipv6_addr
+    flags interval
+    elements = { 2001:67c:878::/48, 2a0f:6282:2100::/44 }
+}
+
+
+### dn42 common stuff
+
+counter dn42_fwd_packets {
+    comment "dn42 packets"
+}
+
+chain input_dn42 {
+    jump input_policy_allow-host-ipv6
+    tcp dport { ssh, bgp } accept
+    udp dport babel accept
+    # bird-lg
+    ip6 daddr $dn42_self_ipv6 ip6 saddr { fdc0:d227:306:ee01::1, fdc0:d227:306:ca04::1 } tcp dport 8000 accept
+    # Other services
+    meta l4proto . th dport @dn42_ports accept
+    reject with icmpx admin-prohibited
+}
+
+### Common chains
 
 chain output {
     type filter hook output priority filter + 10; policy accept;
@@ -25,6 +80,9 @@ chain forward {
     ct state invalid log prefix "forward_STATE_INVALID_DROP: " drop
     counter reject with icmpx admin-prohibited
 }
+
+
+### Protocol chains
 
 chain input_policy_allow-host-ipv6 {
     icmpv6 type { nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert, nd-redirect } accept
