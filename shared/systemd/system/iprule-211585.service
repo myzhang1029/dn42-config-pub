@@ -1,0 +1,20 @@
+[Unit]
+Description=Configure route table 211585
+Wants=network.target
+After=local-fs.target network-pre.target systemd-sysctl.service systemd-modules-load.service
+Before=network.target shutdown.target network-online.target
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/sbin/ip -4 rule add from 44.30.70.0/24 table 211585 priority 40
+ExecStart=/usr/sbin/ip -6 rule add from 2a0f:6282:2100::/44 table 211585 priority 40
+ExecStart=/usr/sbin/ip -6 rule add from 2001:67c:878::/48 table 211585 priority 40
+ExecStop=-/usr/sbin/ip -6 rule delete from 2001:67c:878::/48 table 211585 priority 40
+ExecStop=-/usr/sbin/ip -6 rule delete from 2a0f:6282:2100::/44 table 211585 priority 40
+ExecStop=-/usr/sbin/ip -4 rule delete from 44.30.70.0/24 table 211585 priority 40
+
+[Install]
+WantedBy=network-online.target
+WantedBy=multi-user.target
