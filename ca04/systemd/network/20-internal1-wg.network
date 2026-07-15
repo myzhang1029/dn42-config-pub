@@ -21,3 +21,6 @@ KeepConfiguration=yes
 
 [Address]
 Address=fe80::ca04/64
+
+[Address]
+Address=44.30.70.1/32

@@ -9,10 +9,8 @@ Conflicts=shutdown.target
 Type=oneshot
 RemainAfterExit=true
 ExecStart=/usr/sbin/ip -4 rule add from 44.30.70.0/24 table 211585 priority 40
-ExecStart=/usr/sbin/ip -6 rule add from 2a0f:6282:2100::/44 table 211585 priority 40
 ExecStart=/usr/sbin/ip -6 rule add from 2001:67c:878::/48 table 211585 priority 40
 ExecStop=-/usr/sbin/ip -6 rule delete from 2001:67c:878::/48 table 211585 priority 40
-ExecStop=-/usr/sbin/ip -6 rule delete from 2a0f:6282:2100::/44 table 211585 priority 40
 ExecStop=-/usr/sbin/ip -4 rule delete from 44.30.70.0/24 table 211585 priority 40
 
 [Install]
