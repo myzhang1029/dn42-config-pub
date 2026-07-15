@@ -16,7 +16,7 @@ and follow the dialog to create new peerings.
 
 In general, each router (and thus each site) gets a `/64` (in addition to the ZeroTier allocation if there is one).
 
-My personal LAN allocates from `172.23.6.176/28`. Its IPv6 range is `fdc0:d227:306:be05::/64` (might use SLAAC).
+My personal LAN allocates from `fdc0:d227:306:be05::/64` (might use SLAAC and is IPv6-only).
 
 ## Route Tables
 
@@ -30,7 +30,7 @@ Clearnet AS211585 eBGP import/export using `inet_v[46]`.
 ### Kernel Tables
 - The default table contains only local (true clearnet) routes and internal inter-node routes.
 - Table `4242` contains dn42 eBGP routes (syncd from bird `dn42_v[46]`).
-- Table `211585` contains AS211585 eBGP routes (syncd from bird `inet_v[46]`), for devices with AS211585 connections/
+- Table `211585` contains AS211585 eBGP routes (syncd from bird `inet_v[46]`), for devices with AS211585 connections.
 
 `nftables` controls forwarding between eBGP peers.
 
