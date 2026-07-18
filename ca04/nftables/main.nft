@@ -93,7 +93,8 @@ table inet main {
 
     chain mark_in {
         type filter hook prerouting priority mangle; policy accept;
-        iifgroup $inet_ifgroup ct mark set 211585
+        iifgroup $inet_ifgroup ip6 daddr @inet_self_ipv6_prefix ct mark set 211585
+        iifgroup $inet_ifgroup ip daddr @inet_self_ipv4_prefix ct mark set 211585
     }
     chain remark_out {
         type route hook output priority mangle; policy accept;
