@@ -63,6 +63,7 @@ table inet main {
     include "/etc/nftables/oracle.nft"
     include "/etc/nftables/shared-chains.nft"
     include "/etc/nftables/public-chains.nft"
+    include "/etc/nftables/private-chains.nft"
 
     chain forward_machdep {
         oifname @public_interfaces reject
@@ -73,10 +74,6 @@ table inet main {
         oifgroup { $inet_ifgroup, $internal_ifgroup } ip6 saddr @inet_self_ipv6_prefix counter accept
         iifgroup { $inet_ifgroup, $internal_ifgroup } ip daddr @inet_self_ipv4_prefix counter accept
         oifgroup { $inet_ifgroup, $internal_ifgroup } ip saddr @inet_self_ipv4_prefix counter accept
-    }
-
-    chain nat_post {
-        type nat hook postrouting priority srcnat + 10; policy accept;
     }
 
     chain input {
