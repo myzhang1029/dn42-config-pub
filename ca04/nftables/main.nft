@@ -93,4 +93,13 @@ table inet main {
         # Should have reached a decision by now
         log prefix "input_FINAL_REJECT: " counter reject with icmpx admin-prohibited
     }
+
+    chain mark_in {
+        type filter hook prerouting priority mangle; policy accept;
+        iifgroup $inet_ifgroup ct mark set 211585
+    }
+    chain remark_out {
+        type route hook output priority mangle; policy accept;
+        ct mark 211585 counter meta mark set 211585
+    }
 }

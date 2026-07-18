@@ -18,6 +18,12 @@ ExecStart=/usr/sbin/ip -4 rule add to 10.0.0.0/8 table 4242 priority 41
 ExecStart=/usr/sbin/ip -6 rule add from fdc0:d227:306::/48 table 4242 priority 40
 ExecStart=/usr/sbin/ip -6 rule add to fd00::/8 table 4242 priority 41
 
+ExecStart=/usr/sbin/ip -4 rule add fwmark 4242 table 4242 priority 40
+ExecStart=/usr/sbin/ip -6 rule add fwmark 4242 table 4242 priority 40
+
+ExecStop=-/usr/sbin/ip -6 rule delete fwmark 4242 table 4242 priority 40
+ExecStop=-/usr/sbin/ip -4 rule delete fwmark 4242 table 4242 priority 40
+
 ExecStop=-/usr/sbin/ip -6 rule delete to fd00::/8 table 4242 priority 41
 ExecStop=-/usr/sbin/ip -6 rule delete from fdc0:d227:306::/48 table 4242 priority 40
 
