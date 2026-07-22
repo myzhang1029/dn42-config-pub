@@ -49,7 +49,6 @@ counter dn42_fwd_packets {
 }
 
 chain input_dn42 {
-    jump input_policy_allow-host-ipv6
     tcp dport { ssh, bgp } accept
     udp dport babel accept
     # bird-lg
@@ -84,8 +83,18 @@ chain forward {
 
 ### Protocol chains
 
-chain input_policy_allow-host-ipv6 {
+# Allow required ICMP and limit rates of other ICMP
+chain input_limit_icmp {
     icmpv6 type { nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert, nd-redirect } accept
+    meta l4proto { icmp, ipv6-icmp } limit rate 100/second accept
+}
+
+# Allow ct connections and lo
+chain input_allow_ct_lo {
+    ct state { established, related } accept
+    ct status dnat accept
+    iifname "lo" accept
+    ct state invalid log prefix "input_STATE_INVALID_DROP: " drop
 }
 
 chain filter_policy_drop_martian {

@@ -62,11 +62,8 @@ table inet main {
 
     chain input {
         type filter hook input priority filter + 10; policy drop;
-        meta l4proto { icmp, ipv6-icmp } limit rate 100/second accept
-        ct state { established, related } accept
-        ct status dnat accept
-        iifname "lo" accept
-        ct state invalid log prefix "INPUT_STATE_INVALID_DROP: " drop
+        jump input_limit_icmp
+        jump input_allow_ct_lo
         iifname @public_interfaces jump input_public
         iifname @lan_interfaces jump input_lan
         iifgroup { $dn42_ifgroup, $internal_ifgroup } ip daddr $ampr_self_prefix jump input_public
