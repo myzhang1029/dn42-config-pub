@@ -20,3 +20,7 @@ KeepConfiguration=yes
 
 [Address]
 Address=fd10:127:42:ffff::25/64
+
+[Route]
+Destination=fd10:127:42:ffff::/64
+Table=4242
