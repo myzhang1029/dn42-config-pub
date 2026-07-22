@@ -63,6 +63,7 @@ chain input_dn42 {
 chain output {
     type filter hook output priority filter + 10; policy accept;
     oifname "lo" accept
+    tcp flags syn tcp option maxseg size set rt mtu
     jump filter_policy_drop_martian
     # Accept outbound traffic everywhere
 }
@@ -72,6 +73,7 @@ chain forward {
     ct state { established, related } accept
     ct status dnat accept
     iifname "lo" accept
+    tcp flags syn tcp option maxseg size set rt mtu
     # Check system-specific configurations
     jump forward_machdep
     jump filter_policy_drop_martian
