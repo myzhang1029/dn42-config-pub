@@ -1,0 +1,22 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-ztrnctts5x.network
+
+[Match]
+Name=ztrnctts5x
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+Group=4242
+
+[Network]
+Description=ZeroTier Nedifinita IX connection
+DHCP=no
+IPv6AcceptRA=false
+IPv4ReversePathFilter=no
+IPv4Forwarding=yes
+IPv6Forwarding=yes
+KeepConfiguration=yes
+
+[Address]
+Address=fd10:127:42:ffff::25/64
