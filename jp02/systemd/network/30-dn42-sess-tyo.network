@@ -1,0 +1,23 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-sess-tyo.network
+
+[Match]
+Name=wg2466sesstyo
+
+[Link]
+RequiredForOnline=degraded:routable
+RequiredFamilyForOnline=ipv6
+Group=4242
+
+[Network]
+Description=WireGuard tunnel to AS4242422466 SessNetwork Tokyo, Japan
+DHCP=no
+IPv6AcceptRA=false
+IPv4ReversePathFilter=no
+IPv4Forwarding=yes
+IPv6Forwarding=yes
+KeepConfiguration=yes
+
+[Address]
+Address=fe80::893/64
+Peer=fe80::2466/64
