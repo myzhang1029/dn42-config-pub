@@ -45,7 +45,7 @@ table inet main {
             tcp . domain,
             udp . domain,
             tcp . 180,
-            tcp . 8699, # FlapAlerted
+            tcp . https, # FlapAlerted
             tcp . 1790, # FlapAlerted
         }
     }

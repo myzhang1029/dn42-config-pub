@@ -5,10 +5,12 @@ After=local-fs.target
 
 [Service]
 DynamicUser=true
+CapabilityBoundingSet=
 NoNewPrivileges=true
 LockPersonality=true
 MemoryDenyWriteExecute=true
 PrivateDevices=true
+ProcSubset=pid
 ProtectClock=true
 ProtectControlGroups=true
 ProtectHome=true
@@ -23,7 +25,7 @@ RestrictNamespaces=true
 RestrictRealtime=true
 SystemCallArchitectures=native
 Restart=always
-ExecStart=/usr/local/bin/FlapAlerted -asn 4242420893 -routeChangeCounter 10
+ExecStart=/usr/local/bin/FlapAlerted -asn 4242420893 -routeChangeCounter 10 -httpAPIListenAddress '[::1]:8699'
 
 [Install]
 WantedBy=multi-user.target
