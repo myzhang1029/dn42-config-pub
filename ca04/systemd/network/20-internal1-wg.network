@@ -8,7 +8,7 @@ Name=wginternal1
 RequiredForOnline=degraded:routable
 RequiredFamilyForOnline=ipv6
 Group=4040
-MTUBytes=1440
+MTUBytes=1343
 
 [Network]
 Description=Internal WireGuard tunnel between be05 and ca04
