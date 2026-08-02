@@ -1,11 +1,14 @@
 [Unit]
-Description=StayRTR for inet routes
+Description=Routinator 3000
+Documentation=man:routinator(1)
 After=network.target
 
 [Service]
-Type=simple
-DynamicUser=true
+ExecStart=/usr/bin/routinator --config=/etc/routinator/routinator.conf server
+Type=exec
+Restart=on-failure
 CapabilityBoundingSet=
+DynamicUser=true
 LockPersonality=true
 MemoryDenyWriteExecute=true
 NoNewPrivileges=true
@@ -17,19 +20,20 @@ ProtectClock=true
 ProtectControlGroups=true
 ProtectHome=true
 ProtectHostname=true
-ProtectKernelModules=true
 ProtectKernelLogs=true
+ProtectKernelModules=true
 ProtectKernelTunables=true
 ProtectProc=invisible
 ProtectSystem=strict
+RemoveIPC=true
 RestrictAddressFamilies=AF_INET AF_INET6
 RestrictNamespaces=true
 RestrictRealtime=true
 RestrictSUIDSGID=true
+StateDirectory=routinator
 SystemCallArchitectures=native
 SystemCallFilter=@system-service
 UMask=0077
-ExecStart=/usr/bin/stayrtr -bind=:8282 -metrics.addr=[::1]:9847 -protocol=0 -cache=https://console.rpki-client.org/rpki.json
 
 [Install]
 WantedBy=multi-user.target
