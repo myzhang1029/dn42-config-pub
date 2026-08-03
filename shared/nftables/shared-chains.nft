@@ -5,9 +5,18 @@
 
 # Usage:
 # main.nft MUST define:
-# - chain input (type filter hook input)
-# - chain forward_machdep (no hook)
-# - defn dn42_self_ipv6 (type ipv6_addr)
+
+# - chain input_everywhere (no hook), fallthrough if not accepted
+#   Will be executed first.
+#   Typically, it should accept traffic that should be accepted no matter where
+#   it comes from or what the destination address is, but its rules can be more specific if desired.
+# - chain input_machdep (no hook), all fallthrough will be dropped
+#   Will be executed after input_everywhere and the dn42/internal input chains.
+#   Stuff from neither the internal nor dn42 interfaces, and not already accepted by input_everywhere either
+# - chain forward_machdep (no hook), all fallthrough will be dropped
+
+# - set dn42_self_ipv4 (type ipv4_addr)
+# - set dn42_self_ipv6 (type ipv6_addr)
 # - set dn42_ports (type inet_proto . inet_service)
 
 
@@ -48,33 +57,67 @@ counter dn42_fwd_packets {
     comment "dn42 packets"
 }
 
-chain input_dn42 {
-    tcp dport { ssh, bgp } accept
+chain _input_internal {
+    ip6 saddr fe80::/64 udp dport babel accept
+    # bird-lgproxy
+    ip6 daddr @dn42_self_ipv6 ip6 saddr { fdc0:d227:306:ee01::1, fdc0:d227:306:ca04::1 } tcp dport 8000 accept
+}
+
+# Input chain for internal and dn42 interfaces.
+# Always accept (iface and daddr-based) inet traffic before this chain
+chain _input_dn42 {
+    tcp dport bgp accept
     udp dport bfd-control accept
-    iifgroup $internal_ifgroup ip6 saddr fe80::/64 udp dport babel accept
-    # bird-lg
-    ip6 daddr $dn42_self_ipv6 ip6 saddr { fdc0:d227:306:ee01::1, fdc0:d227:306:ca04::1 } tcp dport 8000 accept
-    # Other services
-    meta l4proto . th dport @dn42_ports accept
+    iifgroup $internal_ifgroup jump _input_internal
+    # Public-facing dn42 services
+    meta l4proto . th dport @dn42_ports ip daddr @dn42_self_ipv4 accept
+    meta l4proto . th dport @dn42_ports ip6 daddr @dn42_self_ipv6 accept
     reject with icmpx admin-prohibited
 }
 
 ### Common chains
 
+chain input {
+    type filter hook input priority filter; policy drop;
+    jump _input_limit_icmp
+    jump _input_allow_ct_lo
+    jump input_everywhere
+    # Order doesn't really matter for the following two
+    iifgroup { $dn42_ifgroup, $internal_ifgroup } jump _input_dn42
+    jump input_machdep
+    counter reject with icmpx admin-prohibited
+}
+
 chain output {
-    type filter hook output priority filter + 10; policy accept;
+    type filter hook output priority filter; policy accept;
     oifname "lo" accept
     tcp flags syn tcp option maxseg size set rt mtu
     jump filter_policy_drop_martian
     # Accept outbound traffic everywhere
 }
 
+chain _forward_dn42 {
+    # Count all non-self traffic
+    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } ip saddr @dn42_self_ipv4 notrack accept
+    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } ip daddr @dn42_self_ipv4 notrack accept
+    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } ip6 saddr @dn42_self_ipv6 notrack accept
+    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } ip6 daddr @dn42_self_ipv6 notrack accept
+    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter name dn42_fwd_packets accept
+}
+
 chain forward {
-    type filter hook forward priority filter + 10; policy drop;
+    type filter hook forward priority filter; policy drop;
     ct state { established, related } accept
     ct status dnat accept
     iifname "lo" accept
     tcp flags syn tcp option maxseg size set rt mtu
+    # Accept all traffic within the dn42 network
+    jump _forward_dn42
+    # AS211585
+    iifgroup { $inet_ifgroup, $internal_ifgroup } ip6 daddr @inet_self_ipv6_prefix counter accept
+    oifgroup { $inet_ifgroup, $internal_ifgroup } ip6 saddr @inet_self_ipv6_prefix counter accept
+    iifgroup { $inet_ifgroup, $internal_ifgroup } ip daddr @inet_self_ipv4_prefix counter accept
+    oifgroup { $inet_ifgroup, $internal_ifgroup } ip saddr @inet_self_ipv4_prefix counter accept
     # Check system-specific configurations
     jump forward_machdep
     jump filter_policy_drop_martian
@@ -87,13 +130,13 @@ chain forward {
 ### Protocol chains
 
 # Allow required ICMP and limit rates of other ICMP
-chain input_limit_icmp {
+chain _input_limit_icmp {
     icmpv6 type { nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert, nd-redirect } accept
     meta l4proto { icmp, ipv6-icmp } limit rate 100/second accept
 }
 
 # Allow ct connections and lo
-chain input_allow_ct_lo {
+chain _input_allow_ct_lo {
     ct state { established, related } accept
     ct status dnat accept
     iifname "lo" accept

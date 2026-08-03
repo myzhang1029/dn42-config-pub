@@ -7,8 +7,16 @@ flush ruleset
 
 table inet main {
     # dn42 assigned addresses
-    define dn42_self_ipv4 = 172.23.6.166
-    define dn42_self_ipv6 = fdc0:d227:306:ee01::6
+    set dn42_self_ipv4 {
+        type ipv4_addr
+        elements = { 172.23.6.166 }
+    }
+    set dn42_self_ipv6 {
+        type ipv6_addr
+        elements = {
+            fdc0:d227:306:ee01::6, fdc0:d227:306:ab06::1
+        }
+    }
     # dn42 services on this host
     set dn42_ports {
         type inet_proto . inet_service
@@ -19,9 +27,6 @@ table inet main {
             tcp . 9080,
         }
     }
-
-    # 44Net routed from dn42
-    define ampr_self_prefix = 44.63.16.192/28
 
     # Public interface
     set public_interfaces {
@@ -48,8 +53,6 @@ table inet main {
 
     chain forward_machdep {
         iifgroup { $dn42_ifgroup, $internal_ifgroup } oifname @lan_interfaces counter accept
-        # Accept all traffic within the dn42 network
-        iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter name dn42_fwd_packets accept
         iifname @lan_interfaces jump forward_lan
     }
 
@@ -58,18 +61,5 @@ table inet main {
         oifname @public_interfaces goto nat_post_public
         oifname @lan_interfaces goto nat_post_lan
         goto nat_post_public
-    }
-
-    chain input {
-        type filter hook input priority filter + 10; policy drop;
-        jump input_limit_icmp
-        jump input_allow_ct_lo
-        iifname @public_interfaces jump input_public
-        iifname @lan_interfaces jump input_lan
-        iifgroup { $dn42_ifgroup, $internal_ifgroup } ip daddr $ampr_self_prefix jump input_public
-        iifgroup { $dn42_ifgroup, $internal_ifgroup } jump input_dn42
-        jump input_public
-        # Should have reached a decision by now
-        log prefix "input_FINAL_REJECT: " counter reject with icmpx admin-prohibited
     }
 }

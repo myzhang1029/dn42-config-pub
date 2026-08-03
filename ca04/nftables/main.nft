@@ -31,8 +31,14 @@ table inet main {
         }
     }
     # dn42 assigned addresses
-    define dn42_self_ipv4 = 172.23.6.161
-    define dn42_self_ipv6 = fdc0:d227:306:ee01::1
+    set dn42_self_ipv4 {
+        type ipv4_addr
+        elements = { 172.23.6.161 }
+    }
+    set dn42_self_ipv6 {
+        type ipv6_addr
+        elements = { fdc0:d227:306:ee01::1, fdc0:d227:306:ca04::1 }
+    }
     # dn42 services on this host
     set dn42_ports {
         type inet_proto . inet_service
@@ -62,30 +68,11 @@ table inet main {
     include "/etc/nftables/blacklist.nft"
     include "/etc/nftables/oracle.nft"
     include "/etc/nftables/shared-chains.nft"
-    include "/etc/nftables/public-chains.nft"
     include "/etc/nftables/private-chains.nft"
 
     chain forward_machdep {
+        oifname @public_interfaces meta l4proto tcp log prefix "forward_WAN_access: " reject
         oifname @public_interfaces reject
-        # Accept all traffic within the dn42 network
-        iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter name dn42_fwd_packets accept
-        # AS211585
-        iifgroup { $inet_ifgroup, $internal_ifgroup } ip6 daddr @inet_self_ipv6_prefix counter accept
-        oifgroup { $inet_ifgroup, $internal_ifgroup } ip6 saddr @inet_self_ipv6_prefix counter accept
-        iifgroup { $inet_ifgroup, $internal_ifgroup } ip daddr @inet_self_ipv4_prefix counter accept
-        oifgroup { $inet_ifgroup, $internal_ifgroup } ip saddr @inet_self_ipv4_prefix counter accept
-    }
-
-    chain input {
-        type filter hook input priority filter + 10; policy drop;
-        jump input_limit_icmp
-        jump input_allow_ct_lo
-        iifname @public_interfaces jump input_public
-        iifgroup $inet_ifgroup jump input_public
-        iifgroup { $dn42_ifgroup, $internal_ifgroup } jump input_dn42
-        jump input_public
-        # Should have reached a decision by now
-        log prefix "input_FINAL_REJECT: " counter reject with icmpx admin-prohibited
     }
 
     chain mark_in {

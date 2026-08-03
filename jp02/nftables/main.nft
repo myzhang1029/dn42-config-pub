@@ -35,8 +35,14 @@ table inet main {
         }
     }
     # dn42 assigned addresses
-    define dn42_self_ipv4 = 172.23.6.162
-    define dn42_self_ipv6 = fdc0:d227:306:aa02::1
+    set dn42_self_ipv4 {
+        type ipv4_addr
+        elements = { 172.23.6.162 }
+    }
+    set dn42_self_ipv6 {
+        type ipv6_addr
+        elements = { fdc0:d227:306:ee01::2, fdc0:d227:306:aa02::1 }
+    }
     # dn42 services on this host
     set dn42_ports {
         type inet_proto . inet_service
@@ -65,8 +71,6 @@ table inet main {
     include "/etc/nftables/public-chains.nft"
 
     chain forward_machdep {
-        # Accept all traffic within the dn42 network
-        iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter name dn42_fwd_packets accept
         iifgroup $internal_ifgroup oifname @public_interfaces counter accept
     }
 
@@ -75,14 +79,12 @@ table inet main {
         oifname @public_interfaces goto nat_post_public
     }
 
-    chain input {
-        type filter hook input priority filter + 10; policy drop;
-        jump input_limit_icmp
-        jump input_allow_ct_lo
-        iifname @public_interfaces jump input_public
-        iifgroup { $dn42_ifgroup, $internal_ifgroup } jump input_dn42
-        jump input_public
-        # Should have reached a decision by now
-        log prefix "input_FINAL_REJECT: " counter reject with icmpx admin-prohibited
+    chain input_everywhere {
+        tcp dport ssh accept
+    }
+
+    chain input_machdep {
+        iifname @oracle_interfaces ip6 daddr fe80::/64 udp dport dhcpv6-client accept
+        iifname @oracle_interfaces udp dport @dn42_wg_ports accept
     }
 }
