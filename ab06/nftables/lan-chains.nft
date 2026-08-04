@@ -24,6 +24,3 @@ chain forward_lan {
     oifgroup { $dn42_ifgroup, $internal_ifgroup } accept
     log prefix "forward_lan_REJECT: " reject with icmpx admin-prohibited
 }
-
-chain nat_post_lan {
-}

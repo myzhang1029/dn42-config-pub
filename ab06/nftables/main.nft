@@ -31,7 +31,7 @@ table inet main {
     # Public interface
     set public_interfaces {
         type ifname
-        elements = { "wlrpi" }
+        elements = { "wlrpi", "eth0" }
     }
 
     # LAN interface
@@ -48,7 +48,12 @@ table inet main {
     # LAN bridge flowtable
     flowtable fastpath {
         hook ingress priority filter + 10
-        devices = { "brlan", "wlrpi" }
+        devices = { "brlan", "wlrpi", "eth0" }
+    }
+
+    chain input_machdep {
+        iifname @public_interfaces ip6 daddr fe80::/64 udp dport dhcpv6-client accept
+        iifname @lan_interfaces jump input_lan
     }
 
     chain forward_machdep {
@@ -58,8 +63,6 @@ table inet main {
 
     chain nat_post {
         type nat hook postrouting priority srcnat + 10; policy accept;
-        oifname @public_interfaces goto nat_post_public
-        oifname @lan_interfaces goto nat_post_lan
-        goto nat_post_public
+        iifname @lan_interfaces oifname @public_interfaces meta nfproto ipv4 masquerade
     }
 }
