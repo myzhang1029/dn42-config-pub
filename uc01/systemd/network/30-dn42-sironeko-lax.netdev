@@ -1,0 +1,20 @@
+# vi: ft=systemd
+# /etc/systemd/network/30-dn42-sironeko-lax.netdev
+
+[NetDev]
+Name=wg1573lax
+Kind=wireguard
+Description=WireGuard tunnel to AS4242421573 sironeko lax
+
+[WireGuard]
+ListenPort=24212
+PrivateKeyFile=/etc/systemd/network/dn42.wgkey
+
+[WireGuardPeer]
+PublicKey=+/Jr/Kwz6VITNrujQIJNS5W2yO71d5aHED9MCha4rUw=
+Endpoint=lax-1.dn42.sironeko.moe:20893
+AllowedIPs=10.0.0.0/8
+AllowedIPs=172.20.0.0/14
+AllowedIPs=172.31.0.0/16
+AllowedIPs=fd00::/8
+AllowedIPs=fe80::/64
