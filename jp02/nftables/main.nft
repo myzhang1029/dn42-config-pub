@@ -42,7 +42,11 @@ table inet main {
     }
     set dn42_self_ipv6 {
         type ipv6_addr
-        elements = { fdc0:d227:306:ee01::2, fdc0:d227:306:aa02::1 }
+        elements = {
+            fdc0:d227:306:ee01::2,
+            fdc0:d227:306:aa02::1,
+            fdc0:d227:306:aa02::2, # for flapalerted
+        }
     }
     # dn42 services on this host
     set dn42_ports {
