@@ -82,6 +82,10 @@ table inet main {
 
     chain input_everywhere {
         tcp dport ssh accept
+        ip saddr @inet_self_ipv4_prefix udp dport domain accept
+        ip saddr @inet_self_ipv4_prefix tcp dport domain accept
+        ip6 saddr @inet_self_ipv6_prefix udp dport domain accept
+        ip6 saddr @inet_self_ipv6_prefix tcp dport domain accept
     }
 
     chain input_machdep {
