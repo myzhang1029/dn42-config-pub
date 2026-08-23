@@ -58,7 +58,7 @@ dn42 eBGP peers import/export using `dn42_v[46]`.
 Clearnet AS211585 eBGP import/export using `inet_v[46]`.
 
 ### Kernel Tables
-- The default table contains only local (true clearnet) routes and internal inter-node routes.
+- The default table contains only local (true clearnet) routes.
 - Table `4242` contains dn42 eBGP routes (syncd from bird `dn42_v[46]`).
 - Table `211585` contains AS211585 eBGP routes (syncd from bird `inet_v[46]`), for devices with AS211585 connections.
 

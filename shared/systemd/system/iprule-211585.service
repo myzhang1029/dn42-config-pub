@@ -8,18 +8,29 @@ Conflicts=shutdown.target
 [Service]
 Type=oneshot
 RemainAfterExit=true
-ExecStart=/usr/sbin/ip -4 rule add from 44.30.70.0/24 table 211585 priority 40
-ExecStart=/usr/sbin/ip -6 rule add from 2001:67c:878::/48 table 211585 priority 40
-ExecStart=/usr/sbin/ip -4 rule add fwmark 211585 table 211585 priority 40
-ExecStart=/usr/sbin/ip -6 rule add fwmark 211585 table 211585 priority 40
+ExecStart=/usr/sbin/ip -4 rule add from 44.30.70.0/24 table 211585 priority 100
+ExecStart=/usr/sbin/ip -6 rule add from 2001:67c:878::/48 table 211585 priority 100
+
+ExecStart=/usr/sbin/ip -4 rule add to 44.30.70.0/24 table 211585 priority 120
+ExecStart=/usr/sbin/ip -6 rule add to 2001:67c:878::/48 table 211585 priority 120
+
+ExecStart=/usr/sbin/ip -4 rule add fwmark 211585 table 211585 priority 130
+ExecStart=/usr/sbin/ip -6 rule add fwmark 211585 table 211585 priority 130
+
 ExecStart=/usr/sbin/ip -4 route add unreachable 0.0.0.0/0 table 211585 metric 2147483647
 ExecStart=/usr/sbin/ip -6 route add unreachable ::/0 table 211585 metric 2147483647
+
 ExecStop=-/usr/sbin/ip -6 route delete unreachable ::/0 table 211585 metric 2147483647
 ExecStop=-/usr/sbin/ip -4 route delete unreachable 0.0.0.0/0 table 211585 metric 2147483647
-ExecStop=-/usr/sbin/ip -6 rule delete fwmark 211585 table 211585 priority 40
-ExecStop=-/usr/sbin/ip -4 rule delete fwmark 211585 table 211585 priority 40
-ExecStop=-/usr/sbin/ip -6 rule delete from 2001:67c:878::/48 table 211585 priority 40
-ExecStop=-/usr/sbin/ip -4 rule delete from 44.30.70.0/24 table 211585 priority 40
+
+ExecStop=-/usr/sbin/ip -6 rule delete fwmark 211585 table 211585 priority 130
+ExecStop=-/usr/sbin/ip -4 rule delete fwmark 211585 table 211585 priority 130
+
+ExecStop=-/usr/sbin/ip -6 rule delete to 2001:67c:878::/48 table 211585 priority 120
+ExecStop=-/usr/sbin/ip -4 rule delete to 44.30.70.0/24 table 211585 priority 120
+
+ExecStop=-/usr/sbin/ip -6 rule delete from 2001:67c:878::/48 table 211585 priority 100
+ExecStop=-/usr/sbin/ip -4 rule delete from 44.30.70.0/24 table 211585 priority 100
 
 [Install]
 WantedBy=network-online.target

@@ -10,16 +10,16 @@ Conflicts=shutdown.target
 [Service]
 Type=oneshot
 RemainAfterExit=true
-ExecStart=/usr/sbin/ip -4 rule add from 172.23.6.160/27 table 4242 priority 40
-ExecStart=/usr/sbin/ip -4 rule add to 172.20.0.0/14 table 4242 priority 41
-ExecStart=/usr/sbin/ip -4 rule add to 172.31.0.0/16 table 4242 priority 41
-ExecStart=/usr/sbin/ip -4 rule add to 10.0.0.0/8 table 4242 priority 41
+ExecStart=/usr/sbin/ip -4 rule add from 172.23.6.160/27 table 4242 priority 200
+ExecStart=/usr/sbin/ip -4 rule add to 172.20.0.0/14 table 4242 priority 250
+ExecStart=/usr/sbin/ip -4 rule add to 172.31.0.0/16 table 4242 priority 250
+ExecStart=/usr/sbin/ip -4 rule add to 10.0.0.0/8 table 4242 priority 250
 
-ExecStart=/usr/sbin/ip -6 rule add from fdc0:d227:306::/48 table 4242 priority 40
-ExecStart=/usr/sbin/ip -6 rule add to fd00::/8 table 4242 priority 41
+ExecStart=/usr/sbin/ip -6 rule add from fdc0:d227:306::/48 table 4242 priority 200
+ExecStart=/usr/sbin/ip -6 rule add to fd00::/8 table 4242 priority 250
 
-ExecStart=/usr/sbin/ip -4 rule add fwmark 4242 table 4242 priority 40
-ExecStart=/usr/sbin/ip -6 rule add fwmark 4242 table 4242 priority 40
+ExecStart=/usr/sbin/ip -4 rule add fwmark 4242 table 4242 priority 230
+ExecStart=/usr/sbin/ip -6 rule add fwmark 4242 table 4242 priority 230
 
 ExecStart=/usr/sbin/ip -4 route add unreachable 0.0.0.0/0 table 4242 metric 2147483647
 ExecStart=/usr/sbin/ip -6 route add unreachable ::/0 table 4242 metric 2147483647
@@ -27,16 +27,16 @@ ExecStart=/usr/sbin/ip -6 route add unreachable ::/0 table 4242 metric 214748364
 ExecStop=-/usr/sbin/ip -6 route delete unreachable ::/0 table 4242 metric 2147483647
 ExecStop=-/usr/sbin/ip -4 route delete unreachable 0.0.0.0/0 table 4242 metric 2147483647
 
-ExecStop=-/usr/sbin/ip -6 rule delete fwmark 4242 table 4242 priority 40
-ExecStop=-/usr/sbin/ip -4 rule delete fwmark 4242 table 4242 priority 40
+ExecStop=-/usr/sbin/ip -6 rule delete fwmark 4242 table 4242 priority 230
+ExecStop=-/usr/sbin/ip -4 rule delete fwmark 4242 table 4242 priority 230
 
-ExecStop=-/usr/sbin/ip -6 rule delete to fd00::/8 table 4242 priority 41
-ExecStop=-/usr/sbin/ip -6 rule delete from fdc0:d227:306::/48 table 4242 priority 40
+ExecStop=-/usr/sbin/ip -6 rule delete to fd00::/8 table 4242 priority 250
+ExecStop=-/usr/sbin/ip -6 rule delete from fdc0:d227:306::/48 table 4242 priority 200
 
-ExecStop=-/usr/sbin/ip -4 rule delete to 10.0.0.0/8 table 4242 priority 41
-ExecStop=-/usr/sbin/ip -4 rule delete to 172.31.0.0/16 table 4242 priority 41
-ExecStop=-/usr/sbin/ip -4 rule delete to 172.20.0.0/14 table 4242 priority 41
-ExecStop=-/usr/sbin/ip -4 rule delete from 172.23.6.160/27 table 4242 priority 40
+ExecStop=-/usr/sbin/ip -4 rule delete to 10.0.0.0/8 table 4242 priority 250
+ExecStop=-/usr/sbin/ip -4 rule delete to 172.31.0.0/16 table 4242 priority 250
+ExecStop=-/usr/sbin/ip -4 rule delete to 172.20.0.0/14 table 4242 priority 250
+ExecStop=-/usr/sbin/ip -4 rule delete from 172.23.6.160/27 table 4242 priority 200
 
 [Install]
 WantedBy=network-online.target
