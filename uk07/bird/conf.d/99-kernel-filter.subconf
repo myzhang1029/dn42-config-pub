@@ -9,19 +9,3 @@ filter kernel_import6 {
     if net ~ inet_netset_internal6 then accept;
     reject;
 }
-
-filter kernel_export4 {
-    if source = RTS_STATIC then reject;
-    # DN42 BGP routes use table 4242
-    # Internet BGP routes use table 211585
-    if source = RTS_BGP then reject;
-    accept;
-}
-
-filter kernel_export6 {
-    if source = RTS_STATIC then reject;
-    # DN42 BGP routes use table 4242
-    # Internet BGP routes use table 211585
-    if source = RTS_BGP then reject;
-    accept;
-}
