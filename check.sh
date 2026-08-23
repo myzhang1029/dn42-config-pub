@@ -73,6 +73,8 @@ find "$N" -follow -type f \! -path "$N/README.md" | {
                 # need to get another stdin to get the answer
                 read -r -p "Apply changes to $etcname? (y/n) " ans < /dev/tty
                 if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
+                    dir="$(dirname "$etcname")"
+                    mkdir -p "$dir"
                     cat "$name" > "$etcname"
                     updated=1
                 fi
