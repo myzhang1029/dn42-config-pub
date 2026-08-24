@@ -27,8 +27,8 @@ table inet main {
             tcp . 9080,
         }
     }
-    set dn42_bgp_src4 { type ipv4_addr }
-    set dn42_bgp_src6 { type ipv6_addr }
+    set dn42_bgp_src4 { type ipv4_addr; }
+    set dn42_bgp_src6 { type ipv6_addr; }
 
     # Public interface
     set public_interfaces {
