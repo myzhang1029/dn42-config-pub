@@ -90,8 +90,8 @@ chain input {
 
 chain output {
     type filter hook output priority filter; policy accept;
-    oifname "lo" accept
     tcp flags syn tcp option maxseg size set rt mtu
+    oifname "lo" accept
     jump filter_policy_drop_martian
     # Accept outbound traffic everywhere
 }
@@ -102,24 +102,29 @@ chain _forward_dn42 {
     iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } ip daddr @dn42_self_ipv4 notrack accept
     iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } ip6 saddr @dn42_self_ipv6 notrack accept
     iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } ip6 daddr @dn42_self_ipv6 notrack accept
-    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter name dn42_fwd_packets accept
+    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter name dn42_fwd_packets notrack accept
 }
 
 chain forward {
     type filter hook forward priority filter; policy drop;
+    tcp flags syn tcp option maxseg size set rt mtu
+    iifname "lo" accept
+
+    # Accept all traffic within the dn42 network without conntrack
+    jump _forward_dn42
+
     ct state { established, related } accept
     ct status dnat accept
-    iifname "lo" accept
-    tcp flags syn tcp option maxseg size set rt mtu
-    # Accept all traffic within the dn42 network
-    jump _forward_dn42
+
     # AS211585
     iifgroup { $inet_ifgroup, $internal_ifgroup } ip6 daddr @inet_self_ipv6_prefix counter accept
     oifgroup { $inet_ifgroup, $internal_ifgroup } ip6 saddr @inet_self_ipv6_prefix counter accept
     iifgroup { $inet_ifgroup, $internal_ifgroup } ip daddr @inet_self_ipv4_prefix counter accept
     oifgroup { $inet_ifgroup, $internal_ifgroup } ip saddr @inet_self_ipv4_prefix counter accept
+
     # Check system-specific configurations
     jump forward_machdep
+
     jump filter_policy_drop_martian
     iifgroup $inet_ifgroup counter drop
     ct state invalid log prefix "forward_STATE_INVALID_DROP: " drop
