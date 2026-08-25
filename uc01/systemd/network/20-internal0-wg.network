@@ -24,3 +24,9 @@ Address=fdc0:d227:306:2c01::1/128
 
 [Address]
 Address=fe80::2c01/64
+
+# No ipv4 full table here
+[Route]
+Destination=0.0.0.0/0
+Gateway=fe80::ca04
+Table=211585
