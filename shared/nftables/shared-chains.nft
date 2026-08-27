@@ -15,7 +15,7 @@
 #   Will be executed after input_everywhere and the dn42/internal input chains.
 #   Stuff from neither the internal nor dn42 interfaces, and not already accepted by input_everywhere either
 #
-# - chain forward_machdep (no hook), all fallthrough will be dropped
+# - chain forward_machdep (no hook), fallthrough will be forwarded if routable among dn42 or as211585
 #
 # - set dn42_self_ipv4 (type ipv4_addr), local dn42 IPv4 addresses
 # - set dn42_self_ipv6 (type ipv6_addr), local dn42 IPv6 addresses
@@ -115,12 +115,16 @@ chain forward {
     type filter hook forward priority filter; policy drop;
     tcp flags syn tcp option maxseg size set rt mtu
     iifname "lo" accept
-
-    # Accept all traffic within the dn42 network without conntrack
-    jump _forward_dn42
+    jump filter_policy_drop_martian
 
     ct state { established, related } accept
     ct status dnat accept
+
+    # Check system-specific configurations
+    jump forward_machdep
+
+    # Accept all traffic within the dn42 network without conntrack
+    jump _forward_dn42
 
     # AS211585
     iifgroup { $inet_ifgroup, $internal_ifgroup } ip6 daddr @inet_self_ipv6_prefix counter accept
@@ -128,10 +132,6 @@ chain forward {
     iifgroup { $inet_ifgroup, $internal_ifgroup } ip daddr @inet_self_ipv4_prefix counter accept
     oifgroup { $inet_ifgroup, $internal_ifgroup } ip saddr @inet_self_ipv4_prefix counter accept
 
-    # Check system-specific configurations
-    jump forward_machdep
-
-    jump filter_policy_drop_martian
     iifgroup $inet_ifgroup counter drop
     ct state invalid log prefix "forward_STATE_INVALID_DROP: " drop
     counter reject with icmpx admin-prohibited
