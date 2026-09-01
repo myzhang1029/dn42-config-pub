@@ -137,6 +137,14 @@ chain forward {
     counter reject with icmpx admin-prohibited
 }
 
+# [CVE-2021-3773] force port randomization for non-locally originated
+# connections using suspicious port values to prevent port-shadow
+# attacks, i.e. accidental matching of new inbound connections vs.
+# existing ones
+chain do_masquerade {
+    meta iif > 0 th sport < 16384 th dport >= 32768 masquerade random
+    masquerade
+}
 
 ### Protocol chains
 
