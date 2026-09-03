@@ -11,7 +11,7 @@ ListenPort=24208
 PrivateKeyFile=/etc/systemd/network/dn42.wgkey
 
 [WireGuardPeer]
-PublicKey=KHQbcp56QWwyQ5GAoFfTPZB/4o91ROmGXPeHAgXn31M=
+PublicKey=fyuyvz9e89d4ksJ9PKHHjVCTGB0z9dfLKWsw3KmKOz4=
 Endpoint=tyo-1.dn42.sironeko.moe:20893
 AllowedIPs=10.0.0.0/8
 AllowedIPs=172.20.0.0/14
