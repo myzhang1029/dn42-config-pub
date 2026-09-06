@@ -8,8 +8,8 @@ Wants=network-online.target
 [Service]
 Type=oneshot
 User=root
-EnvironmentFile=/etc/sysconfig/dn42-ds
-ExecStart=/usr/bin/fetch-dn42-ds.sh /etc/unbound/unbound.conf.d/39-dn42-ds.conf
+EnvironmentFile=-/etc/default/dn42-ds
+ExecStart=/usr/local/bin/fetch-dn42-ds.sh /etc/unbound/unbound.conf.d/39-dn42-ds.conf
 ExecStartPost=chmod 0644 /etc/unbound/unbound.conf.d/39-dn42-ds.conf
 CapabilityBoundingSet=CAP_FOWNER
 LockPersonality=true
