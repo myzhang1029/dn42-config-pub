@@ -25,7 +25,7 @@ RestrictNamespaces=true
 RestrictRealtime=true
 SystemCallArchitectures=native
 Restart=always
-ExecStart=/usr/local/bin/FlapAlerted -asn 4242420893 -routeChangeCounter 10 -httpAPIListenAddress '[::1]:8699'
+ExecStart=/usr/local/bin/FlapAlerted -asn 4242420893 -routeChangeCounter 120 -httpAPIListenAddress '[::1]:8699'
 
 [Install]
 WantedBy=multi-user.target
