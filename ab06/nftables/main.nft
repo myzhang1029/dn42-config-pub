@@ -64,7 +64,7 @@ table inet main {
     }
 
     chain nat_post {
-        type nat hook postrouting priority srcnat + 10; policy accept;
+        type nat hook postrouting priority srcnat; policy accept;
         iifname @lan_interfaces oifname @public_interfaces meta nfproto ipv4 jump do_masquerade
     }
 }
