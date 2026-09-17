@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wginternal0.conf.in
+# Internal WireGuard tunnel between be05 and ca04
+
+[Interface]
+ListenPort = 24301
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = Upm/5Bf8ZcXeGQ8ZyoIGnwcgCJnGhv4C3jRPc/kK+3I=
+AllowedIPs = ::/0, 0.0.0.0/0

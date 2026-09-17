@@ -1,0 +1,33 @@
+# vi: ft=systemd
+# /etc/systemd/system/network-internal-wg@.service
+
+[Unit]
+Description=Configure internal WireGuard tunnel internal$I
+Wants=network-online.target
+After=local-fs.target network-online.target systemd-sysctl.service systemd-modules-load.service
+Before=shutdown.target
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+EnvironmentFile=/etc/wireguard/wginternal%I.env
+
+# Config generation
+ExecStartPre=/bin/mkdir -p /var/tmp/wgconf
+ExecStartPre=/bin/sh -c 'sed "s,@PRIVATE_KEY@,$(cat /etc/wireguard/internal.wgkey)," /etc/wireguard/wginternal%I.conf.in > /var/tmp/wgconf/wginternal%I.conf'
+# Cleanup potential partial setup
+ExecStartPre=-/usr/sbin/ip link delete wginternal%I
+
+ExecStart=/usr/sbin/ip link add wginternal%I mtu $MTU group 4040 type wireguard
+ExecStart=/bin/sh -c 'for addr in $IFACE_ADDRS; do /usr/sbin/ip address add $addr dev wginternal%I; done'
+ExecStart=/usr/bin/wg setconf wginternal%I /var/tmp/wgconf/wginternal%I.conf
+ExecStart=/usr/sbin/ip link set wginternal%I up
+
+ExecReload=/usr/bin/wg syncconf wginternal%I /var/tmp/wgconf/wginternal%I.conf
+
+ExecStop=-/usr/sbin/ip link set wginternal%I down
+ExecStop=-/usr/sbin/ip link delete wginternal%I
+
+[Install]
+WantedBy=multi-user.target
