@@ -3,9 +3,9 @@
 
 [Unit]
 Description=Configure dn42 WireGuard tunnel $I
-Wants=network.target iprule-4242.service
-After=local-fs.target network-pre.target systemd-sysctl.service systemd-modules-load.service iprule-4242.service
-Before=network.target shutdown.target network-online.target
+Wants=network-online.target iprule-4242.service
+After=local-fs.target network-online.target systemd-sysctl.service systemd-modules-load.service iprule-4242.service
+Before=shutdown.target
 Conflicts=shutdown.target
 
 [Service]
@@ -31,5 +31,4 @@ ExecStop=-/usr/sbin/ip link set %I down
 ExecStop=-/usr/sbin/ip link delete %I
 
 [Install]
-WantedBy=network-online.target
 WantedBy=multi-user.target

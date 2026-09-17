@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -eu
 NODE="$1"
 SN="$NODE/systemd/network"
 WG="$NODE/wireguard"
@@ -13,7 +13,6 @@ for netdev in $SN/30-dn42-*.netdev; do
     endp="$(grep Endpoint= "$netdev" | cut -f2- -d=)"
     ourad="$(grep Address= "$network" | cut -f2- -d=)"
     peerad="$(grep Peer= "$network" | cut -f2- -d=)"
-    git rm "$netdev" "$network"
     cat > "$WG/$iface.conf.in" << EOFEOF
 # vi: ft=dosini
 # /etc/wireguard/$iface.conf.in
@@ -33,6 +32,7 @@ OUR_v6ADDR=$ourad
 PEER_v6ADDR=$peerad
 EOFEOF
     git add "$WG/$iface.conf.in" "$WG/$iface.env"
+    git rm "$netdev" "$network"
     NEED_ENABLE="$NEED_ENABLE network-dn42-wg@$iface.service"
 done
 
