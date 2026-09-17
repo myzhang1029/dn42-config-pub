@@ -16,63 +16,35 @@ class MakePeer:
     OUR_ASN = 4242420893
     DOMAIN = "dn42.maiyun.me"
     SITES = ("ca04", "jp02", "uc01")
-    BIRD_TEMPLATE = """protocol bgp {} from dnpeers {{
-    neighbor {}%{} as {};
+    BIRD_TEMPLATE = """protocol bgp {proto_name} from dnpeers {{
+    neighbor {addr}%{iface} as {asn};
     direct;
 }}
 """
-    SYSTEMD_NETDEV_TEMPLATE = """# vi: ft=systemd
-# /etc/systemd/network/{}.netdev
-
-[NetDev]
-Name={}
-Kind=wireguard
-Description={}
-
-[WireGuard]
-ListenPort={}
-PrivateKeyFile=/etc/systemd/network/dn42.wgkey
-
-[WireGuardPeer]
-PublicKey={}{}
-AllowedIPs=10.0.0.0/8
-AllowedIPs=172.20.0.0/14
-AllowedIPs=172.31.0.0/16
-AllowedIPs=fd00::/8
-AllowedIPs=fe80::/64
+    WG_ENV_TEMPLATE = """
+MTU={mtu}
+OUR_LLADDR={our}
+PEER_LLADDR={peer}
 """
-    SYSTEMD_NETWORK_TEMPLATE = """# vi: ft=systemd
-# /etc/systemd/network/{}.network
+    WG_CONF_TEMPLATE = """# vi: ft=dosini
+# /etc/wireguard/{iface}.conf.in
 
-[Match]
-Name={}
+[Interface]
+ListenPort = {listen_port}
+PrivateKey = @PRIVATE_KEY@
 
-[Link]
-RequiredForOnline=degraded:routable
-RequiredFamilyForOnline=ipv6
-Group=4242
-
-[Network]
-Description={}
-DHCP=no
-IPv6AcceptRA=false
-IPv4ReversePathFilter=no
-IPv4Forwarding=yes
-IPv6Forwarding=yes
-KeepConfiguration=yes
-
-[Address]
-Address={}
-Peer={}
+[Peer]
+PublicKey = {peer_pub_key}
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpoint}
 """
-    answers: dict[str, str] = {}
+    answers: dict[str, str]
 
     @property
-    def _systemd_network(self) -> Path:
+    def _wireguard(self) -> Path:
         if "site" not in self.answers:
             raise ValueError("site not set")
         site = self.answers["site"]
-        path = Path(f"{site}/systemd/network")
+        path = Path(f"{site}/wireguard")
         if not path.exists():
             path.mkdir(parents=True)
         return path
@@ -88,6 +60,7 @@ Peer={}
         return path
 
     def __init__(self) -> None:
+        self.answers = {}
         self.ask_questions()
         print("Will generate based on the following answers:")
         pprint(self.answers)
@@ -190,11 +163,11 @@ Peer={}
 
     def _ask_listen_port(self) -> int:
         """Ask for listening port and check for duplicates."""
-        netdevs = self._systemd_network.glob("30-dn42-*.netdev")
-        LOOKFOR = "ListenPort="
+        existing = self._wireguard.glob("*.conf.in")
+        LOOKFOR = "ListenPort ="
         site_used_ports = set()
-        for netdev in netdevs:
-            lines = netdev.open(encoding="utf-8").readlines()
+        for conf in existing:
+            lines = conf.open(encoding="utf-8").readlines()
             this_port = None
             for line in lines:
                 if line.startswith(LOOKFOR):
@@ -210,7 +183,7 @@ Peer={}
         pprint(site_used_ports)
         while True:
             port = self._ask_numeric(
-                "Which port should we listen on?", default=list(available)[0]
+                "Which port should we listen on?", default=next(iter(available))
             )
             if port not in site_used_ports and port in self.PORT_RANGE:
                 return port
@@ -224,10 +197,10 @@ Peer={}
         print()
         self.answers["asn"] = str(self._ask_numeric("What is the peer ASN?", "AS"))
         self.answers["pname"] = self._ask_string(
-            "What is a descriptive name for the peer?"
+            "What is a descriptive short name for the peer?"
         )
         self.answers["ploc"] = self._ask_string(
-            "What is a descriptive location for the peer?"
+            "What is a descriptive location code for the peer?"
         )
         self._generate_names()
         self.answers["ppub"] = self._ask_wgkey("What is the peer's public key?")
@@ -241,7 +214,7 @@ Peer={}
         asn_lastfour = int(str(self.answers["asn"])[-4:])
         maybe = f"fe80::{asn_lastfour}"
         self.answers["peeraddr"] = self._ask_string(
-            f"What is the peer's IPv6 link-local address?", default=maybe
+            "What is the peer's IPv6 link-local address?", default=maybe
         )
         if "/" not in self.answers["peeraddr"]:
             self.answers["peeraddr"] += "/64"
@@ -255,40 +228,22 @@ Peer={}
         """Generate interface, file, and bird names."""
         # WireGuard interface name
         if len(self.answers["pname"] + self.answers["ploc"]) > 10:
-            print(
-                "Warning: names are too long, please specify a shorter name for the interface name generation"
-            )
-        maybe = self._translate_underscore(self.answers["pname"].lower())
-        short_name = self._ask_string(
-            f"What is the short name for the peer?", default=maybe
-        )
-        maybe = self._translate_underscore(self.answers["ploc"].lower())
-        short_loc = self._ask_string(
-            f"What is the short location for the peer?", default=maybe
-        )
+            print("Warning: names are too long, please specify a shorter interface name")
+        short_name = self._translate_underscore(self.answers["pname"].lower())
+        short_loc = self._translate_underscore(self.answers["ploc"].lower())
         maybe = "wg{}{}{}".format(str(self.answers["asn"])[-4:], short_name, short_loc)
-        iface_name = self._ask_string(
-            f"The interface name for the peer?", default=maybe
-        )
-        # systemd-networkd and BIRD configuration file names
-        maybe = "30-dn42-{}-{}".format(short_name, short_loc)
-        file_name = self._ask_string(
-            f"The file name prefix for the peer?", default=maybe
-        )
-        # systemd-networkd description
-        maybe = f"WireGuard tunnel to AS{self.answers['asn']} {self.answers['pname']} {self.answers['ploc']}"
-        systemd_desc = (
-            self._ask_string(f"The description for the peer?", default=maybe) or maybe
-        )
+        iface_name = self._ask_string("A good interface name for the peer?", default=maybe)
+        # BIRD configuration file names
+        maybe = f"30-dn42-{short_name}-{short_loc}"
+        file_name = self._ask_string("A good file name for the peer?", default=maybe)
         # BIRD configuration name
-        maybe = "{}_{}".format(short_name, short_loc)
+        maybe = f"{short_name}_{short_loc}"
         bird_name = self._ask_string(
-            f"The BIRD configuration name for the peer?", default=maybe
+            "A good BIRD configuration name for the peer?", default=maybe
         )
         # Save the names
         self.answers["iface"] = iface_name
         self.answers["file"] = file_name
-        self.answers["systemd"] = systemd_desc
         self.answers["bird"] = self._translate_underscore(bird_name)
 
     def _maybe_write_file(self, file: Path, content: str) -> None:
@@ -305,40 +260,36 @@ Peer={}
         """Generate the BIRD configuration."""
         peerip_nocidr = self.answers["peeraddr"].split("/")[0]
         bird = self.BIRD_TEMPLATE.format(
-            self.answers["bird"],
-            peerip_nocidr,
-            self.answers["iface"],
-            self.answers["asn"],
+            proto_name=self.answers["bird"],
+            addr=peerip_nocidr,
+            iface=self.answers["iface"],
+            asn=self.answers["asn"],
         )
         file = self._birdconf / f"{self.answers['file']}.conf"
         self._maybe_write_file(file, bird)
 
-    def _generate_netdev(self) -> None:
-        """Generate the systemd-networkd .netdev file."""
-        netdev = self.SYSTEMD_NETDEV_TEMPLATE.format(
-            self.answers["file"],
-            self.answers["iface"],
-            self.answers["systemd"],
-            self.answers["listen_port"],
-            self.answers["ppub"],
-            f"\nEndpoint={self.answers['endpoint']}"
+    def _generate_wg_conf(self) -> None:
+        """Generate /etc/wireguard/{iface}.conf.in."""
+        conf = self.WG_CONF_TEMPLATE.format(
+            iface=self.answers["iface"],
+            listen_port=self.answers["listen_port"],
+            peer_pub_key=self.answers["ppub"],
+            endpoint=f"\nEndpoint={self.answers['endpoint']}"
             if self.answers["endpoint"]
             else "",
         )
-        file = self._systemd_network / f"{self.answers['file']}.netdev"
-        self._maybe_write_file(file, netdev)
+        file = self._wireguard / f"{self.answers['iface']}.conf.in"
+        self._maybe_write_file(file, conf)
 
-    def _generate_network(self) -> None:
-        """Generate the systemd-networkd .network file."""
-        network = self.SYSTEMD_NETWORK_TEMPLATE.format(
-            self.answers["file"],
-            self.answers["iface"],
-            self.answers["systemd"],
-            self.answers["ownaddr"],
-            self.answers["peeraddr"],
+    def _generate_wg_env(self) -> None:
+        """Generate /etc/wireguard/{iface}.env."""
+        envf = self.WG_ENV_TEMPLATE.format(
+            mtu=1420,
+            our=self.answers["ownaddr"],
+            peer=self.answers["peeraddr"],
         )
-        file = self._systemd_network / f"{self.answers['file']}.network"
-        self._maybe_write_file(file, network)
+        file = self._wireguard / f"{self.answers['iface']}.env"
+        self._maybe_write_file(file, envf)
 
     def _add_interface_to_firewall(self) -> None:
         """Add the interface and the WG port to nftables/main.nft."""
@@ -395,8 +346,8 @@ Peer={}
 
     def _generate_files(self) -> None:
         """Generate the configuration files."""
-        self._generate_netdev()
-        self._generate_network()
+        self._generate_wg_env()
+        self._generate_wg_conf()
         self._generate_bird()
         self._add_interface_to_firewall()
 
