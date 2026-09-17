@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1888imlhtyo.conf.in
+
+[Interface]
+ListenPort = 24288
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = HND/VBClYdfCqAKGFmapwqOxg/KluPcv2u30rjD8+gk=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = jp1.dn42.ni.sb:20893
