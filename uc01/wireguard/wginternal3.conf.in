@@ -1,0 +1,12 @@
+# vi: ft=dosini
+# /etc/wireguard/wginternal3.conf.in
+# Internal WireGuard tunnel between jp02 and uc01
+
+[Interface]
+ListenPort = 24303
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = kegyJkWyQHjqa9n2XDr/u+daAC6Iw+C/CVqRyBTrNhw=
+AllowedIPs = ::/0, 0.0.0.0/0
+Endpoint = jp02.dn42.maiyun.me:24303

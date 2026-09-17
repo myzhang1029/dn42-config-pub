@@ -2,7 +2,7 @@
 # /etc/systemd/system/network-dn42-wg@.service
 
 [Unit]
-Description=Configure dn42 WireGuard tunnel $I
+Description=Configure dn42 WireGuard tunnel %I
 Wants=network-online.target iprule-4242.service
 After=local-fs.target network-online.target systemd-sysctl.service systemd-modules-load.service
 Before=shutdown.target

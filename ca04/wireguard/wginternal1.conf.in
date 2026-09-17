@@ -1,5 +1,5 @@
 # vi: ft=dosini
-# /etc/wireguard/wginternal0.conf.in
+# /etc/wireguard/wginternal1.conf.in
 # Internal WireGuard tunnel between be05 and ca04
 
 [Interface]
