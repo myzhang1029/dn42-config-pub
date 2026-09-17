@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1240pflbca01.conf.in
+
+[Interface]
+ListenPort = 24211
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = GKUu2Jk49pStCQyK/YUDrGF02JsZhggQBSXk8KlxXAM=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = ca-01.prefixlabs.net:20893

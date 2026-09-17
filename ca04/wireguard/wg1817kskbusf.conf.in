@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1817kskbusf.conf.in
+
+[Interface]
+ListenPort = 24204
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = dZzVdXbQPnWPpHk8QfW/p+MfGzAkMBuWpxEIXzQCggY=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = 4.us.kskb.eu.org:20893

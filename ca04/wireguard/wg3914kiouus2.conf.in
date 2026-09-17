@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg3914kiouus2.conf.in
+
+[Interface]
+ListenPort = 24205
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = 6Cylr9h1xFduAO+5nyXhFI1XJ0+Sw9jCpCDvcqErF1s=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = us2.g-load.eu:20893

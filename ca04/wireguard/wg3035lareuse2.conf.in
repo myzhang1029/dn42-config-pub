@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg3035lareuse2.conf.in
+
+[Interface]
+ListenPort = 24209
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = AREskFoxP2cd6DXoJ7druDsiWKX+8TwrkQqfi4JxRRw=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = use2.dn42.lare.cc:20893

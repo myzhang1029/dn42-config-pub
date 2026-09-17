@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg2189iedonnyc.conf.in
+
+[Interface]
+ListenPort = 24215
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = 2Wmv10a9eVSni9nfZ7YPsyl3ZC5z7vHq0sTZGgk5WGo=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = us-nyc.dn42.iedon.net:36456

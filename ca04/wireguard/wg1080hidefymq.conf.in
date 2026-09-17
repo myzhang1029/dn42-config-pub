@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1080hidefymq.conf.in
+
+[Interface]
+ListenPort = 24216
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = YrlNsVP9bbTqNuNyQ/MVFzulZKNW5vMaDMzHVFNXSSE=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = ymq.peer.highdef.network:20893

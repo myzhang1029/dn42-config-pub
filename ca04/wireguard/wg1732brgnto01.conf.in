@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1732brgnto01.conf.in
+
+[Interface]
+ListenPort = 24212
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = OrIhRR7m2fX1D8Qsi1L9l1LJfHi+Jb4Xecxrwxjq0FY=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = chr-to01.as215887.net:20893

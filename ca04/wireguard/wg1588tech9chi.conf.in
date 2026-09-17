@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1588tech9chi.conf.in
+
+[Interface]
+ListenPort = 24258
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = 0kb8ffMcbx8oXZ3Ii5khOuCzmRqM2Cy0IslmrWtRGSk=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = us-chi01.dn42.tech9.io:59369
