@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg3377lezilos.conf.in
+
+[Interface]
+ListenPort = 24203
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = Xzt9UrH2moj84QSH0jsw8Zj+jwXwdBLpApe4hHyfnAw=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = los1-us.peer.dn42.leziblog.com:20893

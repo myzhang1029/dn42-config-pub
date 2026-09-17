@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1240pflbus03.conf.in
+
+[Interface]
+ListenPort = 24211
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = oNabDMpFKum4CRbvPcwVE0Y4QsAfH0Sh439dfQYhnkQ=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = us-03.prefixlabs.net:20893

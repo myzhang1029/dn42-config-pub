@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg0207rbitslax.conf.in
+
+[Interface]
+ListenPort = 24207
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = s4uGYMeLV30vO/Z3+c1qrg/YA1eIMRVFYUsZEGD1hH8=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = router.lax1.routedbits.com:50893

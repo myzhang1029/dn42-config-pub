@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg2016sdrlphx.conf.in
+
+[Interface]
+ListenPort = 24213
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = 3hy0FIf64sxSVLY6/CwhtMfCmQEkG5hsyKxM/Dttvz0=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = phx1.dn42.sidereal.ca:20893

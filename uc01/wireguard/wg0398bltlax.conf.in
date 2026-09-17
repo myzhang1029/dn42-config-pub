@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg0398bltlax.conf.in
+
+[Interface]
+ListenPort = 24240
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = oAPy0U2qVuSR8PyPLmVLEgWLBKrOq4kcLNLAOVZL10M=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = lax.dn42.boletus.icu:20893

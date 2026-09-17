@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1216srykLV.conf.in
+
+[Interface]
+ListenPort = 24216
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = vP7tl7bcXIVprCz0xlLhNYhLH0kMuifODtJ/X3g/5RY=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = zero.sakurano.date:20893

@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg3797bawuslax1.conf.in
+
+[Interface]
+ListenPort = 24272
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = xQdTyVYKvF3tzKlRvORGv29e1/0sj014BnqBBrz+Dlk=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = us-lax1.rc.badaimweeb.me:50010

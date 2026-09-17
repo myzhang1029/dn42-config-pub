@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg0253moe233lv.conf.in
+
+[Interface]
+ListenPort = 24215
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = C3SneO68SmagisYQ3wi5tYI2R9g5xedKkB56Y7rtPUo=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = lv.dn42.moe233.net:20893
