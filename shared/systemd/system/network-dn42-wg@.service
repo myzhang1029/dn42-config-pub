@@ -15,7 +15,7 @@ EnvironmentFile=/etc/wireguard/%I.env
 
 # Config generation
 ExecStartPre=/bin/mkdir -p /var/tmp/wgconf
-ExecStartPre=/bin/sh -c 'sed "s/@PRIVATE_KEY@/$(cat /etc/wireguard/dn42.wgkey)/" /etc/wireguard/%I.conf.in > /var/tmp/wgconf/%I.conf'
+ExecStartPre=/bin/sh -c 'sed "s,@PRIVATE_KEY@,$(cat /etc/wireguard/dn42.wgkey)," /etc/wireguard/%I.conf.in > /var/tmp/wgconf/%I.conf'
 # Cleanup potential partial setup
 ExecStartPre=-/usr/sbin/ip link delete %I
 
