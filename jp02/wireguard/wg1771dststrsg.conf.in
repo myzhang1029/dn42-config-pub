@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1771dststrsg.conf.in
+
+[Interface]
+ListenPort = 24212
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = 1cBgDK3+i0Yw3oguDAU0MxbU9E/I30JS6qMedx8ZKAk=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = sg1.exploro.one:32593

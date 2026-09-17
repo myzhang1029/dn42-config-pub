@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg2189iedongrc.conf.in
+
+[Interface]
+ListenPort = 24210
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = T/s3VJ2c3Evr4Ie2OEXsAWKsRImd1cIzE1UvEpVOwSQ=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = hk.grc.dn42.iedon.net:44523

@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg3797bawjphnd1.conf.in
+
+[Interface]
+ListenPort = 24272
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = WaZeqXfSRRr/O2tWoDBB6a8LQHuI8TsXTtPOTKYUilk=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = jp-hnd1.rc.badaimweeb.me:50011

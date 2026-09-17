@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1816potat0hkg.conf.in
+
+[Interface]
+ListenPort = 24202
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = Tv1+HniELrS4Br2i7oQgwqBJFXQKculsW8r+UOqQXH0=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = hkg.node.potat0.cc:20893

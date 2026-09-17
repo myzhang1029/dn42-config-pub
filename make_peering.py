@@ -21,10 +21,9 @@ class MakePeer:
     direct;
 }}
 """
-    WG_ENV_TEMPLATE = """
-MTU={mtu}
-OUR_LLADDR={our}
-PEER_LLADDR={peer}
+    WG_ENV_TEMPLATE = """MTU={mtu}
+OUR_v6ADDR={our}
+PEER_v6ADDR={peer}
 """
     WG_CONF_TEMPLATE = """# vi: ft=dosini
 # /etc/wireguard/{iface}.conf.in

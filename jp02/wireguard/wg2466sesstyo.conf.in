@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg2466sesstyo.conf.in
+
+[Interface]
+ListenPort = 24205
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = EIYmoupHpwCAc5T5In9QDN868e6MITcgBVsRTDZGJGw=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = neon-led.xhustudio.eu.org:20893

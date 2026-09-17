@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1573tyo.conf.in
+
+[Interface]
+ListenPort = 24208
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = fyuyvz9e89d4ksJ9PKHHjVCTGB0z9dfLKWsw3KmKOz4=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = tyo-1.dn42.sironeko.moe:20893

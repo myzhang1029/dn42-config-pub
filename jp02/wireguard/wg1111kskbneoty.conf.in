@@ -1,0 +1,10 @@
+# vi: ft=dosini
+# /etc/wireguard/wg1111kskbneoty.conf.in
+
+[Interface]
+ListenPort = 24206
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = 2CxGhL9UwlCB3ybwD1OF2Or18vCPgChS0rdh3Nc8S0c=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8

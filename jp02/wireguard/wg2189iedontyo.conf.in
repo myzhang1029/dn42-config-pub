@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg2189iedontyo.conf.in
+
+[Interface]
+ListenPort = 24203
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = u2ImAJn9ewce9YHN6HaqrR3Sr4Xsy5UaaJOLJ7gkSzs=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint = jp-tyo.dn42.kuu.moe:56648
