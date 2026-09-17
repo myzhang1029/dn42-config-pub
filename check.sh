@@ -6,6 +6,7 @@ qopt="-q"
 filt="filtand"
 N=""
 apply="0"
+yes="0"
 
 filtand() {
     sed "s/ and//"
@@ -37,6 +38,9 @@ while [ -n "$1" ]; do
             qopt="--unified=1"
             filt="cat"
             ;;
+       -y)
+            yes="1"
+           ;;
         --)
             shift
             break
@@ -58,7 +62,7 @@ while [ -n "$1" ]; do
 done
 
 if [ -z "$N" ]; then
-    echo "Usage: $0 [-av] name"
+    echo "Usage: $0 [-avy] name"
     exit 1
 fi
 
@@ -70,14 +74,17 @@ find "$N" -follow -type f \! -path "$N/README.md" | {
         if ! diffout="$(diff "$qopt" "$name" "$etcname")"; then
             echo "$diffout" | $filt
             if [ "$apply" -eq 1 ]; then
-                # need to get another stdin to get the answer
-                read -r -p "Apply changes to $etcname? (y/n) " ans < /dev/tty
-                if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
-                    dir="$(dirname "$etcname")"
-                    mkdir -p "$dir"
-                    cat "$name" > "$etcname"
-                    updated=1
+                if [ "$yes" -ne 1 ]; then
+                    # need to get another stdin to get the answer
+                    read -r -p "Apply changes to $etcname? (y/n) " ans < /dev/tty
+                    if [ "$ans" != "y" ] && [ "$ans" != "Y" ]; then
+                        continue
+                    fi
                 fi
+                dir="$(dirname "$etcname")"
+                mkdir -p "$dir"
+                cat "$name" > "$etcname"
+                updated=1
             fi
         fi
     done

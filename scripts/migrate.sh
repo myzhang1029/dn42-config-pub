@@ -2,6 +2,7 @@
 NODE="$1"
 SN="$NODE/systemd/network"
 WG="$NODE/wireguard"
+NEED_ENABLE=""
 
 for netdev in $SN/30-dn42-*.netdev; do
     network="$(echo "$netdev" | sed 's/\.netdev$/.network/')"
@@ -32,4 +33,7 @@ OUR_v6ADDR=$ourad
 PEER_v6ADDR=$peerad
 EOFEOF
     git add "$WG/$iface.conf.in" "$WG/$iface.env"
+    NEED_ENABLE="$NEED_ENABLE network-dn42-wg@$iface.service"
 done
+
+echo "Enable these new services: $NEED_ENABLE"
