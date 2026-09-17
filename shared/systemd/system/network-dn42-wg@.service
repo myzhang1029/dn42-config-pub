@@ -21,7 +21,7 @@ ExecStartPre=-/usr/sbin/ip link delete %I
 
 ExecStart=/usr/sbin/ip link add %I mtu $MTU group 4242 type wireguard
 ExecStart=/usr/sbin/ip address add $OUR_v6ADDR peer $PEER_v6ADDR dev %I
-ExecStart=/bin/sh -c '[ -n "$OUR_v4ADDR" ] && /usr/sbin/ip address add $OUR_v4ADDR peer $PEER_v4ADDR dev %I'
+ExecStart=/bin/sh -c 'if [ -n "$OUR_v4ADDR" ]; then /usr/sbin/ip address add $OUR_v4ADDR peer $PEER_v4ADDR dev %I; fi'
 ExecStart=/usr/bin/wg setconf %I /var/tmp/wgconf/%I.conf
 ExecStart=/usr/sbin/ip link set %I up
 
