@@ -1,0 +1,19 @@
+# vi: ft=systemd
+# /etc/systemd/system/network-dn42-ztrnctts5x.service
+
+[Unit]
+Description=Set up ztrnctts5x, ZeroTier Nedifinita IX connection
+Wants=network.target
+After=local-fs.target zerotier-one.service
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/sbin/ip link set ztrnctts5x group 4242
+ExecStartPre=-/usr/sbin/ip route delete fd10:127:42:ffff::/64 dev ztrnctts5x table 4242
+ExecStart=/usr/sbin/ip route add fd10:127:42:ffff::/64 dev ztrnctts5x table 4242
+ExecStop=/usr/sbin/ip route delete fd10:127:42:ffff::/64 dev ztrnctts5x table 4242
+
+[Install]
+WantedBy=multi-user.target

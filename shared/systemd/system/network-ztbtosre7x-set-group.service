@@ -1,0 +1,16 @@
+# vi: ft=systemd
+# /etc/systemd/system/network-ztbtosre7x-set-group.service
+
+[Unit]
+Description=Set group on ztbtosre7x
+Wants=network.target
+After=local-fs.target zerotier-one.service
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/sbin/ip link set ztbtosre7x group 4040
+
+[Install]
+WantedBy=multi-user.target
