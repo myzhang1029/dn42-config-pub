@@ -1,5 +1,5 @@
 # dn42-config
-Internet configuration files for AS4242420893 and related devices
+Internet configuration files for AS4242420893, AS211585, and related devices
 
 
 ## For AutoPeer
@@ -11,12 +11,16 @@ Run
 and follow the dialog to create new peerings.
 
 
-## Address Space Plan
-`172.23.6.160/28` for routing and ZeroTier allocation. Its IPv6 range is `fdc0:d227:306:ee01::/112`.
+## dn42 IPAM
+`172.23.6.160/28` for routing and ZeroTier allocation. No IPv4 unless necessary.
+ZeroTier's IPv6 range is `fdc0:d227:306:ee01::/112`.
 
-In general, each router (and thus each site) gets a `/64` (in addition to the ZeroTier `/128` if there is one).
+In general, each router gets a `/64` (in addition to the ZeroTier `/128` if there is one) for the
+host itself, and its site gets a `/56`.
 
 My personal LANs allocate from `fdc0:d227:306:be00::/56` (might use SLAAC and is IPv6-only).
+
+AS211585 IPAM is similar but not disclosed in detail.
 
 ## Firewall Design
 
@@ -28,7 +32,7 @@ The overall idea is that all interfaces can be classified into these categories:
 5. Possibly other interconnections
 
 For transits over physical connections, the interface is classified as both 1. and 4.
-(Hopefully other types of shared interfaces would use either VLAN or some other form of separation.)
+(Other types of shared interfaces would use either VLAN or some other form of separation.)
 
 ### Input Chain
 Idea:
@@ -46,8 +50,6 @@ The input chain evaluates the following in order:
 All dn42 traffic fowards without conntrack.
 
 AS211585 traffic forwards if the source/destination is in the AS211585 address space or AS cone.
-
-
 ## Route Tables
 
 ### Bird Tables
@@ -74,3 +76,20 @@ We mark tunnel interfaces as `wireless` so that missing `hello`s will continuous
 According to [FRR's manual](https://docs.frrouting.org/en/latest/babeld.html):
 > Specifies whether this interface is wireless, which disables a number of optimisations that are only correct on wired interfaces.
 > Specifying wireless (the default) is always correct, but may cause slower convergence and extra routing traffic.
+
+## BGP local pref
+These BGP local preference shift values (loosely) define the routing policy:
+- 100: base
+- Connection types:
+  - +70: Physical (including VLAN-based) connection
+  - +40: Same-city tunnel connection
+  - 0: Some average tunnel connection with stable underlying backbone
+  - -40: Long tunnel connection
+- Routing security:
+  - +10: ASPA valid (current unimplemented)
+  - +10: RPKI valid
+  - reject: RPKI invalid
+- AS path length:
+  - +30: Direct AS neighbour (i.e. =1)
+  - -50: (inet) > 16; (dn42) > 8 (in addition, such routes are not exported to peers)
+  - reject: (inet) > 64; (dn42) > 16
