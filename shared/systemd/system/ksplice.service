@@ -1,0 +1,29 @@
+# vi: ft=systemd
+# /etc/systemd/system/ksplice.service
+
+# From /etc/cron.d/ksplice:
+# /etc/cron.d/ksplice: cron job for the Ksplice client
+#
+# PLEASE DO NOT MODIFY THIS CRON JOB.
+# Instead, contact Ksplice Support at ksplice-support_ww@oracle.com.
+#
+# The offsets below are chosen specifically to distribute server load
+# and allow for Ksplice server maintenance windows. This cron job
+# also only contacts the Ksplice server every Nth time it runs,
+# depending on a load control setting on the Ksplice server.
+#
+# If you would like to adjust the frequency with which your
+# systems check for updates, please contact Ksplice Support at
+# ksplice-support_ww@oracle.com
+
+[Unit]
+Description=cron job for the Ksplice client
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ExecCondition=/usr/bin/test -x /usr/bin/ksplice
+ExecStart=/usr/bin/ksplice --cron all upgrade

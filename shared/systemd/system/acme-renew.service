@@ -1,0 +1,38 @@
+# vi: ft=systemd
+# /etc/systemd/system/acme-renew.service
+
+# semanage fcontext -a -t bin_t '/root/\.acme\.sh/acme\.sh'
+# semanage fcontext -a -t var_t '/root/\.acme\.sh(/.*)?'
+
+[Unit]
+Description=acme.sh certificate renewal
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/root/.acme.sh/acme.sh --cron --home /root/.acme.sh
+CapabilityBoundingSet=CAP_SETUID CAP_SETGID CAP_DAC_OVERRIDE
+LockPersonality=true
+MemoryDenyWriteExecute=true
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+ProcSubset=pid
+ProtectClock=true
+ProtectControlGroups=true
+# ProtectHome=false
+ProtectHostname=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectKernelTunables=true
+ProtectProc=invisible
+ProtectSystem=strict
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+ReadWritePaths=/root/.acme.sh /etc/acmesh
