@@ -77,11 +77,12 @@ According to [FRR's manual](https://docs.frrouting.org/en/latest/babeld.html):
 > Specifies whether this interface is wireless, which disables a number of optimisations that are only correct on wired interfaces.
 > Specifying wireless (the default) is always correct, but may cause slower convergence and extra routing traffic.
 
-## BGP local pref
-These BGP local preference shift values (loosely) define the routing policy:
+## BGP exit policy
+These BGP local preference shift values (loosely) define the outbound routing policy:
 - 100: base
 - Connection types:
   - +70: Physical (including VLAN-based) connection
+  - +50: Almost physical (non-MTU-1500 tunnel transported over a LAN)
   - +40: Same-city tunnel connection
   - 0: Some average tunnel connection with stable underlying backbone
   - -40: Long tunnel connection

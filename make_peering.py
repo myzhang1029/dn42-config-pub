@@ -16,9 +16,18 @@ class MakePeer:
     OUR_ASN = 4242420893
     DOMAIN = "dn42.maiyun.me"
     SITES = ("ca04", "jp02", "uc01")
+    SITE_HEX = {"ca04": "ca04", "jp02": "aa02", "uc01": "2c01"}
     BIRD_TEMPLATE = """protocol bgp {proto_name} from dnpeers {{
     neighbor {addr}%{iface} as {asn};
     direct;
+    ipv4 {{
+        import where dn42_filter4im(0x{sitehex}, {asn}, 0, 0, 0);
+        export where dn42_filter4ex(0x{sitehex}, {asn}, 0);
+    }};
+    ipv6 {{
+        import where dn42_filter6im(0x{sitehex}, {asn}, 0, 0, 0);
+        export where dn42_filter6ex(0x{sitehex}, {asn}, 0);
+    }};
 }}
 """
     WG_ENV_TEMPLATE = """MTU={mtu}
@@ -205,7 +214,7 @@ AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpo
         self.answers["ppub"] = self._ask_wgkey("What is the peer's public key?")
         print("Note: if the peer does not have a public endpoint, leave this blank")
         self.answers["endpoint"] = self._ask_string(
-            "What is the endpoint for the peer?"
+            "What is the endpoint for the peer?", default=""
         )
         print(
             "Note: if the peer does not use IPv6LL, fill something else and manually edit the file"
@@ -263,6 +272,7 @@ AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpo
             addr=peerip_nocidr,
             iface=self.answers["iface"],
             asn=self.answers["asn"],
+            sitehex=self.SITE_HEX[self.answers["site"]],
         )
         file = self._birdconf / f"{self.answers['file']}.conf"
         self._maybe_write_file(file, bird)
