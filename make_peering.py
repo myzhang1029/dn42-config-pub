@@ -4,6 +4,7 @@
 import readline as _
 from pathlib import Path
 from pprint import pprint
+from types import MappingProxyType
 
 
 class MalformedConfig(Exception):
@@ -16,9 +17,11 @@ class MakePeer:
     OUR_ASN = 4242420893
     DOMAIN = "dn42.maiyun.me"
     SITES = ("ca04", "jp02", "uc01")
-    SITE_HEX = {"ca04": "ca04", "jp02": "aa02", "uc01": "2c01"}
+    SITE_HEX = MappingProxyType({"ca04": "ca04", "jp02": "aa02", "uc01": "2c01"})
+    DEFAULT_MTU = MappingProxyType({"ca04": 1420, "jp02": 1420, "uc01": 1420})
     BIRD_TEMPLATE = """protocol bgp {proto_name} from dnpeers {{
     neighbor {addr}%{iface} as {asn};
+    bfd {bfd};
     direct;
     ipv4 {{
         import where dn42_filter4im(0x{sitehex}, {asn}, 0, 0, 0);
@@ -130,13 +133,29 @@ AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpo
                 return default
             print("A response is required; try again\n")
 
-    @staticmethod
-    def _ask_wgkey(question: str, default: str | None = None) -> str:
-        """Ask for a WireGuard key."""
-        if not question.endswith(" "):
-            question += " "
+    @classmethod
+    def _ask_choices(
+        cls, question: str, choices: tuple[str, ...], default: str | None = None
+    ) -> str:
+        """Ask for a choice among a fixed set of possible options."""
         if default is not None:
-            question += f"[default: {default}] "
+            assert default in choices
+            question += f" [default: {default}]"
+        while True:
+            print(question)
+            for i, name in enumerate(choices):
+                print(f"{i + 1}. {name}")
+            answer = input("Answer: ").strip()
+            if not answer and default is not None:
+                return default
+            got = cls._parse_choice(choices, answer)
+            if got is not None:
+                return choices[got]
+            print("Invalid choice, try again.\n")
+
+    @classmethod
+    def _ask_wgkey(cls, question: str, default: str | None = None) -> str:
+        """Ask for a WireGuard key."""
 
         def valid_key(key: str) -> bool:
             if len(key) != 44:
@@ -147,7 +166,7 @@ AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpo
             return all(c.isalnum() for c in chrs)
 
         while True:
-            key = input(question).strip()
+            key = cls._ask_string(question, default)
             if valid_key(key):
                 return key
             print("Invalid key; try again\n")
@@ -159,15 +178,24 @@ AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpo
 
     def _ask_site(self) -> str:
         """Ask for a site name."""
+        return self._ask_choices("Which site is this peer for?", self.SITES)
+
+    def _ask_bfd(self) -> str:
+        """Ask for BFD support."""
+        return self._ask_choices(
+            "Do you wish to enable BFD?",
+            choices=("on", "off", "graceful"),
+            default="off",
+        )
+
+    def _ask_asn(self) -> str:
         while True:
-            print("Which site is this peer for?")
-            for i, name in enumerate(self.SITES):
-                print(f"{i + 1}. {name}")
-            choice = input("Answer: ").strip()
-            site = self._parse_choice(self.SITES, choice)
-            if site is not None:
-                return self.SITES[site]
-            print("Invalid choice, try again.\n")
+            asn = self._ask_numeric("What is the peer (your) ASN?", "AS")
+            if 0 < asn < 2**32:
+                if asn // 10000 != 424242:
+                    print("Warning: non-dn42 ASN")
+                return str(asn)
+            print("Bad ASN. Please try again.\n")
 
     def _ask_listen_port(self) -> int:
         """Ask for listening port and check for duplicates."""
@@ -199,11 +227,15 @@ AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpo
 
     def ask_questions(self) -> None:
         """Ask all questions."""
+        print(
+            "Nothing will be touched until the very last step. "
+            "You may therefore interrupt the program anytime should there be any mistake.\n"
+        )
         self.answers["site"] = self._ask_site()
         self.answers["listen_port"] = str(self._ask_listen_port())
         self._print_additional_info(pre=True)
         print()
-        self.answers["asn"] = str(self._ask_numeric("What is the peer ASN?", "AS"))
+        self.answers["asn"] = self._ask_asn()
         self.answers["pname"] = self._ask_string(
             "What is a descriptive short name for the peer?"
         )
@@ -212,14 +244,24 @@ AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpo
         )
         self._generate_names()
         self.answers["ppub"] = self._ask_wgkey("What is the peer's public key?")
-        print("Note: if the peer does not have a public endpoint, leave this blank")
+        print(
+            "\nNote: some nodes support MTU 9000. "
+            "If the PMTU is higher than 1500, you may want to use a higher value in the following question.\n"
+            "If your IPv[46] is tunneled or otherwise has a lower MTU than 1500, please also choose a value accordingly."
+        )
+        self.answers["wgmtu"] = str(
+            self._ask_numeric(
+                "What should the WireGuard interface's MTU be?", default=1420
+            )
+        )
+        print("\nNote: if the peer does not have a public endpoint, leave this blank")
         self.answers["endpoint"] = self._ask_string(
             "What is the endpoint for the peer?", default=""
         )
         print(
             "Note: if the peer does not use IPv6LL, fill something else and manually edit the file"
         )
-        asn_lastfour = int(str(self.answers["asn"])[-4:])
+        asn_lastfour = int(self.answers["asn"][-4:])
         maybe = f"fe80::{asn_lastfour}"
         self.answers["peeraddr"] = self._ask_string(
             "What is the peer's IPv6 link-local address?", default=maybe
@@ -231,16 +273,21 @@ AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpo
         )
         if "/" not in self.answers["ownaddr"]:
             self.answers["ownaddr"] += "/64"
+        self.answers["bfd"] = self._ask_bfd()
 
     def _generate_names(self) -> None:
         """Generate interface, file, and bird names."""
         # WireGuard interface name
         if len(self.answers["pname"] + self.answers["ploc"]) > 10:
-            print("Warning: names are too long, please specify a shorter interface name")
+            print(
+                "Warning: names are too long, please specify a shorter interface name"
+            )
         short_name = self._translate_underscore(self.answers["pname"].lower())
         short_loc = self._translate_underscore(self.answers["ploc"].lower())
-        maybe = "wg{}{}{}".format(str(self.answers["asn"])[-4:], short_name, short_loc)
-        iface_name = self._ask_string("A good interface name for the peer?", default=maybe)
+        maybe = "wg{}{}{}".format(self.answers["asn"][-4:], short_name, short_loc)
+        iface_name = self._ask_string(
+            "A good interface name for the peer?", default=maybe
+        )
         # BIRD configuration file names
         maybe = f"30-dn42-{short_name}-{short_loc}"
         file_name = self._ask_string("A good file name for the peer?", default=maybe)
@@ -273,6 +320,7 @@ AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpo
             iface=self.answers["iface"],
             asn=self.answers["asn"],
             sitehex=self.SITE_HEX[self.answers["site"]],
+            bfd=self.answers["bfd"],
         )
         file = self._birdconf / f"{self.answers['file']}.conf"
         self._maybe_write_file(file, bird)
@@ -293,7 +341,7 @@ AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpo
     def _generate_wg_env(self) -> None:
         """Generate /etc/wireguard/{iface}.env."""
         envf = self.WG_ENV_TEMPLATE.format(
-            mtu=1420,
+            mtu=self.answers["wgmtu"],
             our=self.answers["ownaddr"],
             peer=self.answers["peeraddr"],
         )
