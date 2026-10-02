@@ -1,2 +1,3 @@
 define dn42_thisaddr4 = 172.23.6.162;
 define dn42_thisaddr6 = fdc0:d227:306:aa02::1;
+define site_id = 0xaa02;

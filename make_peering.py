@@ -24,12 +24,12 @@ class MakePeer:
     bfd {bfd};
     direct;
     ipv4 {{
-        import where dn42_filter4im(0x{sitehex}, {asn}, 0, 0, 0);
-        export where dn42_filter4ex(0x{sitehex}, {asn}, 0);
+        import where dn42_filter4im({asn}, 0, 0, 0);
+        export where dn42_filter4ex({asn}, 0);
     }};
     ipv6 {{
-        import where dn42_filter6im(0x{sitehex}, {asn}, 0, 0, 0);
-        export where dn42_filter6ex(0x{sitehex}, {asn}, 0);
+        import where dn42_filter6im({asn}, 0, 0, 0);
+        export where dn42_filter6ex({asn}, 0);
     }};
 }}
 """
@@ -319,7 +319,6 @@ AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8{endpo
             addr=peerip_nocidr,
             iface=self.answers["iface"],
             asn=self.answers["asn"],
-            sitehex=self.SITE_HEX[self.answers["site"]],
             bfd=self.answers["bfd"],
         )
         file = self._birdconf / f"{self.answers['file']}.conf"
