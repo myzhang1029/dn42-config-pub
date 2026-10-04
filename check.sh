@@ -18,11 +18,11 @@ set_node_name() {
             N="$1"
         else
             echo "Unknown node name: $1"
-            exit 1
+            exit 2
         fi
     else
         echo "Only one positional argument allowed"
-        exit 1
+        exit 2
     fi
 }
 
@@ -47,7 +47,7 @@ while [ -n "$1" ]; do
             ;;
         -*)
             echo "Unknown option: $1"
-            exit 1
+            exit 2
             ;;
         *)
             set_node_name "$1"
@@ -63,7 +63,7 @@ done
 
 if [ -z "$N" ]; then
     echo "Usage: $0 [-avy] name"
-    exit 1
+    exit 2
 fi
 
 find "$N" -follow -type f \! -path "$N/README.md" | {
