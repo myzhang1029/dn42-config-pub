@@ -28,6 +28,9 @@ RestrictNamespaces=true
 RestrictSUIDSGID=true
 RestrictRealtime=true
 SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+SystemCallFilter=@setuid
 UMask=0077
 ExecStart=/usr/local/sbin/bird-lgproxy-go --allowed=fdc0:d227:306:ee01::1,fdc0:d227:306:ca04::1
 

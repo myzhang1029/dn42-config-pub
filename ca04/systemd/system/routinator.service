@@ -33,6 +33,7 @@ RestrictSUIDSGID=true
 StateDirectory=routinator
 SystemCallArchitectures=native
 SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
 UMask=0077
 
 [Install]
