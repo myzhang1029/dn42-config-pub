@@ -37,7 +37,7 @@ SEPOLICY_MK ?= /usr/share/selinux/devel/Makefile
 clean-selinux:
 	rm -f *.mod *.pp
 	rm -rf tmp
-	for f in *.fc *.if; do if [ ! -s $$file ]; then rm -f $$file; fi; done
+	for file in *.fc *.if; do if [ ! -s $$file ]; then rm -f $$file; fi; done
 
 
 ### Bird stuff
