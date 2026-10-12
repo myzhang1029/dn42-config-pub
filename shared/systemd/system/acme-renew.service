@@ -1,8 +1,12 @@
 # vi: ft=systemd
 # /etc/systemd/system/acme-renew.service
-
-# semanage fcontext -a -t bin_t '/root/\.acme\.sh/acme\.sh'
-# semanage fcontext -a -t var_t '/root/\.acme\.sh(/.*)?'
+#
+# useradd --system --home-dir /var/lib/acmesh --shell /sbin/nologin --create-home acmesh
+#
+# Write the reload commands in ExecStartPost instead of acmesh's reloadcmd
+# so that SELinux rules don't have to be overcomplicated
+#
+# Make the .well-known/acme-challenge directory mode 0775 and group acmesh
 
 [Unit]
 Description=acme.sh certificate renewal
@@ -11,9 +15,9 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-User=root
-ExecStart=/root/.acme.sh/acme.sh --cron --home /root/.acme.sh
-CapabilityBoundingSet=CAP_SETUID CAP_SETGID CAP_DAC_OVERRIDE
+User=acmesh
+ExecStart=/var/lib/acmesh/.acme.sh/acme.sh --cron --home /var/lib/acmesh/.acme.sh
+CapabilityBoundingSet=
 LockPersonality=true
 MemoryDenyWriteExecute=true
 NoNewPrivileges=true
@@ -22,7 +26,7 @@ PrivateTmp=true
 ProcSubset=pid
 ProtectClock=true
 ProtectControlGroups=true
-# ProtectHome=false
+ProtectHome=true
 ProtectHostname=true
 ProtectKernelModules=true
 ProtectKernelLogs=true
@@ -35,4 +39,4 @@ RestrictRealtime=true
 RestrictSUIDSGID=true
 SystemCallArchitectures=native
 SystemCallFilter=@system-service
-ReadWritePaths=/root/.acme.sh /etc/acmesh
+ReadWritePaths=/var/lib/acmesh /etc/acmesh
