@@ -91,7 +91,7 @@ chain input {
     # Order doesn't really matter for the following two
     iifgroup { $dn42_ifgroup, $internal_ifgroup } jump _input_dn42
     jump input_machdep
-    counter reject with icmpx admin-prohibited
+    counter drop
 }
 
 chain output {
@@ -133,7 +133,7 @@ chain forward {
     oifgroup { $inet_ifgroup, $internal_ifgroup } ip saddr @inet_self_ipv4_prefix counter accept
 
     iifgroup $inet_ifgroup counter drop
-    ct state invalid log prefix "forward_STATE_INVALID_DROP: " drop
+    ct state invalid drop
     counter reject with icmpx admin-prohibited
 }
 
@@ -159,7 +159,7 @@ chain _input_allow_ct_lo {
     ct state { established, related } accept
     ct status dnat accept
     iifname "lo" accept
-    ct state invalid log prefix "input_STATE_INVALID_DROP: " drop
+    ct state invalid drop
 }
 
 chain filter_policy_drop_martian {
