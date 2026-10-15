@@ -71,7 +71,7 @@ chain _input_internal {
 # Always accept (iface and daddr-based) inet traffic before this chain
 chain _input_dn42 {
     ip6 saddr fe80::/64 meta l4proto . th dport { tcp . bgp, udp . bfd-control } accept
-    iifgroup $internal_ifgroup ip6 saddr @dn42_self_ipv6_prefix meta l4proto . th dport { tcp . bgp, udp . bfd-control } accept
+    iifgroup $internal_ifgroup ip6 saddr @dn42_self_ipv6_prefix meta l4proto . th dport { tcp . bgp, udp . bfd-control, udp . bfd-multi-ctl } accept
     ip saddr @dn42_bgp_src4 meta l4proto . th dport { tcp . bgp, udp . bfd-control } accept
     ip6 saddr @dn42_bgp_src6 meta l4proto . th dport { tcp . bgp, udp . bfd-control } accept
     iifgroup $internal_ifgroup jump _input_internal
