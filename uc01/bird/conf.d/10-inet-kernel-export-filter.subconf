@@ -1,0 +1,11 @@
+filter inet_kernel_export4 {
+    if net = 0.0.0.0/0 then reject;
+    krt_prefsrc = 44.30.70.34;
+    accept;
+}
+
+filter inet_kernel_export6 {
+    if net = ::/0 then reject;
+    krt_prefsrc = 2001:67c:878:2c::1;
+    accept;
+}
