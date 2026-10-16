@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg3310achslax.conf.in
+
+[Interface]
+ListenPort = 24201
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = qEffOA35Oe2IFUFXv7KTGGZ5SV3XmrM+IxTdzHEDmCg=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint=lax01.edge.r1.tmpfs.dev:20893
