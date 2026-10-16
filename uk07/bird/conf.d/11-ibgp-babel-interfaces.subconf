@@ -1,4 +1,4 @@
-interface "gre-ca04" {
+interface "gre-ca04", "gre-jp02" {
     type wireless;
     hello interval 15s;
     rxcost 30;
