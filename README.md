@@ -91,6 +91,6 @@ These BGP local preference shift values (loosely) define the outbound routing po
   - +10: RPKI valid
   - reject: RPKI invalid
 - AS path length:
-  - +30: Direct AS neighbour (i.e. =1)
+  - +80: Direct AS neighbour (i.e. =1)
   - -50: (inet) > 16; (dn42) > 8 (in addition, such routes are not exported to peers)
   - reject: (inet) > 64; (dn42) > 16
