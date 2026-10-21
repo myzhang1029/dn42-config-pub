@@ -10,6 +10,7 @@ Conflicts=shutdown.target
 [Service]
 Type=oneshot
 RemainAfterExit=true
+ExecStartPre=/usr/bin/bash -c 'while ! ip address show dev ztbtosre7x; do sleep 0.1; done'
 ExecStart=/usr/sbin/ip link set ztbtosre7x group 4040
 
 [Install]
