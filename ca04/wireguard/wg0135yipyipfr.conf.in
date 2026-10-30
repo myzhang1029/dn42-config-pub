@@ -1,0 +1,11 @@
+# vi: ft=dosini
+# /etc/wireguard/wg0135yipyipfr.conf.in
+
+[Interface]
+ListenPort = 24202
+PrivateKey = @PRIVATE_KEY@
+
+[Peer]
+PublicKey = dOh5gs61hErnxNbkzmF+WkuOsQfVUnI7kk/Gf9wXlF8=
+AllowedIPs = fe80::/64, fd00::/8, 172.31.0.0/16, 172.20.0.0/14, 10.0.0.0/8
+Endpoint=[2a01:cb08:5a0:a2d1:be24:11ff:fefb:902c]:55502
