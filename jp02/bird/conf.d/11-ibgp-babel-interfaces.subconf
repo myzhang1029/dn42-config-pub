@@ -5,14 +5,14 @@ interface "ztbtosre7x" {
     rxcost 100;
     rtt cost 96;
 };
-interface "gre-ca04", "gre-uk09" {
+interface "gre-????" {
     type wireless; # Enable LQM
     hello interval 15s;
     limit 1;
     rxcost 30;
     rtt cost 96;
 };
-interface "wginternal3" {
+interface "wginternal?" {
     type wireless; # Enable LQM
     hello interval 15s;
     limit 1;
