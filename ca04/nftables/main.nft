@@ -86,14 +86,4 @@ table inet main {
         oifname @public_interfaces meta l4proto tcp log prefix "forward_WAN_access: " reject
         oifname @public_interfaces reject
     }
-
-    chain mark_in {
-        type filter hook prerouting priority mangle; policy accept;
-        iifgroup $inet_ifgroup ip6 daddr @inet_self_ipv6_prefix ct mark set 211585
-        iifgroup $inet_ifgroup ip daddr @inet_self_ipv4_prefix ct mark set 211585
-    }
-    chain remark_out {
-        type route hook output priority mangle; policy accept;
-        ct mark 211585 counter meta mark set 211585
-    }
 }
