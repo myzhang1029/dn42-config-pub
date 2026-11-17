@@ -47,12 +47,12 @@ table inet main {
         type inet_proto . inet_service
         counter
         elements = {
+            udp . ntp,
             tcp . domain,
             udp . domain,
             tcp . http,
             tcp . https,
             udp . https,
-            udp . ntp,
             tcp . 8082, # StayRTR dn42
             tcp . 8282, # StayRTR inet
         }
@@ -77,8 +77,8 @@ table inet main {
         elements = { "enp0s6" }
     }
 
-    include "/etc/nftables/blacklist.nft"
     include "/etc/nftables/oracle.nft"
+    include "/etc/nftables/blacklist.nft"
     include "/etc/nftables/shared-chains.nft"
     include "/etc/nftables/private-chains.nft"
 

@@ -42,7 +42,8 @@ Idea:
 
 The input chain evaluates the following in order:
 1. Accept necessary things like ICMP and conntrack established/related.
-2. Accept things that are allowed from all sources (`chain input_everywhere`).
+2. Drop blacklisted traffic
+2. Accept listed local services
 3. Accept routing traffic on internal interfaces, peering traffic, and dn42 internal services (`chain input_dn42`).
 4. Accept things local to this machine (`chain input_machdep`).
 

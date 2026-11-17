@@ -52,9 +52,9 @@ table inet main {
         type inet_proto . inet_service
         counter
         elements = {
+            udp . ntp,
             tcp . domain,
             udp . domain,
-            tcp . 180,
             tcp . https, # FlapAlerted
             tcp . 1790, # FlapAlerted
         }
@@ -73,29 +73,11 @@ table inet main {
     }
 
     include "/etc/nftables/oracle.nft"
+    include "/etc/nftables/blacklist.nft"
     include "/etc/nftables/shared-chains.nft"
-    include "/etc/nftables/public-chains.nft"
+    include "/etc/nftables/private-chains.nft"
 
     chain forward_machdep {
         iifgroup $internal_ifgroup oifname @public_interfaces counter accept
-    }
-
-    chain nat_post {
-        type nat hook postrouting priority srcnat; policy accept;
-        oifname @public_interfaces goto nat_post_public
-    }
-
-    chain input_everywhere {
-        tcp dport ssh accept
-        udp dport ntp accept
-        ip saddr @inet_self_ipv4_prefix udp dport domain accept
-        ip saddr @inet_self_ipv4_prefix tcp dport domain accept
-        ip6 saddr @inet_self_ipv6_prefix udp dport domain accept
-        ip6 saddr @inet_self_ipv6_prefix tcp dport domain accept
-    }
-
-    chain input_machdep {
-        iifname @oracle_interfaces ip6 daddr fe80::/64 udp dport dhcpv6-client accept
-        iifname @oracle_interfaces udp dport @dn42_wg_ports accept
     }
 }
