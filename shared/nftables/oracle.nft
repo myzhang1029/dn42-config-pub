@@ -34,9 +34,9 @@ chain BareMetalInstanceServices {
     ip6 daddr fd00:c1::a9fe:0/120 meta l4proto udp counter reject
 }
 
-# at iptables (higher) priority
+# at higher priority
 chain oci_filter_output {
-    type filter hook output priority filter; policy accept;
+    type filter hook output priority filter - 10; policy accept;
     ip daddr 169.254.0.0/16 oifname @oracle_interfaces counter jump BareMetalInstanceServices
     ip6 daddr fd00:c1::a9fe:0/120 oifname @oracle_interfaces counter jump BareMetalInstanceServices
 }

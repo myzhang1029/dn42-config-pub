@@ -54,6 +54,7 @@ table inet main {
         elements = { "wlp0s20f3", "enbuiltin" }
     }
 
+    include "/etc/nftables/blacklist.nft"
     include "/etc/nftables/shared-chains.nft"
     include "/etc/nftables/private-chains.nft"
 }

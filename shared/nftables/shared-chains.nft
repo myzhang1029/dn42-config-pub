@@ -56,13 +56,13 @@ set dn42_self_ipv6_prefix {
     elements = { fdc0:d227:306::/48 }
 }
 
-set inet_self_ipv4_prefix {
+set inet_routed_ipv4_prefix {
     type ipv4_addr
     flags interval
     elements = { 44.30.70.0/24 }
 }
 
-set inet_self_ipv6_prefix {
+set inet_routed_ipv6_prefix {
     type ipv6_addr
     flags interval
     elements = { 2001:67c:878::/48, 2a0f:6282:2100::/44, 2602:f92a:1316::/48 }
@@ -73,26 +73,30 @@ set inet_self_ipv6_prefix {
 chain input {
     type filter hook input priority filter; policy drop;
 
-    jump _input_allow_ct_lo
+    ct state { established, related } accept
+    ct status dnat accept
+    iifname "lo" accept
+    ct state invalid drop
 
     # Blacklist these items
-    meta l4proto . th dport . ip saddr @attacker4_by_service drop
     meta l4proto . th dport . ip6 saddr @attacker6_by_service drop
-
-    jump _input_limit_icmp
+    meta l4proto . th dport . ip saddr @attacker4_by_service drop
 
     # Allow these items (traffic to allowed local services)
     meta l4proto . th dport @everywhere_services accept
-    ip daddr . meta l4proto . th dport @local_services_ipv4 accept
     ip6 daddr . meta l4proto . th dport @local_services_ipv6 accept
+    ip daddr . meta l4proto . th dport @local_services_ipv4 accept
 
-    # Order doesn't really matter for the following two
-    iifgroup { $dn42_ifgroup, $internal_ifgroup } jump _input_dn42
+    icmpv6 type { nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert, nd-redirect } accept
+    meta l4proto { icmp, ipv6-icmp } limit rate 100/second accept
+
+    # Allow machdep rules to override _input_dn42 too
     jump input_machdep
+    iifgroup { $dn42_ifgroup, $internal_ifgroup } jump _input_dn42
 
     # We DROP input traffic that isn't explicitly accepted above,
     # since this is what the Oracle firewall does as well
-    counter drop
+    drop
 }
 
 chain output {
@@ -116,13 +120,14 @@ chain forward {
     jump forward_machdep
 
     # Accept all traffic within the dn42 network without conntrack
-    jump _forward_dn42
+    # Count all non-self traffic
+    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } jump _forward_dn42
 
     # AS211585
-    iifgroup { $inet_ifgroup, $internal_ifgroup } ip6 daddr @inet_self_ipv6_prefix counter accept
-    oifgroup { $inet_ifgroup, $internal_ifgroup } ip6 saddr @inet_self_ipv6_prefix counter accept
-    iifgroup { $inet_ifgroup, $internal_ifgroup } ip daddr @inet_self_ipv4_prefix counter accept
-    oifgroup { $inet_ifgroup, $internal_ifgroup } ip saddr @inet_self_ipv4_prefix counter accept
+    iifgroup { $inet_ifgroup, $internal_ifgroup } ip6 daddr @inet_routed_ipv6_prefix accept
+    oifgroup { $inet_ifgroup, $internal_ifgroup } ip6 saddr @inet_routed_ipv6_prefix accept
+    iifgroup { $inet_ifgroup, $internal_ifgroup } ip daddr @inet_routed_ipv4_prefix accept
+    oifgroup { $inet_ifgroup, $internal_ifgroup } ip saddr @inet_routed_ipv4_prefix accept
 
     # For incoming traffic from peers/providers, drop them to protect ourselves
     iifgroup $inet_ifgroup counter drop
@@ -144,20 +149,6 @@ chain do_masquerade {
 }
 
 ### Protocol chains
-
-# Allow required ICMP and limit rates of other ICMP
-chain _input_limit_icmp {
-    icmpv6 type { nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert, nd-redirect } accept
-    meta l4proto { icmp, ipv6-icmp } limit rate 100/second accept
-}
-
-# Allow ct connections and lo
-chain _input_allow_ct_lo {
-    ct state { established, related } accept
-    ct status dnat accept
-    iifname "lo" accept
-    ct state invalid drop
-}
 
 chain filter_policy_drop_martian {
     ip6 daddr {
@@ -187,31 +178,31 @@ counter dn42_fwd_packets {
 }
 
 chain _input_internal {
+    # Routing control plane is v6-only :)
     ip6 saddr fe80::/64 udp dport babel accept
+    ip6 saddr @dn42_self_ipv6_prefix meta l4proto . th dport { tcp . bgp, udp . bfd-multi-ctl } accept
     # bird-lgproxy
     ip6 daddr @dn42_self_ipv6 ip6 saddr { fdc0:d227:306:ee01::1, fdc0:d227:306:ca04::1 } tcp dport 8000 accept
 }
 
-# Input chain for internal and dn42 interfaces.
+# Input chain for internal and dn42 interfaces
 # Always accept (iface and daddr-based) inet traffic before this chain
 chain _input_dn42 {
     ip6 saddr fe80::/64 meta l4proto . th dport { tcp . bgp, udp . bfd-control } accept
-    iifgroup $internal_ifgroup ip6 saddr @dn42_self_ipv6_prefix meta l4proto . th dport { tcp . bgp, udp . bfd-control, udp . bfd-multi-ctl } accept
-    ip saddr @dn42_bgp_src4 meta l4proto . th dport { tcp . bgp, udp . bfd-control } accept
     ip6 saddr @dn42_bgp_src6 meta l4proto . th dport { tcp . bgp, udp . bfd-control } accept
+    ip saddr @dn42_bgp_src4 meta l4proto . th dport { tcp . bgp, udp . bfd-control } accept
     iifgroup $internal_ifgroup jump _input_internal
     # Public-facing dn42 services
-    meta l4proto . th dport @dn42_ports ip daddr @dn42_self_ipv4 accept
     meta l4proto . th dport @dn42_ports ip6 daddr @dn42_self_ipv6 accept
+    meta l4proto . th dport @dn42_ports ip daddr @dn42_self_ipv4 accept
     # Be nice to other participants and let them know something got rejected
     reject with icmpx admin-prohibited
 }
 
 chain _forward_dn42 {
-    # Count all non-self traffic
-    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } ip saddr @dn42_self_ipv4 notrack accept
-    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } ip daddr @dn42_self_ipv4 notrack accept
-    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } ip6 saddr @dn42_self_ipv6 notrack accept
-    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } ip6 daddr @dn42_self_ipv6 notrack accept
-    iifgroup { $dn42_ifgroup, $internal_ifgroup } oifgroup { $dn42_ifgroup, $internal_ifgroup } counter name dn42_fwd_packets notrack accept
+    ip6 saddr @dn42_self_ipv6 accept
+    ip6 daddr @dn42_self_ipv6 accept
+    ip saddr @dn42_self_ipv4 accept
+    ip daddr @dn42_self_ipv4 accept
+    counter name dn42_fwd_packets accept
 }
