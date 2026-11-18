@@ -160,17 +160,6 @@ chain filter_policy_drop_martian {
     } log prefix "RFC3964_IPv4_REJECT: " reject with icmpv6 addr-unreachable
 }
 
-# Do not track incoming NTP requests or outgoing NTP replies
-# jump here after daddr filtering, in a type filter hook prerouting priority raw chain
-chain ct_notrack_ntp_req {
-    # Was @ih,5,3 which doesn't work on a 5.x kernel
-    udp dport ntp @th,69,3 { 1, 3 } notrack accept
-}
-# jump here after saddr filtering, in a type filter hook output priority raw chain
-chain ct_notrack_ntp_resp {
-    udp sport ntp @th,69,3 { 2, 4 } notrack accept
-}
-
 ### dn42 common stuff
 
 counter dn42_fwd_packets {
