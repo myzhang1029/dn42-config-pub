@@ -31,12 +31,12 @@ def fetch_ips() -> tuple[set[IPv4Network], set[IPv6Network]]:
     for iface in ip_j("address", "show"):
         for ai in iface["addr_info"]:
             if ai["family"] == "inet":
-                ip = IPv4Network(ai["local"])
-                local_v4.add(ip)
+                ip4 = IPv4Network(ai["local"])
+                local_v4.add(ip4)
             else:
                 assert ai["family"] == "inet6"
-                ip = IPv6Network(ai["local"])
-                local_v6.add(ip)
+                ip6 = IPv6Network(ai["local"])
+                local_v6.add(ip6)
     local_v4 = set(collapse_addresses(local_v4))
     local_v6 = set(collapse_addresses(local_v6))
     return local_v4, local_v6
