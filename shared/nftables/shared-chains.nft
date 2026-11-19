@@ -76,7 +76,6 @@ chain input {
     ct state { established, related } accept
     ct status dnat accept
     iifname "lo" accept
-    ct state invalid drop
 
     # Blacklist these items
     meta l4proto . th dport . ip6 saddr @attacker6_by_service drop
@@ -90,6 +89,12 @@ chain input {
     icmpv6 type { nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert, nd-redirect } accept
     meta l4proto { icmp, ipv6-icmp } limit rate 100/second accept
 
+    # Nothing before this line should contain rejects
+    # (see the end of `chain forward`),
+    # but there may be rejects in `chain input_machdep` or `chain _input_dn42`,
+    # so we drop ct invalid packets here.
+    # Notably, don't drop ct invalid icmp since there are `notrack`s for some of them.
+    ct state invalid drop
     # Allow machdep rules to override _input_dn42 too
     jump input_machdep
     iifgroup { $dn42_ifgroup, $internal_ifgroup } jump _input_dn42
