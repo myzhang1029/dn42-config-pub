@@ -2,10 +2,12 @@
 # /etc/nftables/shared-chains.nft
 
 # This file is intended to be included by /etc/nftables/main.nft or /etc/nftables.conf
-# It defines shared definitions, and a default set of {input, output, forward}
-# chains flexible enough to be applicable to all hosts.
-# More specific functions like ct_notrack should be defined separately in the
+# It defines shared definitions, and the {input, output, forward} base chains
+# (following iptables conventions I guess?). Hopefully they are flexible enough to be
+# applicable to all hosts.
+# More specific functions like `ct notrack` are to be defined separately in the
 # including file.
+# Chains prefixed with an underscore are not to be called outside of this file!
 
 # Usage:
 # main.nft MUST define:
@@ -86,8 +88,7 @@ chain input {
     ip6 daddr . meta l4proto . th dport @local_services_ipv6 accept
     ip daddr . meta l4proto . th dport @local_services_ipv4 accept
 
-    icmpv6 type { nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert, nd-redirect } accept
-    meta l4proto { icmp, ipv6-icmp } limit rate 100/second accept
+    meta l4proto { icmp, ipv6-icmp } goto _input_icmp
 
     # Nothing before this line should contain rejects
     # (see the end of `chain forward`),
@@ -108,7 +109,7 @@ chain output {
     type filter hook output priority filter; policy accept;
     tcp flags syn tcp option maxseg size set rt mtu
     oifname "lo" accept
-    jump filter_policy_drop_martian
+    jump _filter_drop_martian
     # Accept outbound traffic everywhere
 }
 
@@ -116,7 +117,7 @@ chain forward {
     type filter hook forward priority filter; policy drop;
     tcp flags syn tcp option maxseg size set rt mtu
     iifname "lo" accept
-    jump filter_policy_drop_martian
+    jump _filter_drop_martian
 
     ct state { established, related } accept
     ct status dnat accept
@@ -155,7 +156,7 @@ chain do_masquerade {
 
 ### Protocol chains
 
-chain filter_policy_drop_martian {
+chain _filter_drop_martian {
     ip6 daddr {
         ::/96, ::ffff:0.0.0.0/96,
         2002::/24, 2002:a00::/24,
@@ -163,6 +164,16 @@ chain filter_policy_drop_martian {
         2002:ac10::/28, 2002:c0a8::/32,
         2002:e000::/19
     } log prefix "RFC3964_IPv4_REJECT: " reject with icmpv6 addr-unreachable
+}
+
+chain _input_icmp {
+    icmpv6 type { nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert, nd-redirect } accept
+    # Make sure these rate limits are not shared with echos to reduce DoS potential
+    icmp type { destination-unreachable, time-exceeded, parameter-problem } limit rate over 100/second drop
+    icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem } limit rate over 100/second drop
+    icmp type { echo-request, echo-reply } limit rate over 50/second drop
+    icmpv6 type { echo-request, echo-reply } limit rate over 50/second drop
+    accept
 }
 
 ### dn42 common stuff
