@@ -28,15 +28,13 @@ chain BareMetalInstanceServices {
     ip6 daddr fd00:c1::a9fe:a9fe tcp dport {53, 80} counter accept
     ip6 daddr fd00:c1::a9fe:a9fe udp dport {53, 67, 69, 123} counter accept
 
-    ip daddr 169.254.0.0/16 meta l4proto tcp counter reject with tcp reset
-    ip daddr 169.254.0.0/16 meta l4proto udp counter reject
-    ip6 daddr fd00:c1::a9fe:0/120 meta l4proto tcp counter reject with tcp reset
-    ip6 daddr fd00:c1::a9fe:0/120 meta l4proto udp counter reject
+    meta l4proto tcp counter reject with tcp reset
+    counter reject with icmpx admin-prohibited
 }
 
 # at higher priority
 chain oci_filter_output {
     type filter hook output priority filter - 10; policy accept;
     ip daddr 169.254.0.0/16 oifname @oracle_interfaces counter jump BareMetalInstanceServices
-    ip6 daddr fd00:c1::a9fe:0/120 oifname @oracle_interfaces counter jump BareMetalInstanceServices
+    ip6 daddr fd00:c1::a9fe:0/112 oifname @oracle_interfaces counter jump BareMetalInstanceServices
 }
