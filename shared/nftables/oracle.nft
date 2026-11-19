@@ -38,3 +38,10 @@ chain oci_filter_output {
     ip daddr 169.254.0.0/16 oifname @oracle_interfaces counter jump BareMetalInstanceServices
     ip6 daddr fd00:c1::a9fe:0/112 oifname @oracle_interfaces counter jump BareMetalInstanceServices
 }
+
+# just do not allow forwarding to Oracle metadata IPs whatsoever
+chain oci_filter_forward {
+    type filter hook forward priority filter - 10; policy accept;
+    ip daddr 169.254.0.0/16 oifname @oracle_interfaces counter drop
+    ip6 daddr fd00:c1::a9fe:0/112 oifname @oracle_interfaces counter drop
+}
