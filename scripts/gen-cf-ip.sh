@@ -1,11 +1,12 @@
 #!/bin/sh
 
-v=${1:-6}
+cf_ips=$(curl -fsS https://api.cloudflare.com/client/v4/ips) || exit
 
-cat << EOF
-set cf_ip${v} {
-    type ipv${v}_addr
-    flags interval
-    elements = { $(curl https://api.cloudflare.com/client/v4/ips | jq --raw-output ".result.ipv${v}_cidrs.[]" | xargs | tr ' ' ,) }
-}
-EOF
+echo "chain _input_cf {"
+for v in 6 4; do
+    proto=ip
+    [ "$v" = 6 ] && proto=ip6
+    cidrs="$(jq -nr --argjson ips "$cf_ips" '$ips.result["ipv'$v'_cidrs"] | join(", ")')"
+    echo "    $proto saddr { $cidrs } $proto daddr @local_cf_ipv$v accept"
+done
+echo "}"
