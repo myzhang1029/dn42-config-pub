@@ -1,0 +1,12 @@
+area 0 {
+    interface "gre-????" {
+        type ptp;
+        hello 15;
+        cost 30;
+    };
+    interface "wginternal?" {
+        type ptp;
+        hello 15;
+        cost 60;
+    };
+};
