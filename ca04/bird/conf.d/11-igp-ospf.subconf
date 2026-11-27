@@ -1,6 +1,6 @@
 area 0 {
     interface "ztbtosre7x" {
-        type ptp;
+        type bcast;
         hello 15;
         dead 40;
         cost 100;
