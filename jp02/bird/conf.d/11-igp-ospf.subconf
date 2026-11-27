@@ -1,0 +1,20 @@
+area 0 {
+    interface "ztbtosre7x" {
+        type ptp;
+        hello 15;
+        dead 40;
+        cost 100;
+    };
+    interface "gre-????" {
+        type ptp;
+        hello 15;
+        dead 40;
+        cost 30;
+    };
+    interface "wginternal?" {
+        type ptp;
+        hello 15;
+        dead 40;
+        cost 60;
+    };
+};
